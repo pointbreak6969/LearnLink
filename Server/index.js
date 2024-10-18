@@ -6,7 +6,7 @@ import { app } from "./app.js";
 connectDb().then(()=>{
     app.listen(PORT, ()=>{
         console.log(`Server is running on PORT: ${PORT}`);
-    }).catch((error)=>{
-        console.log("Error while connecting to MongoDB", error);
-    });
-})
+    })
+}).catch((error)=>{
+    console.log("Error while connecting to MongoDB", error);
+});
