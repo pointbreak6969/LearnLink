@@ -2,28 +2,33 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import User from "../models/userModel.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
 
-const generateAccessAndRefreshToken = asyncHandler(async (userId) => {
-  try {
-    const user = await User.findById(userId);
-    const accessToken = user.generateAccessToken();
-    const refreshToken = user.generateRefreshToken();
-    user.refreshToken = refreshToken;
-    await user.save({ validateBeforeSave: false });
-    return { accessToken, refreshToken };
-  } catch (error) {
-    throw new ApiError(500, "Error while generating tokens");
-  }
-});
+const generateAccessAndRefreshToken = async (userId) => {
+    try {
+      const user = await User.findById(userId);
+      const accessToken = user.generateAccessToken();
+      const refreshToken = user.generateRefreshToken();
+      
+      console.log("Access Token:", accessToken);
+      console.log("Refresh Token:", refreshToken);
+  
+      user.refreshToken = refreshToken;
+      await user.save({ validateBeforeSave: false });
+      
+      return { accessToken, refreshToken };
+    } catch (error) {
+      console.error("Error generating tokens:", error);
+      throw new ApiError(500, "Something went wrong while generating tokens");
+    }
+  };
+  
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
   if ([fullName, email, password].some((field) => field.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
-  const existingUser = await User.findOne(email);
+  const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new ApiError(400, "User already exists");
   }
@@ -36,10 +41,10 @@ const registerUser = asyncHandler(async (req, res) => {
   }
   const options = {
     httpOnly: true,
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), //7 days
     secure: true,
+    sameSite: "none",
   };
-  const { accessToken, refreshToken } = generateAccessAndRefreshToken(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
   return res
     .status(201)
     .cookie("accessToken", accessToken, options)
@@ -52,7 +57,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!email && !password) {
     throw new ApiError(400, "Email and password are required");
   }
-  const user = await User.findOne(email);
+  const user = await User.findOne({ email });
   if (!user) {
     throw new ApiError(404, "User not found");
   }
@@ -60,14 +65,14 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     throw new ApiError(400, "Invalid credentials");
   }
-  const { accessToken, refreshToken } = generateAccessAndRefreshToken(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken -otp -otpExpiry"
   );
   const options = {
     httpOnly: true,
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), //7 days
     secure: true,
+    sameSite: "none",
   };
   return res
     .status(200)
@@ -102,6 +107,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
-    .json(new ApiResponse(200, req.user, "User Fetched successfully"));
+    .json(new ApiResponse(200, req.user, "User found successfully"));
 });
 export { registerUser, loginUser, logoutUser, getCurrentUser };
