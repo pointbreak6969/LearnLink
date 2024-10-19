@@ -7,27 +7,27 @@ const Login = () => {
     <>
       <Navbar />
       <div className="min-h-screen flex flex-col bg-gray-50">
-        <main className="container mx-auto mt-8 flex flex-grow">
-          {/* Left Section: Testimonials */}
-          <div className="w-1/2 pr-8 hidden lg:block">
-            <h2 className="text-3xl font-bold text-orange-600 mb-4">Students Testimonials</h2>
-            <p className="text-gray-600 text-base mb-6 leading-relaxed">
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tempus
-              tincidunt etiam eget elit id imperdiet et. Cras eu sit dignissim lorem
-              nibh et. Highly recommend it!"
+        <main className="container mx-auto flex flex-grow flex-col-reverse lg:flex-row mt-8 p-4">
+          {/* Left Section: Testimonials (shows below form on small screens) */}
+          <div className="lg:w-1/2 lg:pr-8 lg:block mt-8 lg:mt-0">
+            <h2 className="text-2xl lg:text-3xl font-bold text-orange-600 mb-4 text-center lg:text-left">
+              Students Testimonials
+            </h2>
+            <p className="text-gray-600 text-base mb-6 leading-relaxed text-center lg:text-left">
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tempus tincidunt etiam eget
+              elit id imperdiet et. Cras eu sit dignissim lorem nibh et. Highly recommend it!"
             </p>
             <div className="bg-white shadow-lg p-6 rounded-lg">
-              <p className="text-gray-700 text-base mb-4">
-                "The web design course provided a solid foundation for me. The
-                instructors were knowledgeable and supportive, and the interactive
-                learning environment was engaging."
+              <p className="text-gray-700 text-base mb-4 text-center lg:text-left">
+                "The web design course provided a solid foundation for me. The instructors were
+                knowledgeable and supportive, and the interactive learning environment was engaging."
               </p>
-              <div className="flex items-center">
+              <div className="flex items-center justify-center lg:justify-start">
                 <div className="w-10 h-10 bg-purple-400 rounded-full mr-3"></div>
                 <span className="font-semibold text-lg text-gray-800">Sarah L.</span>
               </div>
             </div>
-            <div className="flex justify-end mt-6 space-x-4">
+            <div className="flex justify-center lg:justify-end mt-6 space-x-4">
               <button className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full hover:bg-orange-500 hover:text-white transition duration-300">
                 &lt;
               </button>
@@ -103,7 +103,7 @@ const Login = () => {
             </form>
           </div>
         </main>
-      <Footer />
+        <Footer />
       </div>
     </>
   );

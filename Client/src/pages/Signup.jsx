@@ -20,11 +20,11 @@ const Signup = () => {
     return (
         <>
         <Navbar/>
-        <div className="min-h-screen flex justify-center items-center bg-gray-100 p-4 ">
+        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center bg-gray-100 p-4 space-y-8 md:space-y-0">
             {/* Student Testimonials Section */}
-            <div className="bg-gray-100  flex flex-col max-w-7xl md:w-1/2 p-8  mb-8 mr-20">
-                <h2 className="text-3xl font-bold mb-6">Students Testimonials</h2>
-                <p className="text-gray-600 mb-8">
+            <div className="bg-gray-100 flex flex-col max-w-7xl w-full md:w-1/2 p-8 mb-8 md:mr-20">
+                <h2 className="text-3xl font-bold mb-6 text-center md:text-left">Students Testimonials</h2>
+                <p className="text-gray-600 mb-8 text-center md:text-left">
                     Lorem ipsum dolor sit amet consectetur. Tempus tincidunt etiam eget
                     elit id imperdiet et. Cras eu sit dignissim lorem nibh et. Ac cum
                     eget habitasse in velit fringilla feugiat senectus in.
@@ -57,7 +57,7 @@ const Signup = () => {
             </div>
 
             {/* Signup Form Section */}
-            <div className="bg-white shadow-lg rounded-lg w-full md:w-1/3 p-8 border border-gray-200">
+            <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-8 border border-gray-200">
                 <h2 className="text-3xl font-bold mb-6 text-center">Sign Up</h2>
                 <p className="text-gray-600 mb-8 text-center">
                     Create an account to unlock exclusive features.
@@ -134,7 +134,7 @@ const Signup = () => {
                 </p>
             </div>
         </div>
-            <Footer/>
+        <Footer/>
         </>
     );
 };
