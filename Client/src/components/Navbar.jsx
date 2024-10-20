@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,10 +22,13 @@ const Navbar = () => {
 
       <header className="bg-orange-500 text-white py-2">
         <div className="container mx-auto flex justify-between items-center">
-         
-          <div className="text-2xl font-bold" aria-label="Logo">L</div>
+          {/* Logo */}
+          <div className="text-2xl font-bold" aria-label="Logo">
+            L
+          </div>
 
-          <button
+          {/* Mobile Menu Toggle Button */}
+          <Button
             className="text-white md:hidden"
             onClick={toggleMenu}
             aria-label="Toggle Menu"
@@ -43,9 +47,9 @@ const Navbar = () => {
                 d={isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16m-7 6h7'}
               />
             </svg>
-          </button>
+          </Button>
 
-          {/* Navigation Links  */}
+          {/* Navigation Links */}
           <nav className="hidden md:flex space-x-4 text-sm">
             <ul className="flex space-x-4">
               <li className="cursor-pointer hover:text-orange-200">Home</li>
@@ -58,20 +62,12 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="space-x-2 hidden md:block">
-            <button
-              variant="ghost"
-              className="text-white px-3 py-1 border border-white rounded hover:bg-orange-600 transition duration-300"
-              aria-label="Sign Up"
-            >
+            <Button variant="default" className="border-white text-white hover:bg-orange-600">
               Sign Up
-            </button>
-            <button
-              variant="ghost"
-              className="text-white px-3 py-1 border border-white rounded hover:bg-orange-600 transition duration-300"
-              aria-label="Login"
-            >
+            </Button>
+            <Button variant="default" className="border-white text-white hover:bg-orange-600">
               Login
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -86,20 +82,12 @@ const Navbar = () => {
               <li className="cursor-pointer hover:text-orange-200">Contact</li>
             </ul>
             <div className="space-y-2">
-              <button
-                variant="ghost"
-                className="w-full text-white px-3 py-1 border border-white rounded hover:bg-orange-600 transition duration-300"
-                aria-label="Sign Up"
-              >
+              <Button variant="outline" className="w-full border-white text-white hover:bg-orange-600">
                 Sign Up
-              </button>
-              <button
-                variant="ghost"
-                className="w-full text-white px-3 py-1 border border-white rounded hover:bg-orange-600 transition duration-300"
-                aria-label="Login"
-              >
+              </Button>
+              <Button variant="outline" className="w-full border-white text-white hover:bg-orange-600">
                 Login
-              </button>
+              </Button>
             </div>
           </div>
         )}
