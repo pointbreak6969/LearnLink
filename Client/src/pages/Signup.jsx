@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+
 
 const Signup = () => {
     const [isagreed, Setisagreed] = useState(false);
@@ -20,11 +24,11 @@ const Signup = () => {
     return (
         <>
         <Navbar/>
-        <div className="min-h-screen flex justify-center items-center bg-gray-100 p-4 ">
+        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center bg-gray-100 p-4 space-y-8 md:space-y-0">
             {/* Student Testimonials Section */}
-            <div className="bg-gray-100  flex flex-col max-w-7xl md:w-1/2 p-8  mb-8 mr-20">
-                <h2 className="text-3xl font-bold mb-6">Students Testimonials</h2>
-                <p className="text-gray-600 mb-8">
+            <div className="bg-gray-100 flex flex-col max-w-7xl w-full md:w-1/2 p-8 mb-8 md:mr-20">
+                <h2 className="text-3xl font-bold mb-6 text-center md:text-left">Students Testimonials</h2>
+                <p className="text-gray-600 mb-8 text-center md:text-left">
                     Lorem ipsum dolor sit amet consectetur. Tempus tincidunt etiam eget
                     elit id imperdiet et. Cras eu sit dignissim lorem nibh et. Ac cum
                     eget habitasse in velit fringilla feugiat senectus in.
@@ -47,17 +51,17 @@ const Signup = () => {
                     </div>
                 </div>
                 <div className="flex justify-between">
-                    <button className="p-4 bg-orange-300 rounded-full shadow hover:bg-orange-400">
+                    <Button className="p-4 bg-orange-300 rounded-full shadow hover:bg-orange-400">
                         &#8592;
-                    </button>
-                    <button className="p-4 bg-orange-300 rounded-full shadow hover:bg-orange-400">
+                    </Button>
+                    <Button className="p-4 bg-orange-300 rounded-full shadow hover:bg-orange-400">
                         &#8594;
-                    </button>
+                    </Button>
                 </div>
             </div>
 
             {/* Signup Form Section */}
-            <div className="bg-white shadow-lg rounded-lg w-full md:w-1/3 p-8 border border-gray-200">
+            <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-8 border border-gray-200">
                 <h2 className="text-3xl font-bold mb-6 text-center">Sign Up</h2>
                 <p className="text-gray-600 mb-8 text-center">
                     Create an account to unlock exclusive features.
@@ -65,34 +69,33 @@ const Signup = () => {
                 <form className="space-y-6" onSubmit={handleSignup}>
                     <div>
                         <label className="block text-gray-700 text-lg">Full Name</label>
-                        <input
+                        <Input
                             type="text"
-                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400"
+                            className="w-full"
                             placeholder="Enter your Name"
                         />
                     </div>
                     <div>
                         <label className="block text-gray-700 text-lg">Email</label>
-                        <input
+                        <Input
                             type="email"
-                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400"
+                            className="w-full"
                             placeholder="Enter your Email"
                         />
                     </div>
                     <div>
                         <label className="block text-gray-700 text-lg">Password</label>
-                        <input
+                        <Input
                             type="password"
-                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400"
+                            className="w-full"
                             placeholder="Enter your Password"
                         />
                     </div>
                     <div className="flex items-center">
-                        <input 
-                            type="checkbox" 
-                            className="mr-2" 
-                            checked={isagreed} 
-                            onChange={handleAggrement} 
+                        <Checkbox
+                            checked={isagreed}
+                            onCheckedChange={handleAggrement}
+                            className="mr-2"
                         />
                         <label className="text-gray-700 text-lg">
                             I agree with{' '}
@@ -105,26 +108,29 @@ const Signup = () => {
                             </a>
                         </label>
                     </div>
-                    <button 
+                    <Button 
                         type="submit" 
-                        className={`w-full p-3 rounded-md text-white transition duration-300 ${isagreed ? 'bg-orange-500 hover:bg-orange-600' : 'bg-gray-400 cursor-not-allowed'}`} 
+                        className="w-full bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded" 
                         disabled={!isagreed}
                     >
                         Sign Up
-                    </button>
+                    </Button>
                     <div className="flex items-center justify-between">
                         <hr className="w-full border-gray-300" />
                         <span className="px-2 text-gray-500">OR</span>
                         <hr className="w-full border-gray-300" />
                     </div>
-                    <button className="w-full flex items-center justify-center p-3 border border-gray-300 rounded-md">
+                    <Button 
+                        className="w-full flex items-center justify-center" 
+                        variant="outline"
+                    >
                         <img
                             src="https://imagepng.org/wp-content/uploads/2019/08/google-icon.png"
                             alt="Google"
                             className="w-6 h-6 mr-2"
                         />
                         Sign Up with Google
-                    </button>
+                    </Button>
                 </form>
                 <p className="text-center text-gray-600 mt-8">
                     Already have an account?{' '}
@@ -134,7 +140,7 @@ const Signup = () => {
                 </p>
             </div>
         </div>
-            <Footer/>
+        <Footer/>
         </>
     );
 };
