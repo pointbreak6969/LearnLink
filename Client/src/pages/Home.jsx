@@ -1,15 +1,19 @@
+
+import Faq from '@/components/Faq'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ArrowRight, BookOpen, ChevronRightCircle, Star, Users, Zap } from 'lucide-react'
 import React from 'react'
+import FewCourses from '@/components/FewCourses'
 
 const Home = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="">
+
         <section className="h-screen flex items-center justify-center bg-gradient-to-b from-orange-50 to-orange-100">
           <div className="container mx-auto px-4 text-center space-y-12">
             <h1 className="text-6xl md:text-8xl font-bold leading-tight">
@@ -28,7 +32,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
        
 
         <section className="py-20 bg-white">
@@ -88,6 +91,8 @@ const Home = () => {
             </Button>
           </div>
         </section>
+        <FewCourses/>
+        <Faq/>
       </main>
       <Footer/>
     </div>

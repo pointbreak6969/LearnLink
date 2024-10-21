@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,21 +53,20 @@ const Navbar = () => {
           {/* Navigation Links */}
           <nav className="hidden md:flex space-x-4 text-sm">
             <ul className="flex space-x-4">
-              <li className="cursor-pointer hover:text-orange-200">Home</li>
-              <li className="cursor-pointer hover:text-orange-200">Courses</li>
-              <li className="cursor-pointer hover:text-orange-200">About Us</li>
-              <li className="cursor-pointer hover:text-orange-200">Pricing</li>
-              <li className="cursor-pointer hover:text-orange-200">Contact</li>
+              <Link to={'/'} className="cursor-pointer hover:text-orange-200">Home</Link>
+              <Link to={'/courses'} className="cursor-pointer hover:text-orange-200">Courses</Link>
+              <Link to={'/about'} className="cursor-pointer hover:text-orange-200">About Us</Link>
+              <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
+              <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
             </ul>
           </nav>
 
-          {/* Auth Buttons */}
           <div className="space-x-2 hidden md:block">
             <Button variant="default" className="border-white text-white hover:bg-orange-600">
-              Sign Up
+              <Link to={'/signup'}>Sign Up</Link>
             </Button>
             <Button variant="default" className="border-white text-white hover:bg-orange-600">
-              Login
+            <Link to={'/login'}>Log In</Link>
             </Button>
           </div>
         </div>
