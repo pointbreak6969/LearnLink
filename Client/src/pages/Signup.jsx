@@ -24,9 +24,9 @@ const Signup = () => {
     return (
         <>
         <Navbar/>
-        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center bg-gray-100 p-4 space-y-8 md:space-y-0">
+        <div className="min-h-screen flex flex-col-reverse md:flex-row justify-center items-center bg-gray-100 p-4 space-y-8 md:space-y-0">
             {/* Student Testimonials Section */}
-            <div className="bg-gray-100 flex flex-col max-w-7xl w-full md:w-1/2 p-8 mb-8 md:mr-20">
+            <div className="bg-gray-100 flex flex-col max-w-7xl w-full lg:w-1/2 p-8 mb-8 lg:mr-20">
                 <h2 className="text-3xl font-bold mb-6 text-center md:text-left">Students Testimonials</h2>
                 <p className="text-gray-600 mb-8 text-center md:text-left">
                     Lorem ipsum dolor sit amet consectetur. Tempus tincidunt etiam eget
