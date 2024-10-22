@@ -58,6 +58,7 @@ const Navbar = () => {
               <Link to={'/about'} className="cursor-pointer hover:text-orange-200">About Us</Link>
               <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
               <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
+              <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
             </ul>
           </nav>
 
@@ -75,11 +76,12 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-orange-500 text-white py-4 px-4 space-y-4">
             <ul>
-              <li className="cursor-pointer hover:text-orange-200">Home</li>
-              <li className="cursor-pointer hover:text-orange-200">Courses</li>
-              <li className="cursor-pointer hover:text-orange-200">About Us</li>
-              <li className="cursor-pointer hover:text-orange-200">Pricing</li>
-              <li className="cursor-pointer hover:text-orange-200">Contact</li>
+            <Link to={'/'} className="cursor-pointer hover:text-orange-200">Home</Link>
+              <Link to={'/courses'} className="cursor-pointer hover:text-orange-200">Courses</Link>
+              <Link to={'/about'} className="cursor-pointer hover:text-orange-200">About Us</Link>
+              <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
+              <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
+              <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
             </ul>
             <div className="space-y-2">
               <Button variant="outline" className="w-full border-white text-white hover:bg-orange-600">

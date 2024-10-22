@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Contact from './pages/Contact'
 import About from './pages/About'
 import Courses from './pages/AllCourses'
+import Profile from './pages/Profile'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/courses' element={<Courses/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
+          <Route path='/profile' element={<Profile/>}/>
 
         </Routes>
       </BrowserRouter>
