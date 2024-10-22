@@ -3,7 +3,7 @@ export class AuthService {
   async createUser({ fullName, email, password }) {
     try {
       const response = await axios.post(
-        "http://localhost:5050/api/user/register",
+        "http://localhost:5050/api/v1/user/register",
         { fullName, email, password },
         {
           withCredentials: true,
@@ -21,7 +21,7 @@ export class AuthService {
   async login({ email, password }) {
     try {
      const response = await axios.post(
-        "http://localhost:5050/api/user/login",
+        "http://localhost:5050/api/v1/user/login",
         { email, password },
         {
           withCredentials: true,
