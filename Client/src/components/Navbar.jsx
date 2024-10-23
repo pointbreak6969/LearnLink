@@ -40,39 +40,12 @@ const Navbar = () => {
           {/* Navigation Links */}
           <nav className="flex space-x-4 text-sm">
             <ul className="flex space-x-4">
-              <Link to={"/"} className="cursor-pointer hover:text-orange-200">
-                Home
-              </Link>
-              <Link
-                to={"/courses"}
-                className="cursor-pointer hover:text-orange-200"
-              >
-                Courses
-              </Link>
-              <Link
-                to={"/about"}
-                className="cursor-pointer hover:text-orange-200"
-              >
-                About Us
-              </Link>
-              <Link
-                to={"/pricing"}
-                className="cursor-pointer hover:text-orange-200"
-              >
-                Pricing
-              </Link>
-              <Link
-                to={"/contact"}
-                className="cursor-pointer hover:text-orange-200"
-              >
-                Contact
-              </Link>
-              <Link
-                to={"/profile"}
-                className="cursor-pointer hover:text-orange-200"
-              >
-                Profile
-              </Link>
+              <Link to={'/'} className="cursor-pointer hover:text-orange-200">Home</Link>
+              <Link to={'/courses'} className="cursor-pointer hover:text-orange-200">Courses</Link>
+              <Link to={'/about'} className="cursor-pointer hover:text-orange-200">About Us</Link>
+              <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
+              <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
+              <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
             </ul>
           </nav>
 
