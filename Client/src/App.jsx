@@ -7,6 +7,7 @@ import Contact from './pages/Contact'
 import About from './pages/About'
 import Courses from './pages/AllCourses'
 import Profile from './pages/Profile'
+import Classroom from './pages/Classroom'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/profile' element={<Profile/>}/>
+          <Route path='classroom' element={<Classroom/>}/>
 
         </Routes>
       </BrowserRouter>
