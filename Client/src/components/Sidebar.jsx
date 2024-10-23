@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -20,22 +21,18 @@ const items = [
   {
     title: "Courses",
     url: "#",
-
   },
   {
     title: "About Us",
     url: "#",
-
   },
   {
     title: "Pricing",
     url: "#",
-
   },
   {
     title: "Contact",
     url: "#",
-
   },
 ];
 
@@ -70,6 +67,13 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>Profile</SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
