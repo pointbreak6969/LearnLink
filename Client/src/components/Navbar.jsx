@@ -49,7 +49,6 @@ const Navbar = () => {
               />
             </svg>
           </Button>
-
           {/* Navigation Links */}
           <nav className="hidden md:flex space-x-4 text-sm">
             <ul className="flex space-x-4">
