@@ -50,7 +50,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarSeparator />
-      <SidebarContent className="text-white">
+      <SidebarContent >
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -67,11 +67,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarSeparator/>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="text-white">Profile</SidebarMenuButton>
-          </SidebarMenuItem>
+            <SidebarMenuItem>
+            <SidebarMenuButton>Profile</SidebarMenuButton>
+            </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
