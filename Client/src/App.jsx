@@ -8,6 +8,7 @@ import About from './pages/About'
 import Courses from './pages/AllCourses'
 import Profile from './pages/Profile'
 import Classroom from './pages/Classroom'
+import SingleClass from './pages/SingleClass'
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
           <Route path='/about' element={<About/>}/>
           <Route path='/profile' element={<Profile/>}/>
           <Route path='classroom' element={<Classroom/>}/>
-
+          <Route path='/classroom/:classCode' element={<SingleClass/>}/>
         </Routes>
       </BrowserRouter>
     </>
