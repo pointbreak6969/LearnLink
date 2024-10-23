@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { AppSidebar } from "./Sidebar";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <div>
       {/* Top Banner */}
@@ -22,7 +18,20 @@ const Navbar = () => {
       </div>
 
       <header className="bg-orange-500 text-white py-2">
-        <div className="container mx-auto flex justify-between items-center">
+        <div className="flex justify-between px-5 md:hidden">
+          <div className="text-2xl font-bold" aria-label="Logo">
+            L
+          </div>
+          <div>
+            <SidebarProvider>
+              <AppSidebar/>
+              <SidebarTrigger/>
+            </SidebarProvider>
+          </div>
+        </div>
+
+        {/* desktop view */}
+        <div className="hidden container mx-auto md:flex justify-between items-center">
           {/* Logo */}
           <div className="text-2xl font-bold" aria-label="Logo">
             L
@@ -49,8 +58,9 @@ const Navbar = () => {
               />
             </svg>
           </Button>
+
           {/* Navigation Links */}
-          <nav className="hidden md:flex space-x-4 text-sm">
+          <nav className="flex space-x-4 text-sm">
             <ul className="flex space-x-4">
               <Link to={'/'} className="cursor-pointer hover:text-orange-200">Home</Link>
               <Link to={'/courses'} className="cursor-pointer hover:text-orange-200">Courses</Link>
@@ -58,41 +68,24 @@ const Navbar = () => {
               <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
               <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
               <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
-              <Link to={'/classroom'} className="cursor-pointer hover:text-orange-200">ClassRoom</Link>
             </ul>
           </nav>
 
           <div className="space-x-2 hidden md:block">
-            <Button variant="default" className="border-white text-white hover:bg-orange-600">
-              <Link to={'/signup'}>Sign Up</Link>
+            <Button
+              variant="default"
+              className="border-white text-white hover:bg-orange-600"
+            >
+              <Link to={"/signup"}>Sign Up</Link>
             </Button>
-            <Button variant="default" className="border-white text-white hover:bg-orange-600">
-            <Link to={'/login'}>Log In</Link>
+            <Button
+              variant="default"
+              className="border-white text-white hover:bg-orange-600"
+            >
+              <Link to={"/login"}>Log In</Link>
             </Button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-orange-500 text-white py-4 px-4 space-y-4">
-            <ul>
-            <Link to={'/'} className="cursor-pointer hover:text-orange-200">Home</Link>
-              <Link to={'/courses'} className="cursor-pointer hover:text-orange-200">Courses</Link>
-              <Link to={'/about'} className="cursor-pointer hover:text-orange-200">About Us</Link>
-              <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
-              <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
-              <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
-            </ul>
-            <div className="space-y-2">
-              <Button variant="outline" className="w-full border-white text-white hover:bg-orange-600">
-                Sign Up
-              </Button>
-              <Button variant="outline" className="w-full border-white text-white hover:bg-orange-600">
-                Login
-              </Button>
-            </div>
-          </div>
-        )}
       </header>
     </div>
   );
