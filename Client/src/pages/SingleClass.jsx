@@ -4,10 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, MoreVertical, PlusCircle, FileText, Paperclip } from 'lucide-react';
+import { Calendar, MoreVertical, PlusCircle, FileText, Paperclip, Upload } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import { Label } from '@/components/ui/label';
+
 const SingleClass = () => {
+  
+  const [isAddResourceDialogOpen, setIsAddResourceDialogOpen] = useState(false);
+  const [newResource, setNewResource] = useState({ title: "", description: "", file: null });
   const [activeTab, setActiveTab] = useState('stream');
   const [announcements, setAnnouncements] = useState([
     {
@@ -36,36 +42,14 @@ const SingleClass = () => {
     { id: '2', name: 'Week 1 Lecture Slides', type: 'PPTX' },
     { id: '3', name: 'Assignment 1 Guidelines', type: 'DOCX' },
   ]);
-  const [newAnnouncement, setNewAnnouncement] = useState('');
-  const [newResourceName, setNewResourceName] = useState('');
-  const [newResourceType, setNewResourceType] = useState('');
-
   const handlePostAnnouncement = (e) => {
     e.preventDefault();
-    if (newAnnouncement.trim()) {
-      const announcement = {
-        id: (announcements.length + 1).toString(),
-        user: 'Current User',
-        content: newAnnouncement,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      };
-      setAnnouncements([announcement, ...announcements]);
-      setNewAnnouncement('');
-    }
+  
   };
 
   const handleAddResource = (e) => {
     e.preventDefault();
-    if (newResourceName.trim() && newResourceType.trim()) {
-      const resource = {
-        id: (resources.length + 1).toString(),
-        name: newResourceName,
-        type: newResourceType.toUpperCase(),
-      };
-      setResources([...resources, resource]);
-      setNewResourceName('');
-      setNewResourceType('');
-    }
+   
   };
 
   return (
@@ -122,9 +106,7 @@ const SingleClass = () => {
                         </Avatar>
                         <Textarea
                           placeholder="Announce something to your class"
-                          value={newAnnouncement}
-                          onChange={(e) => setNewAnnouncement(e.target.value)}
-                          className="flex-1 border border-gray-300 rounded-lg"
+                           className="flex-1 border border-gray-300 rounded-lg"
                         />
                       </div>
                       <div className="flex justify-between items-center">
@@ -188,19 +170,59 @@ const SingleClass = () => {
                       <div className="flex flex-col md:flex-row items-center space-x-2">
                         <Input
                           placeholder="Resource name"
-                          value={newResourceName}
-                          onChange={(e) => setNewResourceName(e.target.value)}
-                          className="flex-1 border border-gray-300 rounded-lg mb-2 md:mb-0"
+                           className="flex-1 border border-gray-300 rounded-lg mb-2 md:mb-0"
                         />
                         <Input
                           placeholder="Type (e.g., PDF)"
-                          value={newResourceType}
-                          onChange={(e) => setNewResourceType(e.target.value)}
+                          
                           className="w-24 border border-gray-300 rounded-lg mb-2 md:mb-0"
                         />
-                        <Button type="submit" className="bg-[#FF9500] hover:bg-[#FF9500]/90 text-white rounded-lg">
-                          <PlusCircle className="h-4 w-4 mr-2" />
-                          Add
+                        <Button type="submit" className="bg-[#FF9500]  text-white rounded-lg">
+                              <Dialog open={isAddResourceDialogOpen} onOpenChange={setIsAddResourceDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-[#FF9500]   text-white hover:bg-transparent transition-all duration-300 hover:scale-105">
+                        <Upload className="mr-2" />Upload
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Add New Resource</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="title" className="text-right">
+                            Title
+                          </Label>
+                          <Input
+                            id="title"
+                             className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="description" className="text-right">
+                            Description
+                          </Label>
+                          <Textarea
+                            id="description"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="file" className="text-right">
+                            File
+                          </Label>
+                          <Input
+                            id="file"
+                            type="file"
+                               className="col-span-3"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit" >Add Resource</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                         </Button>
                       </div>
                     </form>

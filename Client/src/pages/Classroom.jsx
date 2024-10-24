@@ -99,7 +99,7 @@ const Classroom = () => {
                   <CardContent>
                     <p className="text-sm mb-2">{classroom.description}</p>
                     <p className="text-sm mb-2">Price: ₹{classroom.price}</p>
-                    <Link to={'/classroom'}>
+                    <Link to={`/classroom/${classroom.id}`}>
                       <Button className="w-full bg-orange-500 hover:bg-slate-900/90 transition-all duration-300 text-white">
                         <BookOpen className="mr-2 h-4 w-4" />
                         Enter Classroom
