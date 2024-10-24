@@ -68,10 +68,12 @@ const CardCollection = ({ array }) => {
           {array.map((item) => (
             <div key={item.id} className="p-3">
               <MyCard
+                id={item.id}
                 name={item.name}
                 teacher={item.teacher}
                 description={item.description}
                 price={item.price}
+              
               />
             </div>
           ))}
