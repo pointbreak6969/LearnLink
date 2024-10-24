@@ -23,7 +23,7 @@ const Navbar = () => {
             L
           </div>
           <div>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={false} >
               <AppSidebar/>
               <SidebarTrigger/>
             </SidebarProvider>
