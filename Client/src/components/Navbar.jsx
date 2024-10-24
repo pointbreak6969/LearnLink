@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./Sidebar";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <div>
       {/* Top Banner */}
@@ -17,15 +18,21 @@ const Navbar = () => {
         </div>
       </div>
 
-      <header className="bg-orange-500 text-white py-2">
+      <header className="bg-slate-100 py-2 shadow-xl">
         <div className="flex justify-between px-5 md:hidden">
           <div className="text-2xl font-bold" aria-label="Logo">
-            L
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              L
+            </button>
           </div>
           <div>
             <SidebarProvider>
-              <AppSidebar/>
-              <SidebarTrigger/>
+              <AppSidebar />
+              <SidebarTrigger />
             </SidebarProvider>
           </div>
         </div>
@@ -34,33 +41,64 @@ const Navbar = () => {
         <div className="hidden container mx-auto md:flex justify-between items-center">
           {/* Logo */}
           <div className="text-2xl font-bold" aria-label="Logo">
-            L
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              L
+            </button>
           </div>
 
-         
-
           {/* Navigation Links */}
-          <nav className="flex space-x-4 text-sm">
+          <nav className="flex space-x-4 text-lg">
             <ul className="flex space-x-4">
-              <Link to={'/'} className="cursor-pointer hover:text-orange-200">Home</Link>
-              <Link to={'/courses'} className="cursor-pointer hover:text-orange-200">Courses</Link>
-              <Link to={'/about'} className="cursor-pointer hover:text-orange-200">About Us</Link>
-              <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
-              <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
-              <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
+              <Link to={"/"} className="cursor-pointer hover:text-orange-200">
+                Home
+              </Link>
+              <Link
+                to={"/courses"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Courses
+              </Link>
+              <Link
+                to={"/about"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                About Us
+              </Link>
+              <Link
+                to={"/pricing"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Pricing
+              </Link>
+              <Link
+                to={"/contact"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Contact
+              </Link>
+              <Link
+                to={"/profile"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Profile
+              </Link>
             </ul>
           </nav>
 
           <div className="space-x-2 hidden md:block">
             <Button
-              variant="default"
-              className="border-white text-white hover:bg-orange-600"
+              variant="ghost"
+              className="border-white text-lg  hover:bg-orange-600"
             >
               <Link to={"/signup"}>Sign Up</Link>
             </Button>
             <Button
               variant="default"
-              className="border-white text-white hover:bg-orange-600"
+              className="border-white text-white text-lg hover:bg-orange-600 bg-orange-500"
             >
               <Link to={"/login"}>Log In</Link>
             </Button>

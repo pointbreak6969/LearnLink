@@ -70,10 +70,9 @@ export function AppSidebar() {
       <SidebarSeparator/>
       <SidebarFooter>
         <SidebarMenu>
-            <SidebarMenuItem>
-            <SidebarMenuButton>Profile</SidebarMenuButton>
-            </SidebarMenuItem>
+          <SidebarMenuItem>Profile</SidebarMenuItem>
         </SidebarMenu>
+
       </SidebarFooter>
     </Sidebar>
   );
