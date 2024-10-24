@@ -34,6 +34,10 @@ const items = [
     title: "Contact",
     url: "#",
   },
+  {
+    title: "ClassRoom",
+    url: "#",
+  },
 ];
 
 export function AppSidebar() {

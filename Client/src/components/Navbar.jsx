@@ -48,6 +48,7 @@ const Navbar = () => {
               <Link to={'/pricing'} className="cursor-pointer hover:text-orange-200">Pricing</Link>
               <Link to={'/contact'} className="cursor-pointer hover:text-orange-200">Contact</Link>
               <Link to={'/profile'} className="cursor-pointer hover:text-orange-200">Profile</Link>
+              <Link to={'/classroom'} className="cursor-pointer hover:text-orange-200">ClassRoom</Link>
             </ul>
           </nav>
 
