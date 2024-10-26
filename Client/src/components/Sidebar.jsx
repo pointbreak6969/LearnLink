@@ -16,27 +16,28 @@ import {
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
   },
   {
     title: "Courses",
-    url: "#",
+    url: "/courses",
   },
   {
     title: "About Us",
-    url: "#",
+    url: "/about",
   },
-  {
-    title: "Pricing",
-    url: "#",
-  },
+  
   {
     title: "Contact",
-    url: "#",
+    url: "/contact",
   },
   {
     title: "ClassRoom",
-    url: "#",
+    url: "/classroom",
+  },
+  {
+    title: "SearchNotes",
+    url: "/searchnotes",
   },
 ];
 
@@ -46,10 +47,10 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton> Login</SidebarMenuButton>
+            <SidebarMenuButton> <Link to={'/login'}>Login </Link></SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton> Signup</SidebarMenuButton>
+            <SidebarMenuButton> <Link to={'/signup'}>  Signup</Link></SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -61,7 +62,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link to={item.url}>
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -74,7 +75,7 @@ export function AppSidebar() {
       <SidebarSeparator/>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>Profile</SidebarMenuItem>
+          <SidebarMenuItem><Link to={'/profile'}>Profile</Link></SidebarMenuItem>
         </SidebarMenu>
 
       </SidebarFooter>

@@ -9,6 +9,7 @@ import Courses from './pages/AllCourses'
 import Profile from './pages/Profile'
 import Classroom from './pages/Classroom'
 import SingleClass from './pages/SingleClass'
+import SearchNotes from './pages/SearchNotes'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/profile' element={<Profile/>}/>
           <Route path='classroom' element={<Classroom/>}/>
           <Route path='/classroom/:classCode' element={<SingleClass/>}/>
+          <Route path='/searchnotes' element={<SearchNotes/>}/>
         </Routes>
       </BrowserRouter>
     </>
