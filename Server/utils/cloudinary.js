@@ -1,44 +1,27 @@
-import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
-import { ApiError } from "./ApiError.js";
-
+import {v2 as cloudinary} from "cloudinary";
+import fs from "fs"
+//cloudinary configuration
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-const uploadOnCloudinary = async (localFilePath) => {
-  try {
-    if (!localFilePath) {
-        //upload the file on cloudinary
-      const response = await cloudinary.uploader.upload(localFilePath, {
-        resource_type: "auto",
-      });
-      //file has been uploaded successfully
-      fs.unlinkSync(localFilePath);
-      return response;
-    }
-  } catch (error) {
-    fs.unlinkSync(localFilePath);
-    console.log("Error while uploading on cloudinary", error);
-    return null;
-  }
-};
-
-const deleteFromCloudinary = async (oldImageUrl, publicId) =>{
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
+//first we take path from user using multer. save it in a file locally which is called localFilePath. then we provide that file to cloudinary. we do this because if the user have low internet bandwidth also then the file can be easily uploaded to a storage server from our server
+const uploadOnCloudinary = async(localFilePath)=>{
     try {
-        if (!(oldImageUrl || publicId)){
-            throw new ApiError(404, "No Image Found to be deleted");
-        }
-        const result = await cloudinary.uploader.destroy(publicId, {
-            resource_type: `${oldImageUrl.includes("image") ? "image" : "video"}`
-        });
-        console.log("Asset Deleted Successfully", result);
-    } catch(error){
-        console.log("Error while deleting the asset", error);
-        throw new ApiError(500, error?.message || "Server Error while deleting the asset");
+        if(!localFilePath) return null;
+        //upload file on cloudinary
+        const response = await cloudinary.uploader.upload(localFilePath, { //check documentation
+            resource_type: "auto"
+        })
+        fs.unlinkSync(localFilePath) //since we are taking localFilePath and storing in our server we need to delete those file after completion so there wouldn't be any mess. 
+        return response
+    } catch (error) {
+        //if error also delete the local file from the serer
+        fs.unlinkSync(localFilePath)
+        console.log("Error while uploading on cloudinary", error)
+        return null
     }
 }
 
-export { uploadOnCloudinary, deleteFromCloudinary };
+export {uploadOnCloudinary};

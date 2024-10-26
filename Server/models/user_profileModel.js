@@ -16,6 +16,12 @@ const UserProfileSchema = new Schema({
             type: String,
             required: [true, 'Location is required'],
             trim: true
+        },
+        university:{
+            type: String,
+        },
+        college:{
+            type:String
         }
     },
     uploadedResources: [{
