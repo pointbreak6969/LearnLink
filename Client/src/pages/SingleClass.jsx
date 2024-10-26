@@ -109,11 +109,7 @@ const SingleClass = () => {
                            className="flex-1 border border-gray-300 rounded-lg"
                         />
                       </div>
-                      <div className="flex justify-between items-center">
-                        <Button type="button" variant="outline" size="sm" className="border-gray-400 hover:border-[#FF9500]">
-                          <Paperclip className="h-4 w-4 mr-2" />
-                          Add Attachment
-                        </Button>
+                      <div className="flex justify-end">
                         <Button type="submit" className="bg-[#FF9500] hover:bg-[#FF9500]/90 text-white rounded-lg">
                           Post
                         </Button>

@@ -29,7 +29,13 @@ const UserProfileSchema = new Schema({
     pointsEarned: {
         type: Number,
         default: 0
-    }
+    },
+    createdClassroom:[
+        {
+            type:mongoose.Types.ObjectId,
+            ref:'Classroom'
+        }
+    ]
 }, {
     timestamps: true
 });
