@@ -89,7 +89,7 @@ const SingleClass = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="border-b border-gray-300">
                 <TabsTrigger value="stream" className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-100">Stream</TabsTrigger>
-                <TabsTrigger value="classwork" className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-100">Classwork</TabsTrigger>
+                <TabsTrigger value="classwork" className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-100">Resources</TabsTrigger>
                 <TabsTrigger value="people" className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-100">People</TabsTrigger>
               </TabsList>
 
