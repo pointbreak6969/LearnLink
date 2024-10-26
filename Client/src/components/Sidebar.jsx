@@ -35,7 +35,7 @@ const items = [
     url: "#",
   },
   {
-    title: "ClassRoom",
+    title: "Classroom",
     url: "#",
   },
 ];

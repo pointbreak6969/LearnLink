@@ -19,11 +19,11 @@ const UserProfileSchema = new Schema({
         }
     },
     uploadedResources: [{
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Resource'
     }],
     savedResources: [{
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Resource'
     }],
     pointsEarned: {
