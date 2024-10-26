@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const EditProfile = asyncHandler(async(req,res)=>{
+   
     const {phone,location,university,college}=req.body
 
     const Profilelocation=req.files?.profilePicture?.[0]?.path;
@@ -16,6 +17,7 @@ const EditProfile = asyncHandler(async(req,res)=>{
     console.log(uploadProfile);
     const profilePicture=uploadProfile.url
     const profile=UserProfile.create({
+        user:req.user._id,
         profilePicture,
         contactInfo:{phone,location,university,college}
     })
@@ -32,7 +34,17 @@ const EditProfile = asyncHandler(async(req,res)=>{
 })
 
 const getProfile=asyncHandler(async(req,res)=>{
-    
+    const userProfile=await UserProfile.find({user:req.user._id})
+    if(!userProfile){
+        throw new ApiError(400,"No use found")
+    }
+    res.status(200).json(
+        new ApiResponse(
+            200,
+            userProfile,
+            "user found successfully"
+        )
+    )
 })
 
-export {EditProfile}
+export {EditProfile,getProfile}

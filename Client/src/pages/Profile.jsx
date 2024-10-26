@@ -73,7 +73,7 @@ const Profile = () => {
         </div>
 
         {/* Hamburger Menu for Tabs */}
-        <div className="md:hidden mb-4">
+        {/* <div className="md:hidden mb-4">
           <Button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="flex items-center bg-[#FF9500] text-white hover:bg-[#E68600] transition-colors duration-300"
@@ -117,13 +117,13 @@ const Profile = () => {
               </Button>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Tabs for larger screens */}
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
-          className="hidden md:block"
+          className=""
         >
           <TabsList className="bg-orange-100 p-1 rounded-lg">
             <TabsTrigger

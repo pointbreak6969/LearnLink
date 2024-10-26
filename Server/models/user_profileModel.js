@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
 const UserProfileSchema = new Schema({
+    user:{
+        type:mongoose.Types.ObjectId,
+        ref:'User'
+    },
     profilePicture: {
         type: String,
         required: [true, 'Profile picture is required'],
