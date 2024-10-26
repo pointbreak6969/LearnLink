@@ -11,7 +11,7 @@ const ResourceSchema = new Schema({
         trim: true
     },
     owner: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },

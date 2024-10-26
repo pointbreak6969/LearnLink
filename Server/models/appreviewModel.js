@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const AppReviewSchema = new Schema({
     user: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
@@ -12,7 +12,7 @@ const AppReviewSchema = new Schema({
         required: [true, 'Review message is required']
     },
     userprofile: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'UserProfile',
         required: true
     }

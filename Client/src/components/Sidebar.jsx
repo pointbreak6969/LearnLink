@@ -32,12 +32,8 @@ const items = [
     url: "/contact",
   },
   {
-    title: "ClassRoom",
-    url: "/classroom",
-  },
-  {
-    title: "SearchNotes",
-    url: "/searchnotes",
+    title: "Classroom",
+    url: "#",
   },
 ];
 
