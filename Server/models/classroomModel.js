@@ -18,9 +18,7 @@ const ClassroomSchema = new Schema({
         required: [true, 'Code is required'],
         unique: true
     },
-    message: {
-        type: String
-    }
+    
 }, {
     timestamps: true
 });
