@@ -84,6 +84,12 @@ const Navbar = () => {
                 Classroom
               </Link>
               <Link
+                to={"/searchnotes"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                SearchNotes
+              </Link>
+              <Link
                 to={"/profile"}
                 className="cursor-pointer hover:text-orange-200"
               >
