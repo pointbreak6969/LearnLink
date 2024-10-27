@@ -6,10 +6,10 @@ const ResourceSchema = new Schema({
         required: [true, 'Resource title is required'],
         trim: true
     },
-    pictures: {
+    resource:[ {
         type: String,
         trim: true
-    },
+    }],
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -19,9 +19,9 @@ const ResourceSchema = new Schema({
         type: String,
         trim: true
     },
-    link: {
-        type: String,
-        trim: true
+    classroom:{
+        type:mongoose.Types.ObjectId,
+        ref:'Classroom'
     },
     views: {
         type: Number,
