@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { EditProfile, getProfile } from "../controllers/profile.controller.js";
+import { CompleteProfile, EditProfile, getProfile } from "../controllers/profile.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 const router=Router()
 
-router.route('/edit').post(
+router.route('/complete').post(
     verifyJwt,
     upload.fields([
         {
@@ -12,9 +12,9 @@ router.route('/edit').post(
             maxCount:1
         }
     ]),
-    EditProfile
+    CompleteProfile
 )
 
 router.route('/get').get(verifyJwt, getProfile)
-
+router.route('/edit').put(verifyJwt,EditProfile)
 export  default router

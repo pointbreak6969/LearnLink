@@ -25,21 +25,38 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-const deleteFromCloudinary = async (oldImageUrl, publicId) =>{
-    try {
-        if(!localFilePath) return null;
-        //upload file on cloudinary
-        const response = await cloudinary.uploader.upload(localFilePath, { //check documentation
-            resource_type: "auto"
-        })
-        fs.unlinkSync(localFilePath) //since we are taking localFilePath and storing in our server we need to delete those file after completion so there wouldn't be any mess. 
-        return response
-    } catch (error) {
-        //if error also delete the local file from the serer
-        fs.unlinkSync(localFilePath)
-        console.log("Error while uploading on cloudinary", error)
-        return null
-    }
-}
+// const deleteFromCloudinary = async (oldImageUrl, publicId) =>{
+//     try {
+//         if(!localFilePath) return null;
+//         //upload file on cloudinary
+//         const response = await cloudinary.uploader.upload(localFilePath, { //check documentation
+//             resource_type: "auto"
+//         })
+//         fs.unlinkSync(localFilePath) //since we are taking localFilePath and storing in our server we need to delete those file after completion so there wouldn't be any mess. 
+//         return response
+//     } catch (error) {
+//         //if error also delete the local file from the serer
+//         fs.unlinkSync(localFilePath)
+//         console.log("Error while uploading on cloudinary", error)
+//         return null
+//     }
+// }
 
-export {uploadOnCloudinary};
+const deleteFromCloudinary = async (publicId) => {
+  try {
+
+      if (!publicId) {
+          console.error("No public ID provided for deletion");
+          return null;
+      }
+
+      // Delete the file from Cloudinary
+      const response = await cloudinary.uploader.destroy(publicId);
+      return response;
+  } catch (error) {
+      console.error("Error while deleting from Cloudinary:", error);
+      return null;
+  }
+};
+
+export {uploadOnCloudinary,deleteFromCloudinary};
