@@ -4,6 +4,7 @@ const ResourceSchema = new Schema({
     title: {
         type: String,
         required: [true, 'Resource title is required'],
+        index:'text',
         trim: true
     },
     resource:[ {
