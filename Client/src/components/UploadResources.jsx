@@ -12,7 +12,7 @@ import { Input } from './ui/input';
 const UploadResources = () => {
     
     const [uploadedResources, setUploadedResources] = useState([
-        { id: 1, title: "Uploaded Resource 1", thumbnail: "https://img.freepik.com/free-vector/colorful-notepad_53876-67695.jpg", date: "2024-01-01", approved: true }
+        { id: 1, title: "Uploaded Resource 1", thumbnail: "https://pngimg.com/d/dwarf_PNG70.png", date: "2024-01-01", approved: true }
       ]);
      
   return (
@@ -33,7 +33,7 @@ const UploadResources = () => {
                         <img
                           src={resource.thumbnail}
                           alt={`Thumbnail for ${resource.title}`}
-                          className="w-full h-40 object-cover"
+                          className="aspect-auto object-cover w-36"
                         />
                       </CardHeader>
                       <CardContent className="p-4">
