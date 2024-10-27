@@ -17,11 +17,12 @@ app.use(cookieParser())
 import userRotuer from "./routes/user.routes.js"
 import profileRouter from "./routes/profile.routes.js"
 import resourceRouter from './routes/resources.routes.js'
-
+import classroomRouter from "./routes/classroom.routes.js"
 //routes declaration
 app.use("/api/v1/user", userRotuer);
 app.use("/api/v1/profile",profileRouter)
 app.use("/api/v1/resource",resourceRouter)
+app.use("/api/v1/classroom", classroomRouter)
 
 export { app };
 
