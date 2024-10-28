@@ -67,5 +67,13 @@ const DeleteResource =asyncHandler(async(req,res)=>{
     )
 })
 
+// check authorization
+if (classroom.admin.toString() !== req.user._id.toString()) {
+    throw new ApiError(
+      403,
+      "Unauthorized: Only the author can update this classroom"
+    ); // Changed to 403 for "Forbidden"
+  }
 
+  
 export {AddResources,DeleteResource,getResource}
