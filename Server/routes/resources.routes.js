@@ -17,6 +17,6 @@ router.route('/add').post(
 )
 
 router.route('/get').get(getResource)
-router.route('/delete/:id').delete(DeleteResource)
+router.route('/delete/:id').delete(verifyJwt,DeleteResource)
 
 export default router

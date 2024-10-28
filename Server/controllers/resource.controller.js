@@ -49,8 +49,14 @@ const getResource=asyncHandler(async(req,res)=>{
 const DeleteResource =asyncHandler(async(req,res)=>{
     const {id}=req.params
     const resource=await Resource.findById(id)
+    if(resource.owner.toString()!=req.user._id.toString()){
+        throw new ApiError(
+            403,
+            "Unauthorized: Only the author can update this  Resource"
+          ); 
+    }
     const resourceUrl = Array.isArray(resource.resource) ? resource.resource[0] : resource.resource;
-  
+    
     const publicId = resourceUrl.split('/').pop().split('.')[0];
     await deleteFromCloudinary(publicId)
     const deleteResource=await Resource.findByIdAndDelete(id)
@@ -67,13 +73,4 @@ const DeleteResource =asyncHandler(async(req,res)=>{
     )
 })
 
-// check authorization
-if (classroom.admin.toString() !== req.user._id.toString()) {
-    throw new ApiError(
-      403,
-      "Unauthorized: Only the author can update this classroom"
-    ); // Changed to 403 for "Forbidden"
-  }
-
-  
-export {AddResources,DeleteResource,getResource}
+export {AddResources,getResource,DeleteResource}
