@@ -65,12 +65,7 @@ const Navbar = () => {
               >
                 About Us
               </Link>
-              <Link
-                to={"/pricing"}
-                className="cursor-pointer hover:text-orange-200"
-              >
-                Pricing
-              </Link>
+              
               <Link
                 to={"/contact"}
                 className="cursor-pointer hover:text-orange-200"
@@ -94,6 +89,12 @@ const Navbar = () => {
                 className="cursor-pointer hover:text-orange-200"
               >
                 Profile
+              </Link>
+              <Link
+                to={"/reward"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Reward
               </Link>
             </ul>
           </nav>
