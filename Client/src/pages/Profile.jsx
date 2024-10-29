@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import UploadResources from "@/components/UploadResources";
 import ClassroomHandle from "@/components/ClassroomHandle";
+import PointsEarned from "@/components/PointsEarned";
 
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
@@ -251,35 +252,7 @@ const Profile = () => {
               </Card>
             </TabsContent>
             <UploadResources />
-
-            <TabsContent value="points">
-              <Card className="animate-fade-in-up">
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-[#FF9500]">
-                    Points Earned
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Progress
-                    value={60}
-                    className="w-full mb-4 bg-orange-200 [&>div]:bg-[#FF9500]"
-                  />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-2xl font-bold text-[#FF9500] flex items-center">
-                        <Star className="mr-2" /> You Have Earned
-                      </h3>
-                      <p className="text-xl font-semibold text-[#FF9500]">
-                        60 Points
-                      </p>
-                    </div>
-                    <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
-                      Redeem Points
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+           <PointsEarned/>
             <ClassroomHandle />
           </Tabs>
                
