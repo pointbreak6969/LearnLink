@@ -8,6 +8,10 @@ const createClassroom = asyncHandler(async (req, res) => {
   if (!classroomName) {
     throw new ApiError(400, "Classroom Name is required");
   }
+  const { universityName, facultyName } = req.body || req.params;
+  if (!(universityName && facultyName)) {
+    throw new ApiError(400, "All fields are required");
+  }
   const admin = req.user?._id;
   if (!admin) {
     throw new ApiError(401, "Unauthorized");
@@ -19,6 +23,8 @@ const createClassroom = asyncHandler(async (req, res) => {
   const response = await Classroom.create({
     name: classroomName,
     admin,
+    university: universityName, 
+    faculty: facultyName,
     code: classroomCode,
   });
   if (!response) {
@@ -45,38 +51,44 @@ const deleteClassroom = asyncHandler(async (req, res) => {
 
 const updateClassroom = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { newClassroomName } = req.body;
+  const { newClassroomName, newFacultyName, newUniversityName } = req.body;
 
   // Validate input
   if (!id) {
     throw new ApiError(400, "Classroom ID is required");
   }
 
-  if (!newClassroomName || newClassroomName.trim() === "") {
-    throw new ApiError(400, "New classroom name is required");
-  }
-
   // Find classroom and check if it exists
   const classroom = await Classroom.findById(id);
   if (!classroom) {
-    throw new ApiError(404, "Classroom not found"); // Changed to 404 for "Not Found"
+    throw new ApiError(404, "Classroom not found");
   }
 
-  // check authorization
+  // Check authorization
   if (classroom.admin.toString() !== req.user._id.toString()) {
-    throw new ApiError(
-      403,
-      "Unauthorized: Only the author can update this classroom"
-    ); // Changed to 403 for "Forbidden"
+    throw new ApiError(403, "Unauthorized: Only the author can update this classroom");
+  }
+
+  // Prepare update data
+  const updateData = {
+  };
+  if (newClassroomName && newClassroomName.trim() !== "") {
+    updateData.name = newClassroomName.trim();
+  }
+  
+  if (newUniversityName && newUniversityName.trim() !== "") {
+    updateData.university = newUniversityName.trim();
+  }
+
+  if (newFacultyName && newFacultyName.trim() !== "") {
+    updateData.faculty = newFacultyName.trim();
   }
 
   // Update classroom with new data
   const updatedClassroom = await Classroom.findByIdAndUpdate(
     id,
     {
-      $set: {
-        name: newClassroomName.trim(),
-      },
+      $set: updateData,
     },
     {
       new: true, // Return the updated document
@@ -95,4 +107,16 @@ const updateClassroom = asyncHandler(async (req, res) => {
       new ApiResponse(200, updatedClassroom, "Classroom updated successfully")
     );
 });
-export { createClassroom, deleteClassroom, updateClassroom };
+const getAllClassrooms = asyncHandler(async (req, res)=>{
+  const allClasses = await Classroom.find({}, {
+    name: 1,
+    university: 1,
+    faculty: 1,
+    
+  });
+  if (!allClasses) {
+    throw new ApiError(500, "Server Error")
+  }
+  return res.status(200).json(new ApiResponse(200, allClasses, "Success"))
+})
+export { createClassroom, deleteClassroom, updateClassroom, getAllClassrooms }; 

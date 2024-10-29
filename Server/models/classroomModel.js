@@ -9,6 +9,14 @@ const ClassroomSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
     },
+    university: {
+        type: String,
+        required: true
+    },
+    faculty: {
+        type: String,
+        required: true
+    },
     users: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
