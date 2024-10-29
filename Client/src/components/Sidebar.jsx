@@ -33,7 +33,11 @@ const items = [
   },
   {
     title: "Classroom",
-    url: "#",
+    url: "/classroom",
+  },
+  {
+    title: "Reward",
+    url: "/reward",
   },
 ];
 
@@ -73,7 +77,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem><Link to={'/profile'}>Profile</Link></SidebarMenuItem>
         </SidebarMenu>
-
+         
       </SidebarFooter>
     </Sidebar>
   );

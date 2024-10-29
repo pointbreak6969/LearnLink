@@ -95,6 +95,12 @@ const Navbar = () => {
               >
                 Profile
               </Link>
+              <Link
+                to={"/reward"}
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Reward
+              </Link>
             </ul>
           </nav>
 

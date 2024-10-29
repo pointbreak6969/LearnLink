@@ -10,6 +10,7 @@ import Profile from './pages/Profile'
 import Classroom from './pages/Classroom'
 import SingleClass from './pages/SingleClass'
 import SearchNotes from './pages/SearchNotes'
+import Reward from './pages/Reward'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='classroom' element={<Classroom/>}/>
           <Route path='/classroom/:classCode' element={<SingleClass/>}/>
           <Route path='/searchnotes' element={<SearchNotes/>}/>
+          <Route path='/reward' element={<Reward/>}/>
         </Routes>
       </BrowserRouter>
     </>
