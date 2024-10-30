@@ -108,15 +108,48 @@ const updateClassroom = asyncHandler(async (req, res) => {
     );
 });
 const getAllClassrooms = asyncHandler(async (req, res)=>{
-  const allClasses = await Classroom.find({}, {
-    name: 1,
-    university: 1,
-    faculty: 1,
-    
-  });
+  const allClasses = await Classroom.aggregate([
+    {
+      $lookup: {
+        'from': 'users', 
+        'localField': 'admin', 
+        'foreignField': '_id', 
+        'as': 'admin_details'
+      }
+    }, {
+      $addFields: {
+        'admin_details': {
+          '$first': '$admin_details'
+        }
+      }
+    }
+  ]);
   if (!allClasses) {
     throw new ApiError(500, "Server Error")
   }
   return res.status(200).json(new ApiResponse(200, allClasses, "Success"))
 })
-export { createClassroom, deleteClassroom, updateClassroom, getAllClassrooms }; 
+const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res)=>{
+const {universityName, facultyName} = {...req.query, ...req.body} ;
+if (!(universityName && facultyName)) {
+  throw new ApiError(400, "All fields are required")
+}
+const response = await Classroom.aggregate([
+  {
+    $match: {
+      'university': new RegExp(universityName, 'i')
+    }
+  }, 
+  {
+    $match: {
+      'faculty': new RegExp(facultyName, 'i')
+    }
+  }
+]);
+
+if (!response) {
+  throw new ApiError(500, "Server error while finding the documents")
+}
+return res.status(200).json(new ApiResponse(200, response, "Fetched successfully"))
+})
+export { createClassroom, deleteClassroom, updateClassroom, getAllClassrooms, getClassroomByUniversityAndFaculty }; 
