@@ -1,54 +1,64 @@
 import mongoose, { Schema } from "mongoose";
 
-const UserProfileSchema = new Schema({
-    user:{
-        type:mongoose.Types.ObjectId,
-        ref:'User'
+const UserProfileSchema = new Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
     profilePicture: {
+      publicId: {
         type: String,
-        required: [true, 'Profile picture is required'],
-        trim: true
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
     },
     contactInfo: {
-        phone: {
-            type: String,
-            required: [true, 'Phone number is required'],
-            trim: true
-        },
-        location: {
-            type: String,
-            required: [true, 'Location is required'],
-            trim: true
-        },
-        university:{
-            type: String,
-        },
-        college:{
-            type:String
-        }
+      phone: {
+        type: String,
+        trim: true,
+      },
+      location: {
+        type: String,
+        trim: true,
+      },
+      university: {
+        type: String,
+      },
+      college: {
+        type: String,
+      },
     },
-    uploadedResources: [{
+    uploadedResources: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Resource'
-    }],
-    savedResources: [{
+        ref: "Resource",
+      },
+    ],
+    savedResources: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Resource'
-    }],
+        ref: "Resource",
+      },
+    ],
     pointsEarned: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
-    createdClassroom:[
-        {
-            type:mongoose.Types.ObjectId,
-            ref:'Classroom'
-        }
-    ]
-}, {
-    timestamps: true
-});
+    createdClassroom: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Classroom",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const UserProfile = mongoose.model("UserProfile", UserProfileSchema);
 
