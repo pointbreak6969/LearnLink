@@ -16,8 +16,7 @@ const CompleteProfile = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Failed to upload Profile");
   }
   const uploadProfile = await uploadOnCloudinary(Profilelocation);
-  console.log(uploadProfile);
-  const profilePicture = uploadProfile.url;
+  const profilePicture = uploadProfile;
   const profile = UserProfile.create({
     user: req.user._id,
     profilePicture: {
@@ -57,11 +56,10 @@ const EditProfileDetails = asyncHandler(async (req, res) => {
 });
 const editProfilePicture = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const user = await UserProfile.findOne({ user: userId });
+  const user = await UserProfile.findOne({user: userId})
   if (!user) {
     throw new ApiError(404, "User not found");
   }
-  const oldProfilePic = UserProfile.profilePicture;
   const newProfilePicLocalPath = req.file?.path;
 
   if (!newProfilePicLocalPath) {
@@ -72,18 +70,18 @@ const editProfilePicture = asyncHandler(async (req, res) => {
     if (!newProfilePic) {
       throw new ApiError(500, "Profile can't be updated");
     }
-    const newProfileDetails = await UserProfile.findByIdAndUpdate(userId, {
+    const newProfileDetails = await UserProfile.findByIdAndUpdate(user._id, {
       $set: {
-        profilePicture: {
-          publicId: newProfilePic.public_id,
-          url: newProfilePic.url,
-        },
+        "profilePicture.publicId" :  `${newProfilePic.public_id}`,
+        "profilePicture.url": `${newProfilePic.url}`
       },
+    }, {
+      new: true,
     });
     if (!newProfileDetails) {
       throw new ApiError(500, "Failed while updating the profile pic");
     }
-    await deleteFromCloudinary(oldProfilePic.publicId)
+    await deleteFromCloudinary(user.profilePicture.publicId)
     return res.status(200).json(new ApiResponse(200, newProfileDetails, "Profile Pic updated successfully"))
   } catch (error) {
     console.log(error.message)
