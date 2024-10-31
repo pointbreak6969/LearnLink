@@ -24,6 +24,7 @@ const CompleteProfile = asyncHandler(async (req, res) => {
       url: profilePicture.url,
     },
     contactInfo: { phone, location, university, college },
+    
   });
   if (!profile) {
     throw new ApiError(401, "Failed to edit Profile");
@@ -34,7 +35,28 @@ const CompleteProfile = asyncHandler(async (req, res) => {
 });
 
 const getProfile = asyncHandler(async (req, res) => {
-  const userProfile = await UserProfile.find({ user: req.user._id });
+  const userProfile = await UserProfile.aggregate([
+    {
+      '$match': {
+        'user': req.user?._id
+      }
+    }, {
+      '$lookup': {
+        'from': 'users', 
+        'localField': 'user', 
+        'foreignField': '_id', 
+        'as': 'user_details'
+      }
+    }, {
+      '$addFields': {
+        'user_details': {
+          '$arrayElemAt': [
+            '$user_details', 0
+          ]
+        }
+      }
+    }
+  ])
   if (!userProfile) {
     throw new ApiError(400, "No use found");
   }

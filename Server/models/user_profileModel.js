@@ -32,6 +32,9 @@ const UserProfileSchema = new Schema(
         type: String,
       },
     },
+    liveLocation: {
+      type: String,
+    },
     uploadedResources: [
       {
         type: Schema.Types.ObjectId,

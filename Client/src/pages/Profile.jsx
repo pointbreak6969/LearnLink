@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfileDetails } from "@/store/profileReducer";
 import {
   User,
   Mail,
@@ -26,13 +28,14 @@ import UploadResources from "@/components/UploadResources";
 import ClassroomHandle from "@/components/ClassroomHandle";
 import PointsEarned from "@/components/PointsEarned";
 
+
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
   const [savedResources, setSavedResources] = useState(3);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
-  
+
   const tabsListRef = useRef(null);
 
   const scrollRight = () => {
@@ -70,7 +73,14 @@ const Profile = () => {
   const handleTabChange = (value) => {
     setActiveTab(value);
   };
-
+  const dispatch = useDispatch()
+  const profileDetails = useSelector((state)=> state.profile.profileDetails)
+  const status = useSelector((state)=> state.profile.status);
+  useEffect(()=> {
+    if (status === "idle"){
+      dispatch(fetchProfileDetails())
+    }
+  }, [dispatch, status])
   return (
     <>
       <Navbar />
@@ -79,14 +89,14 @@ const Profile = () => {
           <div className="flex items-center gap-5">
             <div className="relative">
               <Avatar className="h-16 w-16">
-                <AvatarImage src="https://github.com/shadcn.png"></AvatarImage>
+                <AvatarImage src={profileDetails.profilePicture.url}></AvatarImage>
                 <AvatarFallback>profile pic</AvatarFallback>
               </Avatar>
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-[#FF9500]">Ram Poudel</h1>
+              <h1 className="text-3xl font-bold text-[#FF9500]">{profileDetails.user_details.fullName}</h1>
               <p className="text-gray-600 flex items-center">
-                <MapPin className="w-4 h-4 mr-1" /> Pokhara, Nepal
+                <MapPin className="w-4 h-4 mr-1" /> {profileDetails.contactInfo.location}
               </p>
             </div>
           </div>
@@ -194,24 +204,24 @@ const Profile = () => {
                       <p className="flex items-center mb-2">
                         <User className="text-[#FF9500] mr-2" />{" "}
                         <strong className="text-[#FF9500]">Full Name:</strong>{" "}
-                        Ram Poudel
+                        {profileDetails.user_details.fullName}
                       </p>
                       <p className="flex items-center mb-2">
                         <Mail className="text-[#FF9500] mr-2" />{" "}
                         <strong className="text-[#FF9500]">Email:</strong>{" "}
-                        rampoudel@gmail.com
+                        {profileDetails.user_details.email}
                       </p>
                       <p className="flex items-center mb-2">
                         <Phone className="text-[#FF9500] mr-2" />{" "}
                         <strong className="text-[#FF9500]">
                           Contact Number:
                         </strong>{" "}
-                        +977 980-456-7891
+                        {profileDetails.contactInfo.phone}
                       </p>
                       <p className="flex items-center mb-2">
                         <MapPin className="text-[#FF9500] mr-2" />{" "}
                         <strong className="text-[#FF9500]">Location:</strong>{" "}
-                        Pokhara, Nepal
+                        {profileDetails.contactInfo.location}
                       </p>
                     </div>
                   </div>
