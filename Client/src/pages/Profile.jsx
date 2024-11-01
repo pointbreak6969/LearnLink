@@ -27,6 +27,8 @@ import {
 import UploadResources from "@/components/UploadResources";
 import ClassroomHandle from "@/components/ClassroomHandle";
 import PointsEarned from "@/components/PointsEarned";
+import { Skeleton } from "@/components/ui/skeleton"; 
+
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
   const [savedResources, setSavedResources] = useState(3);
@@ -38,19 +40,13 @@ const Profile = () => {
 
   const scrollRight = () => {
     if (tabsListRef.current) {
-      tabsListRef.current.scrollBy({
-        left: 200,
-        behavior: "smooth",
-      });
+      tabsListRef.current.scrollBy({ left: 200, behavior: "smooth" });
     }
   };
 
   const scrollLeft = () => {
     if (tabsListRef.current) {
-      tabsListRef.current.scrollBy({
-        left: -200,
-        behavior: "smooth",
-      });
+      tabsListRef.current.scrollBy({ left: -200, behavior: "smooth" });
     }
   };
 
@@ -71,29 +67,41 @@ const Profile = () => {
   const handleTabChange = (value) => {
     setActiveTab(value);
   };
+  
   const dispatch = useDispatch();
   const profileDetails = useSelector((state) => state.profile.profileDetails);
   const status = useSelector((state) => state.profile.status);
+  
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchProfileDetails());
     }
   }, [dispatch, status]);
+
   return (
     <>
       <Navbar />
-      {status === "loading" && <p>Loading...</p>}
+      {status === "loading" && (
+        <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
+          <Skeleton className="h-16 w-16 rounded-full mb-4" />
+          <Skeleton className="h-8 w-1/2 mb-2" />
+          <Skeleton className="h-4 w-1/3 mb-4" />
+          <Progress value={profileCompletion} className="w-full mb-2 bg-orange-200" />
+          <Skeleton className="h-6 w-full mb-4" />
+          <Tabs>
+            <Skeleton className="h-10 w-1/4 mb-2" />
+            <Skeleton className="h-10 w-1/4 mb-2" />
+          </Tabs>
+        </div>
+      )}
       {status === "succeeded" && (
         <>
-          {" "}
           <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
             <div className="flex items-center justify-between mb-6 animate-fade-in">
               <div className="flex items-center gap-5">
                 <div className="relative">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage
-                      src={profileDetails.profilePicture.url}
-                    ></AvatarImage>
+                    <AvatarImage src={profileDetails.profilePicture.url} />
                     <AvatarFallback>profile pic</AvatarFallback>
                   </Avatar>
                 </div>
@@ -102,7 +110,7 @@ const Profile = () => {
                     {profileDetails.user_details.fullName}
                   </h1>
                   <p className="text-gray-600 flex items-center">
-                    <MapPin className="w-4 h-4 mr-1" />{" "}
+                    <MapPin className="w-4 h-4 mr-1" />
                     {profileDetails.contactInfo.location}
                   </p>
                 </div>
@@ -111,8 +119,6 @@ const Profile = () => {
                 <Edit className="w-4 h-4 mr-2" /> Edit Profile
               </Button>
             </div>
-
-            {/* Profile Completion Bar */}
             <div className="mb-8 animate-fade-in">
               <h2 className="text-sm text-gray-500 mb-2 flex items-center">
                 <Award className="w-4 h-4 mr-1" /> Profile Completion
@@ -121,9 +127,7 @@ const Profile = () => {
                 value={profileCompletion}
                 className="w-full mb-2 bg-orange-200 [&>div]:bg-[#FF9500] transition-all"
               />
-              <p className="text-sm text-gray-600">
-                {profileCompletion}% Complete
-              </p>
+              <p className="text-sm text-gray-600">{profileCompletion}% Complete</p>
             </div>
 
             {/* Tabs for larger screens */}
@@ -159,39 +163,22 @@ const Profile = () => {
                       className="bg-orange-100 p-1 rounded-lg flex justify-start overflow-x-auto scrollbar-hide"
                       onScroll={checkScroll}
                     >
-                      <TabsTrigger
-                        value="overview"
-                        className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300"
-                      >
-                        <User className="w-4 h-4 mr-2 inline" /> Profile
-                        Overview
+                      <TabsTrigger value="overview" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
+                        <User className="w-4 h-4 mr-2 inline" /> Profile Overview
                       </TabsTrigger>
-                      <TabsTrigger
-                        value="saved"
-                        className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300"
-                      >
+                      <TabsTrigger value="saved" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
                         <Save className="w-4 h-4 mr-2 inline" /> Saved Resources
                         <span className="ml-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full">
                           {savedResources}
                         </span>
                       </TabsTrigger>
-                      <TabsTrigger
-                        value="uploaded"
-                        className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300"
-                      >
-                        <Upload className="w-4 h-4 mr-2 inline" /> Uploaded
-                        Resources
+                      <TabsTrigger value="uploaded" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
+                        <Upload className="w-4 h-4 mr-2 inline" /> Uploaded Resources
                       </TabsTrigger>
-                      <TabsTrigger
-                        value="points"
-                        className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300"
-                      >
+                      <TabsTrigger value="points" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
                         <Star className="w-4 h-4 mr-2 inline" /> Points Earned
                       </TabsTrigger>
-                      <TabsTrigger
-                        value="classrooms"
-                        className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300"
-                      >
+                      <TabsTrigger value="classrooms" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
                         <BookOpen className="w-4 h-4 mr-2 inline" /> Classrooms
                       </TabsTrigger>
                     </TabsList>
@@ -202,41 +189,27 @@ const Profile = () => {
                 <TabsContent value="overview">
                   <Card className="animate-fade-in-up">
                     <CardHeader>
-                      <CardTitle className="text-2xl font-semibold text-[#FF9500]">
-                        Profile Overview
-                      </CardTitle>
+                      <CardTitle className="text-2xl font-semibold text-[#FF9500]">Profile Overview</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <h3 className="text-lg font-semibold mb-3 text-[#FF9500]">
-                            Personal Information
-                          </h3>
+                          <h3 className="text-lg font-semibold mb-3 text-[#FF9500]">Personal Information</h3>
                           <p className="flex items-center mb-2">
-                            <User className="text-[#FF9500] mr-2" />{" "}
-                            <strong className="text-[#FF9500]">
-                              Full Name:
-                            </strong>{" "}
-                            {profileDetails.user_details.fullName}
+                            <User className="text-[#FF9500] mr-2" />
+                            <strong className="text-[#FF9500]">Full Name:</strong> {profileDetails.user_details.fullName}
                           </p>
                           <p className="flex items-center mb-2">
-                            <Mail className="text-[#FF9500] mr-2" />{" "}
-                            <strong className="text-[#FF9500]">Email:</strong>{" "}
-                            {profileDetails.user_details.email}
+                            <Mail className="text-[#FF9500] mr-2" />
+                            <strong className="text-[#FF9500]">Email:</strong> {profileDetails.user_details.email}
                           </p>
                           <p className="flex items-center mb-2">
-                            <Phone className="text-[#FF9500] mr-2" />{" "}
-                            <strong className="text-[#FF9500]">
-                              Contact Number:
-                            </strong>{" "}
-                            {profileDetails.contactInfo.phone}
+                            <Phone className="text-[#FF9500] mr-2" />
+                            <strong className="text-[#FF9500]">Contact Number:</strong> {profileDetails.contactInfo.phone}
                           </p>
                           <p className="flex items-center mb-2">
-                            <MapPin className="text-[#FF9500] mr-2" />{" "}
-                            <strong className="text-[#FF9500]">
-                              Location:
-                            </strong>{" "}
-                            {profileDetails.contactInfo.location}
+                            <MapPin className="text-[#FF9500] mr-2" />
+                            <strong className="text-[#FF9500]">Location:</strong> {profileDetails.contactInfo.location}
                           </p>
                         </div>
                       </div>
@@ -247,9 +220,7 @@ const Profile = () => {
                 <TabsContent value="saved">
                   <Card className="animate-fade-in-up">
                     <CardHeader>
-                      <CardTitle className="text-xl font-semibold text-[#FF9500]">
-                        Saved Resources
-                      </CardTitle>
+                      <CardTitle className="text-xl font-semibold text-[#FF9500]">Saved Resources</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -263,8 +234,7 @@ const Profile = () => {
                           />
                           <p className="text-sm">Resource Title 1</p>
                           <p className="text-xs text-gray-500 flex items-center">
-                            <Clock className="w-3 h-3 mr-1" /> Saved on:
-                            2024-01-01
+                            <Clock className="w-3 h-3 mr-1" /> Saved on: 2024-01-01
                           </p>
                           <Button
                             variant="link"
@@ -282,11 +252,21 @@ const Profile = () => {
                 <ClassroomHandle />
               </Tabs>
             </div>
-          </div>{" "}
+          </div>
           <Footer />
         </>
       )}
-      {status === "failed" && <p>Error loading profile.</p>}
+    {status === "failed" && (
+  <div className="flex flex-col justify-center items-center h-screen text-center">
+    <img
+      src="https://img.freepik.com/free-vector/401-error-unauthorized-concept-illustration_114360-5531.jpg?t=st=1730446455~exp=1730450055~hmac=aa6d4878156525287e43864710997fc04b8289b026bae33895324042a3f5857f&w=740"
+      alt="Error"
+      className="max-w-full h-auto"
+    />
+  </div>
+)}
+
+
     </>
   );
 };
