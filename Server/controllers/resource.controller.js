@@ -6,6 +6,7 @@ import {
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Resource from "../models/resourceModel.js";
+import mongoose from "mongoose";
 
 const AddResources = asyncHandler(async (req, res) => {
   const { title, text } = req.body;
@@ -45,20 +46,18 @@ const AddResources = asyncHandler(async (req, res) => {
   if (!CreatedResource) {
     throw new ApiError(400, "Failed to add resource");
   }
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, {
-        resource: CreatedResource,
-        failedUploads: failedUploads.length ? failedUploads : undefined,
-      }),
-      `Successfully added ${uploadedResources.length} resources${
-        failedUploads.length ? ` (${failedUploads.length} failed)` : ""
-      }`
-    );
+  return res.status(200).json(
+    new ApiResponse(200, {
+      resource: CreatedResource,
+      failedUploads: failedUploads.length ? failedUploads : undefined,
+    }),
+    `Successfully added ${uploadedResources.length} resources${
+      failedUploads.length ? ` (${failedUploads.length} failed)` : ""
+    }`
+  );
 });
 
-const getResource = asyncHandler(async (req, res) => {
+const getResourceByTitle = asyncHandler(async (req, res) => {
   const { title } = req.body;
   const resource = await Resource.find({ $text: { $search: title } });
   if (resource.length == 0) {
@@ -69,28 +68,51 @@ const getResource = asyncHandler(async (req, res) => {
 
 const DeleteResource = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid resource Id format");
+  }
   const resource = await Resource.findById(id);
-  if (resource.owner.toString() != req.user._id.toString()) {
+  if (resource.owner.toString() !== req.user._id.toString()) {
     throw new ApiError(
       403,
-      "Unauthorized: Only the author can update this  Resource"
+      "Unauthorized: Only the author can update this classroom"
     );
   }
-  const resourceUrl = Array.isArray(resource.resource)
-    ? resource.resource[0]
-    : resource.resource;
-
-  const publicId = resourceUrl.split("/").pop().split(".")[0];
-  await deleteFromCloudinary(publicId);
-  const deleteResource = await Resource.findByIdAndDelete(id);
-
-  if (!deleteResource) {
-    throw new ApiError(400, "Failed to delete resource");
+  const resourceUrls = Array.isArray(resource.resource)
+    ? resource.resource
+    : [resource.resource];
+  const deletionResults = {
+    successful: [],
+    failed: [],
+  };
+  for (const resourceUrl of resourceUrls) {
+    try {
+      const publicId = resourceUrl.split("/").pop().split(".")[0];
+      await deleteFromCloudinary(publicId);
+      deletionResults.successful.push(publicId);
+    } catch (error) {
+      deletionResults.failed.push({
+        publicId: resourceUrl.split("/").pop().split(".")[0],
+        error: error.message,
+      });
+      console.log("Failed to delete file from cloudinary " + error.message);
+    }
   }
-  res
-    .status(200)
-    .json(new ApiResponse(200, "", "Resource deleted successfully"));
+  const deletedResource = await Resource.findByIdAndDelete(id);
+  if (!deletedResource) {
+    throw new ApiError(400, "Failed to delete resource from database");
+  }
+  let message = "Resource deleted successfully";
+  if (deletionResults.failed.length > 0) {
+    message = `Resource deleted with ${deletionResults.failed.length} file(s) failed to delete from storage`;
+  }
+  return res.status(200).json(new ApiResponse(200, { deletedResourceId: id, deletionResults: deletionResults.failed.length > 0 ? deletionResults: undefined}, message))
 });
 const getUserUploadedResource = asyncHandler(async (req, res) => {});
 
-export { AddResources, getResource, DeleteResource, getUserUploadedResource };
+export {
+  AddResources,
+  getResourceByTitle,
+  DeleteResource,
+  getUserUploadedResource,
+};
