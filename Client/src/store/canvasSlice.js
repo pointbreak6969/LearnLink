@@ -1,18 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+
 const initialState = {
   objects: [],
   isDrawing: false,
   selectedObject: null,
-  zoon: 1,
+  zoom: 1,
   pan: { x: 0, y: 0 },
   viewportTransform: [1, 0, 0, 1, 0, 0],
   canvasSize: {
     width: window.innerWidth,
-    height: window.innerHeight,
-  },
+    height: window.innerHeight
+  }
 };
+
 const canvasSlice = createSlice({
-  name: "canvas",
+  name: 'canvas',
   initialState,
   reducers: {
     setObjects: (state, action) => {
@@ -21,7 +23,7 @@ const canvasSlice = createSlice({
     setIsDrawing: (state, action) => {
       state.isDrawing = action.payload;
     },
-    setSeletedOjbect: (state, action) => {
+    setSelectedObject: (state, action) => {
       state.selectedObject = action.payload;
     },
     setZoom: (state, action) => {
@@ -35,16 +37,18 @@ const canvasSlice = createSlice({
     },
     updateCanvasSize: (state, action) => {
       state.canvasSize = action.payload;
-    },
-  },
+    }
+  }
 });
+
 export const {
   setObjects,
   setIsDrawing,
-  setSeletedOjbect,
+  setSelectedObject,
   setZoom,
   setPan,
   setViewportTransform,
-  updateCanvasSize,
+  updateCanvasSize
 } = canvasSlice.actions;
+
 export default canvasSlice.reducer;

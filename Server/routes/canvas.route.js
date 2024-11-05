@@ -1,5 +1,5 @@
 import { Router } from "express";
-import verifyJwt from "../middlewares/auth.middleware.js"
+import{ verifyJwt} from "../middlewares/auth.middleware.js"
 import { createCanvas, getCanvas, updateCanvas } from "../controllers/canvas.controller.js";
 const router = Router()
 router.route("/createCanvas").post(verifyJwt, createCanvas)
