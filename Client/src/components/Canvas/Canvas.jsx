@@ -1,23 +1,29 @@
-import React, { useEffect, useRef } from 'react';
-import * as fabric from 'fabric';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { useCanvas } from '../../hooks/useCanvas.js';
+import React, { useEffect, useRef } from "react";
+import * as fabric from "fabric";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useCanvas } from "../../hooks/useCanvas.js";
+import CanvasToolbar from "./CanvasToolbar";
 import {
   setObjects,
   setSelectedObject,
   setZoom,
   setPan,
-  setViewportTransform
-} from '../../store/canvasSlice.js';
+  setViewportTransform,
+  undo,
+  redo,
+  deleteSelectedObject,
+} from "../../store/canvasSlice.js";
 
 const Canvas = () => {
   const canvasRef = useRef(null);
   const fabricRef = useRef(null);
   const dispatch = useDispatch();
-  const { id: canvasId } = useParams(); // Assuming you're using route params for canvas ID
-  const { zoom, pan, canvasSize } = useSelector((state) => state.canvas);
-  
+  const { id: canvasId } = useParams();
+  const { zoom, pan, canvasSize, activeTool, selectedObject } = useSelector(
+    (state) => state.canvas
+  );
+
   // Initialize useCanvas hook
   const { saveCanvasState, loadCanvasState, resetZoom } = useCanvas(fabricRef);
 
@@ -26,9 +32,9 @@ const Canvas = () => {
     fabricRef.current = new fabric.Canvas(canvasRef.current, {
       width: canvasSize.width,
       height: canvasSize.height,
-      backgroundColor: '#ffffff',
+      backgroundColor: "#ffffff",
       selection: true,
-      preserveObjectStacking: true
+      preserveObjectStacking: true,
     });
 
     const canvas = fabricRef.current;
@@ -39,14 +45,14 @@ const Canvas = () => {
     }
 
     // Enable pan and zoom
-    canvas.on('mouse:wheel', function(opt) {
+    canvas.on("mouse:wheel", function (opt) {
       const delta = opt.e.deltaY;
       let newZoom = canvas.getZoom() * 0.999 ** delta;
       newZoom = Math.min(Math.max(0.1, newZoom), 20);
 
       const point = {
         x: opt.e.offsetX,
-        y: opt.e.offsetY
+        y: opt.e.offsetY,
       };
 
       canvas.zoomToPoint(point, newZoom);
@@ -56,7 +62,7 @@ const Canvas = () => {
     });
 
     // Pan functionality
-    canvas.on('mouse:down', function(opt) {
+    canvas.on("mouse:down", function (opt) {
       const evt = opt.e;
       if (evt.altKey === true) {
         this.isDragging = true;
@@ -66,7 +72,7 @@ const Canvas = () => {
       }
     });
 
-    canvas.on('mouse:move', function(opt) {
+    canvas.on("mouse:move", function (opt) {
       if (this.isDragging) {
         const evt = opt.e;
         const vpt = this.viewportTransform;
@@ -80,22 +86,22 @@ const Canvas = () => {
       }
     });
 
-    canvas.on('mouse:up', function() {
+    canvas.on("mouse:up", function () {
       this.isDragging = false;
       this.selection = true;
     });
 
     // Handle object selection
-    canvas.on('selection:created', (options) => {
+    canvas.on("selection:created", (options) => {
       dispatch(setSelectedObject(options.selected[0]));
     });
 
-    canvas.on('selection:cleared', () => {
+    canvas.on("selection:cleared", () => {
       dispatch(setSelectedObject(null));
     });
 
     // Save canvas state after modifications
-    canvas.on('object:modified', () => {
+    canvas.on("object:modified", () => {
       if (canvasId) {
         dispatch(setObjects(canvasService.serializeCanvas(canvas)));
         saveCanvasState(canvasId);
@@ -106,37 +112,119 @@ const Canvas = () => {
     const handleResize = () => {
       canvas.setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
       canvas.renderAll();
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
       canvas.dispose();
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [canvasId, dispatch, loadCanvasState, saveCanvasState]);
+  const addText = () => {
+    const text = new fabric.IText("Double click to edit", {
+      left: 100,
+      top: 100,
+      fontFamily: "Arial",
+      fontSize: 20,
+      fill: "#000000",
+    });
 
+    fabricRef.current.add(text);
+    fabricRef.current.setActiveObject(text);
+    dispatch(setObjects(canvasService.serializeCanvas(fabricRef.current)));
+  };
+
+  const addShape = (type) => {
+    let shape;
+
+    if (type === "rectangle") {
+      shape = new fabric.Rect({
+        left: 100,
+        top: 100,
+        width: 100,
+        height: 100,
+        fill: "transparent",
+        stroke: "#000000",
+        strokeWidth: 2,
+      });
+    } else if (type === "circle") {
+      shape = new fabric.Circle({
+        left: 100,
+        top: 100,
+        radius: 50,
+        fill: "transparent",
+        stroke: "#000000",
+        strokeWidth: 2,
+      });
+    }
+
+    if (shape) {
+      fabricRef.current.add(shape);
+      fabricRef.current.setActiveObject(shape);
+      dispatch(setObjects(canvasService.serializeCanvas(fabricRef.current)));
+    }
+  };
+
+  const handleDelete = () => {
+    const activeObject = fabricRef.current.getActiveObject();
+    if (activeObject) {
+      fabricRef.current.remove(activeObject);
+      dispatch(setObjects(canvasService.serializeCanvas(fabricRef.current)));
+      dispatch(deleteSelectedObject());
+    }
+  };
+
+  const handleUndo = () => {
+    dispatch(undo());
+    // Reload canvas with previous state
+    loadCanvasState(canvasId);
+  };
+
+  const handleRedo = () => {
+    dispatch(redo());
+    // Reload canvas with next state
+    loadCanvasState(canvasId);
+  };
+
+  useEffect(() => {
+    if (fabricRef.current) {
+      // Update canvas mode based on active tool
+      switch (activeTool) {
+        case "select":
+          fabricRef.current.isDrawingMode = false;
+          fabricRef.current.selection = true;
+          break;
+        case "text":
+          fabricRef.current.isDrawingMode = false;
+          fabricRef.current.selection = true;
+          addText();
+          break;
+        case "rectangle":
+        case "circle":
+          fabricRef.current.isDrawingMode = false;
+          fabricRef.current.selection = true;
+          addShape(activeTool);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [activeTool]);
   return (
     <div className="canvas-container relative w-full h-screen">
-      <div className="absolute top-4 right-4 flex gap-2">
-        <button 
-          onClick={() => resetZoom()} 
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Reset View
-        </button>
-        <button 
-          onClick={() => saveCanvasState(canvasId)} 
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        >
-          Save
-        </button>
-      </div>
-      <canvas ref={canvasRef} />
-    </div>
+    <CanvasToolbar
+      onAddText={addText}
+      onAddShape={addShape}
+      onDelete={handleDelete}
+      onUndo={handleUndo}
+      onRedo={handleRedo}
+    />
+    <canvas ref={canvasRef} />
+  </div>
   );
 };
 
