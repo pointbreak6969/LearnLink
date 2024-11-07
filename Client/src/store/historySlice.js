@@ -1,35 +1,47 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const MAX_HISTORY = 50; // Maximum number of steps to store
+
 
 const initialHistoryState = {
-  past: [],
-  future: []
+  past: [], // Array of path arrays
+  future: [],
+  maxHistoryLength: 50
 };
 
 export const historySlice = createSlice({
   name: 'history',
   initialState: initialHistoryState,
   reducers: {
-    undo: (state) => {
-      const previous = state.past[state.past.length - 1];
-      if (previous) {
-        state.past = state.past.slice(0, -1);
-        state.future = [previous, ...state.future];
+    undo: (state, action) => {
+      const { currentPaths } = action.payload;
+      if (state.past.length > 0) {
+        const newFuture = [currentPaths, ...state.future];
+        const newPast = state.past.slice(0, -1);
+        state.future = newFuture;
+        state.past = newPast;
       }
     },
-    redo: (state) => {
-      const next = state.future[0];
-      if (next) {
-        state.future = state.future.slice(1);
-        state.past = [...state.past, next];
+    redo: (state, action) => {
+      const { currentPaths } = action.payload;
+      if (state.future.length > 0) {
+        const newPast = [...state.past, currentPaths];
+        const newFuture = state.future.slice(1);
+        state.past = newPast;
+        state.future = newFuture;
       }
     },
     addToHistory: (state, action) => {
-      state.past = [...state.past, action.payload].slice(-MAX_HISTORY);
-      state.future = []; // Clear redo stack when new action is performed
+      state.past = [
+        ...state.past,
+        action.payload
+      ].slice(-state.maxHistoryLength);
+      state.future = []; // Clear redo stack
+    },
+    clearHistory: (state) => {
+      state.past = [];
+      state.future = [];
     }
   }
 });
-export const {undo, redo, addToHistory} = historySlice.actions;
+export const {undo, redo, addToHistory, clearHistory} = historySlice.actions;
 export default historySlice.reducer;

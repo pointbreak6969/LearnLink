@@ -10,7 +10,7 @@ const initialCanvasState = {
   }
 };
 
- const canvasSlice = createSlice({
+export const canvasSlice = createSlice({
   name: 'canvas',
   initialState: initialCanvasState,
   reducers: {
@@ -36,8 +36,12 @@ const initialCanvasState = {
     },
     setCanvasSize: (state, action) => {
       state.canvasSize = action.payload;
+    },
+   
+    setPaths: (state, action) => {
+      state.paths = action.payload;
     }
   }
 });
-export const { addPoint, startDrawing, endDrawing, setCanvasSize} = canvasSlice.actions;
+export const { addPoint, startDrawing, endDrawing, setCanvasSize, setPaths} = canvasSlice.actions;
 export default canvasSlice.reducer;

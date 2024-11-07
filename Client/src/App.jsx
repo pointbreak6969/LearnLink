@@ -11,7 +11,7 @@ import Classroom from './pages/Classroom'
 import SingleClass from './pages/SingleClass'
 import SearchNotes from './pages/SearchNotes'
 import Reward from './pages/Reward'
-
+import Canvas from './components/canvas/Canvas'
 function App() {
   return (
     <>
@@ -28,6 +28,7 @@ function App() {
           <Route path='/classroom/:classCode' element={<SingleClass/>}/>
           <Route path='/searchnotes' element={<SearchNotes/>}/>
           <Route path='/reward' element={<Reward/>}/>
+          <Route path='/canvas' element={<Canvas/>}/>
         </Routes>
       </BrowserRouter>
     </>
