@@ -23,7 +23,7 @@ function App() {
 
   return loading ? (
     <div className="flex items-center justify-center min-h-screen">
-      <p>Loading...</p>
+      <p className='loader'></p>
     </div>
   ) : (
     <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
