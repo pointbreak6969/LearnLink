@@ -17,7 +17,7 @@ import SingleClass from './pages/SingleClass';
 import SearchNotes from './pages/SearchNotes';
 import Reward from './pages/Reward';
 import Protected from './components/Protected';
-
+import Canvas from './components/canvas/Canvas.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -31,11 +31,18 @@ const router = createBrowserRouter([
         ),
       },
       { 
+        path: '/canvas', 
+        element: (
+            <Canvas />
+        ),
+      },
+      { 
         path: '/signup', 
         element: (
              <Signup />
         ),
       },
+      
       { path: '/courses', element: <Courses /> },
       { path: '/contact', element: <Contact /> },
       { path: '/about', element: <About /> },
@@ -49,6 +56,7 @@ const router = createBrowserRouter([
           </Protected>
         ),
       },
+      
       { 
         path: '/classroom', 
         element: (
