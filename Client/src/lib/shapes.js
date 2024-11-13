@@ -58,7 +58,7 @@ export const createText = (pointer, text) => {
   });
 };
 
-export const createSpecificShape = () => {
+export const createSpecificShape = (shapeType, pointer) => {
   switch (shapeType) {
     case "rectangle":
       return createRectangle(pointer);
@@ -84,7 +84,6 @@ export const handleImageUpload = async ({
   file,
   canvas,
   shapeRef,
-  syncShapeInStorage,
 }) => {
   const reader = new FileReader();
   reader.onload = () => {
@@ -94,7 +93,6 @@ export const handleImageUpload = async ({
       canvas.current.add(img);
       img.objectId = uuidv4();
       shapeRef.current = img;
-      syncShapeInStorage(img);
       canvas.current.requestRenderAll();
     });
   };
@@ -113,7 +111,6 @@ export const modifyShape = ({
   property,
   value,
   activeObjectRef,
-  syncShapeInStorage,
 }) => {
   const selectedElement = canvas.getActiveObject();
   if (!selectedElement || selectedElement?.type === "activeSelection") return;
@@ -128,10 +125,10 @@ export const modifyShape = ({
     selectedElement.set(property, value);
   }
   activeObjectRef.current = selectedElement;
-  syncShapeInStorage(selectedElement);
+
 };
 
-export const bringElement = ({ canvas, direction, syncShapeInStorage }) => {
+export const bringElement = ({ canvas, direction }) => {
   if (!canvas) return;
   const selectedElement = canvas.getActiveObject();
   if (!selectedElement || selectedElement?.type === "activeSelection") return;
@@ -140,5 +137,4 @@ export const bringElement = ({ canvas, direction, syncShapeInStorage }) => {
   } else if (direction === "back") {
     canvas.sendToBack(selectedElement);
   }
-  syncShapeInStorage(selectedElement);
 };
