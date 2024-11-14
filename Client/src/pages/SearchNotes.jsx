@@ -4,8 +4,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardDescription, CardTitle } from "@/components/ui/card";
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 
 const SearchNotes = () => {
@@ -39,7 +37,6 @@ const SearchNotes = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-orange-50">
         <main className="container mx-auto p-4">
           <motion.div
@@ -154,7 +151,6 @@ const SearchNotes = () => {
           </motion.div>
         </main>
       </div>
-      <Footer />
     </>
   );
 };

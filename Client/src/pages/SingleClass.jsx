@@ -71,7 +71,6 @@ const SingleClass = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="border-b shadow-md">

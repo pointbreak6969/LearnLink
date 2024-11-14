@@ -2,8 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import { useDispatch } from "react-redux";
 import authService from "../services/auth.js";
 import { useForm } from "react-hook-form";
@@ -28,7 +26,6 @@ const Login = () => {
   };
   return (
     <>
-      <Navbar />
       <div className="min-h-screen flex flex-col bg-gray-50">
         <main className="container mx-auto flex flex-grow flex-col-reverse lg:flex-row mt-8 p-4">
           {/* Left Section: Testimonials (shows below form on small screens) */}
@@ -148,7 +145,6 @@ const Login = () => {
             </form>
           </div>
         </main>
-        <Footer />
       </div>
     </>
   );

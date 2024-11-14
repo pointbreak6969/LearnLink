@@ -4,6 +4,8 @@ import './App.css';
 import authService from './services/auth';
 import { login, logout } from './store/authSlice';
 import { Outlet } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -26,8 +28,11 @@ function App() {
       <p className='loader'></p>
     </div>
   ) : (
-
+    <>
+    <Navbar/>
     <Outlet/>
+    <Footer/>
+    </>
   );
 }
 

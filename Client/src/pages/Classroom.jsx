@@ -9,8 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlusCircle} from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { classrooms, suggestedClassrooms } from "@/lib/list";
 import CardCollection from "@/components/CardCollection";
@@ -45,7 +43,6 @@ const Classroom = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-orange-100 to-green-100 mt-0">
         <main className="container mx-auto mt-0 py-10 px-4">
           <motion.div
@@ -93,7 +90,6 @@ const Classroom = () => {
           <CardCollection array={suggestedClassrooms}/>
         </main>
       </div>
-      <Footer />
     </>
   );
 };
