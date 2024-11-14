@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import Classroom from "../models/classroomModel.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import generateRandomString from "../utils/randomString.js";
+import mongoose from "mongoose";
 const createClassroom = asyncHandler(async (req, res) => {
   const { classroomName } = req.body;
   if (!classroomName) {
@@ -126,6 +127,16 @@ const getAllClassrooms = asyncHandler(async (req, res) => {
         },
       },
     },
+    {
+      $project: {
+        "admin_details.fullName": 1,
+        name: 1,
+        university: 1,
+        faculty: 1,
+        users: 1,
+        resources: 1,
+      },
+    },
   ]);
   if (!allClasses) {
     throw new ApiError(500, "Server Error");
@@ -157,14 +168,46 @@ const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, response, "Fetched successfully"));
 });
-const getClassroomDetails = asyncHandler(async (req, res)=>{
-
-})
+const getClassroomDetails = asyncHandler(async (req, res) => {
+  const { classroomId } = req.params;
+  if (!classroomId) {
+    throw new ApiError(400, "classroom id not found");
+  }
+  if (!mongoose.Types.ObjectId.isValid(classroomId)) {
+    throw new ApiError(400, "Invalid Classroom ID");
+  }
+  const classroom = await Classroom.findById(classroomId);
+  if (!classroom) {
+    throw new ApiError(404, "Classroom not found");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, classroom, "Classroom details found successfully")
+    );
+});
+const joinClassroom = asyncHandler(async (req, res) => {
+  const { code } = req.body;
+  const userId = req.user._id;
+  const classroom = await Classroom.findOne({ code });
+  if (!classroom) {
+    throw new ApiError(400, "Not a valid classroom code");
+  }
+  if (classroom.users.includes(userId)) {
+    throw new ApiError(400, "User already exists");
+  }
+  classroom.users.push(userId);
+  await classroom.save();
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Classroom joined successfully"));
+});
 export {
   createClassroom,
   deleteClassroom,
   updateClassroom,
   getAllClassrooms,
   getClassroomByUniversityAndFaculty,
-  getClassroomDetails
+  joinClassroom,
+  getClassroomDetails,
 };

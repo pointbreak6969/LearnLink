@@ -19,16 +19,16 @@ const ClassroomSchema = new Schema({
     },
     users: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'users'
     }],
     resources: [{
         type: Schema.Types.ObjectId,
-        ref: 'Resources'
+        ref: 'resources'
     }],
     code: {
         type: String,
         required: [true, 'Code is required'],
-        unique: true
+        unique: true,
     },
 }, {
     timestamps: true

@@ -2,22 +2,22 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import User from "../models/userModel.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshToken = async (userId) => {
-    try {
-      const user = await User.findById(userId);
-      const accessToken = user.generateAccessToken();
-      const refreshToken = user.generateRefreshToken();
-      user.refreshToken = refreshToken;
-      await user.save({ validateBeforeSave: false });
-      
-      return { accessToken, refreshToken };
-    } catch (error) {
-      console.error("Error generating tokens:", error);
-      throw new ApiError(500, "Something went wrong while generating tokens");
-    }
-  };
-  
+  try {
+    const user = await User.findById(userId);
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    return { accessToken, refreshToken };
+  } catch (error) {
+    console.error("Error generating tokens:", error);
+    throw new ApiError(500, "Something went wrong while generating tokens");
+  }
+};
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -40,7 +40,9 @@ const registerUser = asyncHandler(async (req, res) => {
     secure: true,
     sameSite: "none",
   };
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
   return res
     .status(201)
     .cookie("accessToken", accessToken, options)
@@ -61,7 +63,9 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     throw new ApiError(400, "Invalid credentials");
   }
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken -otp -otpExpiry"
   );
@@ -105,4 +109,42 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, req.user, "User found successfully"));
 });
-export { registerUser, loginUser, logoutUser, getCurrentUser };
+const getUserAllClassrooms = asyncHandler(async (req, res) => {
+
+  const userClassrooms =await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user?._id)
+      }
+    },
+    {
+      $lookup: {
+        from: "classrooms",
+        localField: "_id",
+        foreignField: "users",
+        as: "results",
+      },
+    },
+    {
+      $project: {
+        results: 1,
+      },
+    },
+  ]);
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        userClassrooms,
+        "User classrooms found successfully"
+      )
+    );
+});
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  getCurrentUser,
+  getUserAllClassrooms,
+};

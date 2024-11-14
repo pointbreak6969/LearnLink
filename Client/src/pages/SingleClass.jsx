@@ -96,20 +96,7 @@ const SingleClass = () => {
         {/* Main Content */}
         <main className="container mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-8">
           <aside className="w-full lg:w-64">
-            <Card className="animate-fade-in shadow-lg rounded-lg">
-              <CardHeader>
-                <CardTitle>Upcoming</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">Woohoo, no work due in soon!</p>
-                <Button
-                  variant="link"
-                  className="mt-2 p-0 h-auto text-[#FF9500] hover:underline"
-                >
-                  View all
-                </Button>
-              </CardContent>
-            </Card>
+      
           </aside>
           <div className="flex-1">
             <Tabs
