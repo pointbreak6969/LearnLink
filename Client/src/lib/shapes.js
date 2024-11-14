@@ -57,6 +57,9 @@ export const createText = (pointer, text) => {
     objectId: uuidv4(),
   });
 };
+// export const initializeEraser = (canvas)=>{
+//   const eraserBrush = new fabric.EraserBrush(canvas)
+// }
 
 export const createSpecificShape = (shapeType, pointer) => {
   switch (shapeType) {

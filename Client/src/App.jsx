@@ -26,13 +26,8 @@ function App() {
       <p className='loader'></p>
     </div>
   ) : (
-    <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
-      <div className="w-full block">
-        <main>
-          <Outlet />
-        </main>
-      </div>
-    </div>
+
+    <Outlet/>
   );
 }
 

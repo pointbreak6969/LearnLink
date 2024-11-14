@@ -257,7 +257,7 @@ export const handleCanvasObjectMoving = ({
 export const handleCanvasSelectionCreated = ({
   options,
   isEditingRef,
-  setElementAttributes,
+
 }) => {
   // if user is editing manually, return
   if (isEditingRef.current) return;
@@ -267,55 +267,9 @@ export const handleCanvasSelectionCreated = ({
 
   // get the selected element
   const selectedElement = options?.selected[0]
-
-  // if only one element is selected, set element attributes
-  if (selectedElement && options.selected.length === 1) {
-    // calculate scaled dimensions of the object
-    const scaledWidth = selectedElement?.scaleX
-      ? selectedElement?.width * selectedElement?.scaleX
-      : selectedElement?.width;
-
-    const scaledHeight = selectedElement?.scaleY
-      ? selectedElement?.height * selectedElement?.scaleY
-      : selectedElement?.height;
-
-    setElementAttributes({
-      width: scaledWidth?.toFixed(0).toString() || "",
-      height: scaledHeight?.toFixed(0).toString() || "",
-      fill: selectedElement?.fill?.toString() || "",
-      stroke: selectedElement?.stroke || "",
-      // @ts-ignore
-      fontSize: selectedElement?.fontSize || "",
-      // @ts-ignore
-      fontFamily: selectedElement?.fontFamily || "",
-      // @ts-ignore
-      fontWeight: selectedElement?.fontWeight || "",
-    });
-  }
 };
 
-// update element attributes when element is scaled
-export const handleCanvasObjectScaling = ({
-  options,
-  setElementAttributes,
-}) => {
-  const selectedElement = options.target;
 
-  // calculate scaled dimensions of the object
-  const scaledWidth = selectedElement?.scaleX
-    ? selectedElement?.width * selectedElement?.scaleX
-    : selectedElement?.width;
-
-  const scaledHeight = selectedElement?.scaleY
-    ? selectedElement?.height * selectedElement?.scaleY
-    : selectedElement?.height;
-
-  setElementAttributes((prev) => ({
-    ...prev,
-    width: scaledWidth?.toFixed(0).toString() || "",
-    height: scaledHeight?.toFixed(0).toString() || "",
-  }));
-};
 
 // render canvas objects coming from storage on canvas
 export const renderCanvas = ({
