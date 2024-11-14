@@ -55,8 +55,14 @@ export const createText = (pointer, text) => {
     fontSize: 36,
     fontWeight: "400",
     objectId: uuidv4(),
+    editable: true,
+    lockScalingX: false,
+    lockScalingY: false,
   });
 };
+// export const initializeEraser = (canvas)=>{
+//   const eraserBrush = new fabric.EraserBrush(canvas)
+// }
 
 export const createSpecificShape = (shapeType, pointer) => {
   switch (shapeType) {
@@ -84,6 +90,7 @@ export const handleImageUpload = async ({
   file,
   canvas,
   shapeRef,
+  syncShapeInStorage
 }) => {
   const reader = new FileReader();
   reader.onload = () => {
@@ -93,6 +100,7 @@ export const handleImageUpload = async ({
       canvas.current.add(img);
       img.objectId = uuidv4();
       shapeRef.current = img;
+      syncShapeInStorage(img);
       canvas.current.requestRenderAll();
     });
   };

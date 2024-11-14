@@ -51,7 +51,8 @@ export const handleCanvasMouseDown = ({
     canvas.isDrawingMode = true;
     canvas.freeDrawingBrush.width = 5;
     return;
-  }
+  } 
+
 
   canvas.isDrawingMode = false;
 
@@ -95,6 +96,7 @@ export const handleCanvaseMouseMove = ({
   isDrawing,
   selectedShapeRef,
   shapeRef,
+  syncShapeInStorage
 }) => {
   // if selected shape is freeform, return
   if (!isDrawing.current) return;
@@ -150,9 +152,9 @@ export const handleCanvaseMouseMove = ({
   canvas.renderAll();
 
   // sync shape in storage
-  // if (shapeRef.current?.objectId) {
-  //   syncShapeInStorage(shapeRef.current);
-  // }
+  if (shapeRef.current?.objectId) {
+    syncShapeInStorage(shapeRef.current);
+  }
 };
 
 // handle mouse up event on canvas to stop drawing shapes
@@ -162,14 +164,18 @@ export const handleCanvasMouseUp = ({
   shapeRef,
   activeObjectRef,
   selectedShapeRef,
-  // syncShapeInStorage,
-  setActiveElement,
+  syncShapeInStorage,
 }) => {
   isDrawing.current = false;
   if (selectedShapeRef.current === "freeform") return;
 
   // sync shape in storage as drawing is stopped
-  // syncShapeInStorage(shapeRef.current);
+  if (shapeRef.current) {
+    // Don't sync text objects immediately as they might still be editing
+    if (!(shapeRef.current instanceof fabric.IText)) {
+      syncShapeInStorage(shapeRef.current);
+    }
+  }
 
   // set everything to null
   shapeRef.current = null;
@@ -187,7 +193,7 @@ export const handleCanvasMouseUp = ({
 // update shape in storage when object is modified
 export const handleCanvasObjectModified = ({
   options,
-  // syncShapeInStorage,
+  syncShapeInStorage,
 }) => {
   const target = options.target;
   if (!target) return;
@@ -195,14 +201,14 @@ export const handleCanvasObjectModified = ({
   if (target?.type == "activeSelection") {
     // fix this
   } else {
-    // syncShapeInStorage(target);
+    syncShapeInStorage(target);
   }
 };
 
 // update shape in storage when path is created when in freeform mode
 export const handlePathCreated = ({
   options,
-  // syncShapeInStorage,
+  syncShapeInStorage,
 }) => {
   // get path object
   const path = options.path;
@@ -214,7 +220,7 @@ export const handlePathCreated = ({
   });
 
   // sync shape in storage
-  // syncShapeInStorage(path);
+  syncShapeInStorage(path);
 };
 
 // check how object is moving on canvas and restrict it to canvas boundaries
@@ -253,69 +259,9 @@ export const handleCanvasObjectMoving = ({
   }
 };
 
-// set element attributes when element is selected
-export const handleCanvasSelectionCreated = ({
-  options,
-  isEditingRef,
-  setElementAttributes,
-}) => {
-  // if user is editing manually, return
-  if (isEditingRef.current) return;
 
-  // if no element is selected, return
-  if (!options?.selected) return;
 
-  // get the selected element
-  const selectedElement = options?.selected[0]
 
-  // if only one element is selected, set element attributes
-  if (selectedElement && options.selected.length === 1) {
-    // calculate scaled dimensions of the object
-    const scaledWidth = selectedElement?.scaleX
-      ? selectedElement?.width * selectedElement?.scaleX
-      : selectedElement?.width;
-
-    const scaledHeight = selectedElement?.scaleY
-      ? selectedElement?.height * selectedElement?.scaleY
-      : selectedElement?.height;
-
-    setElementAttributes({
-      width: scaledWidth?.toFixed(0).toString() || "",
-      height: scaledHeight?.toFixed(0).toString() || "",
-      fill: selectedElement?.fill?.toString() || "",
-      stroke: selectedElement?.stroke || "",
-      // @ts-ignore
-      fontSize: selectedElement?.fontSize || "",
-      // @ts-ignore
-      fontFamily: selectedElement?.fontFamily || "",
-      // @ts-ignore
-      fontWeight: selectedElement?.fontWeight || "",
-    });
-  }
-};
-
-// update element attributes when element is scaled
-export const handleCanvasObjectScaling = ({
-  options,
-  setElementAttributes,
-}) => {
-  const selectedElement = options.target;
-
-  // calculate scaled dimensions of the object
-  const scaledWidth = selectedElement?.scaleX
-    ? selectedElement?.width * selectedElement?.scaleX
-    : selectedElement?.width;
-
-  const scaledHeight = selectedElement?.scaleY
-    ? selectedElement?.height * selectedElement?.scaleY
-    : selectedElement?.height;
-
-  setElementAttributes((prev) => ({
-    ...prev,
-    width: scaledWidth?.toFixed(0).toString() || "",
-    height: scaledHeight?.toFixed(0).toString() || "",
-  }));
-};
 
 // render canvas objects coming from storage on canvas
 export const renderCanvas = ({

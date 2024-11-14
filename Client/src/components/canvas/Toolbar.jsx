@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Circle, Square, Type, ImageIcon, Pencil, Eraser, MousePointer } from 'lucide-react';
+import { Circle, Square, Type, ImageIcon, Pencil, Eraser, MousePointer , Trash 
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Toolbar = ({ activeElement, handleActiveElement, imageInputRef, handleImageUpload }) => {
@@ -33,6 +34,16 @@ const Toolbar = ({ activeElement, handleActiveElement, imageInputRef, handleImag
         name: "Freeform",
         value: "freeform",
         icon: <Pencil className="h-4 w-4" />
+      },
+      {
+        name: "Eraser",
+        value: "eraser",
+        icon: <Eraser className="h-4 w-4" />
+      },
+      {
+        name: "Trash",
+        value: "trash",
+        icon: <Trash className="h-4 w-4" />
       }
     ];
   
