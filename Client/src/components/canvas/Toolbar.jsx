@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Circle, Square, Type, ImageIcon, Pencil, Eraser, MousePointer ,
+import { Circle, Square, Type, ImageIcon, Pencil, Eraser, MousePointer , Trash 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -39,6 +39,11 @@ const Toolbar = ({ activeElement, handleActiveElement, imageInputRef, handleImag
         name: "Eraser",
         value: "eraser",
         icon: <Eraser className="h-4 w-4" />
+      },
+      {
+        name: "Trash",
+        value: "trash",
+        icon: <Trash className="h-4 w-4" />
       }
     ];
   

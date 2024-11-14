@@ -13,7 +13,7 @@ export const handleCopy = (canvas) => {
   return activeObjects;
 };
 
-export const handlePaste = (canvas) => {
+export const handlePaste = (canvas, syncShapeInStorage) => {
   if (!canvas || !(canvas instanceof fabric.Canvas)) {
     console.error("Invalid canvas object. Aborting paste operation.");
     return;
@@ -26,39 +26,23 @@ export const handlePaste = (canvas) => {
   if (clipboardData) {
     try {
       const parsedObjects = JSON.parse(clipboardData);
-
-      // Keep track of new objects to select them after pasting
-      const newObjects = [];
-
       parsedObjects.forEach((objData) => {
+        // convert the plain javascript objects retrieved from localStorage into fabricjs objects (deserialization)
         fabric.util.enlivenObjects(
           [objData],
           (enlivenedObjects) => {
             enlivenedObjects.forEach((enlivenedObj) => {
-              // Generate new ID and apply offset
-              const newObj = enlivenedObj.set({
-                left: (enlivenedObj.left || 0) + 20,
-                top: (enlivenedObj.top || 0) + 20,
+              // Offset the pasted objects to avoid overlap with existing objects
+              enlivenedObj.set({
+                left: enlivenedObj.left || 0 + 20,
+                top: enlivenedObj.top || 0 + 20,
                 objectId: uuidv4(),
                 fill: "#aabbcc",
               });
 
-              canvas.add(newObj);
-              newObjects.push(newObj);
+              canvas.add(enlivenedObj);
+              syncShapeInStorage(enlivenedObj);
             });
-
-            // Create a new selection containing all pasted objects
-            if (newObjects.length > 0) {
-              if (newObjects.length === 1) {
-                canvas.setActiveObject(newObjects[0]);
-              } else {
-                const selection = new fabric.ActiveSelection(newObjects, {
-                  canvas: canvas,
-                });
-                canvas.setActiveObject(selection);
-              }
-            }
-
             canvas.renderAll();
           },
           "fabric"
@@ -69,21 +53,22 @@ export const handlePaste = (canvas) => {
     }
   }
 };
-export const handleDelete = (canvas) => {
+export const handleDelete = (canvas, deleteShapeFromStorage) => {
   const activeObjects = canvas.getActiveObjects();
   if (!activeObjects || activeObjects.length === 0) return;
-
+  if (activeObjects.isEditing) return;
   if (activeObjects.length > 0) {
     activeObjects.forEach((obj) => {
       if (!obj.objectId) return;
       canvas.remove(obj);
+      deleteShapeFromStorage(obj.objectId);
     });
   }
 
   canvas.discardActiveObject();
   canvas.requestRenderAll();
 };
-export const handleKeyDown = ({ e, canvas}) => {
+export const handleKeyDown = ({ e, canvas, syncShapeInStorage, deleteShapeFromStorage}) => {
   // Copy (Ctrl/Cmd + C)
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 67) {
     handleCopy(canvas);
@@ -91,20 +76,20 @@ export const handleKeyDown = ({ e, canvas}) => {
 
   // Paste (Ctrl/Cmd + V)
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 86) {
-    handlePaste(canvas);
+    handlePaste(canvas, syncShapeInStorage);
   }
 
   // Cut (Ctrl/Cmd + X)
   if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 88) {
     handleCopy(canvas);
-    handleDelete(canvas);
+    handleDelete(canvas, deleteShapeFromStorage);
   }
 
   // Delete (Delete key or Backspace)
-  if (e.keyCode === 46 || e.keyCode === 8) {
-    handleDelete(canvas);
-    e.preventDefault();
-  }
+  // if (e.keyCode === 46) {
+  //   handleDelete(canvas);
+
+  // }
 
   // Undo (Ctrl/Cmd + Z)
   // if ((e?.ctrlKey || e?.metaKey) && e.keyCode === 90) {

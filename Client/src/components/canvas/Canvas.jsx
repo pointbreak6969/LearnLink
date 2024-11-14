@@ -27,9 +27,58 @@ const Canvas = () => {
     value: "select",
     icon: null,
   });
+  const syncShapeInStorage = (object) => {
+    // if the passed object is null, return
+    if (!object) return;
 
+    const { objectId } = object;
 
+    // Convert Fabric object into JSON format for storage
+    const shapeData = object.toJSON();
+    shapeData.objectId = objectId;
 
+    // Get existing canvas objects from localStorage or initialize an empty object
+    const canvasObjects =
+      JSON.parse(localStorage.getItem("canvasObjects")) || {};
+
+    // Update or add the current shape data in the canvas objects map
+    canvasObjects[objectId] = shapeData;
+
+    // Save updated canvas objects back to localStorage
+    localStorage.setItem("canvasObjects", JSON.stringify(canvasObjects));
+  };
+  const deleteShapeFromStorage = (shapeId) => {
+    // Retrieve the current canvas objects from localStorage
+    const canvasObjects =
+      JSON.parse(localStorage.getItem("canvasObjects")) || {};
+
+    // Check if the shapeId exists and delete it
+    if (canvasObjects[shapeId]) {
+      delete canvasObjects[shapeId];
+    }
+
+    // Save the updated canvas objects back to localStorage
+    localStorage.setItem("canvasObjects", JSON.stringify(canvasObjects));
+  };
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      handleImageUpload({
+        file,
+        canvas: fabricRef,
+        shapeRef,
+        syncShapeInStorage,
+      });
+    }
+  };
   const handleActiveElement = (elem) => {
     setActiveElement(elem);
 
@@ -39,8 +88,8 @@ const Canvas = () => {
     }
 
     switch (elem?.value) {
-      case "delete":
-        handleDelete(fabricRef.current);
+      case "trash":
+        handleDelete(fabricRef.current, deleteShapeFromStorage);
         break;
       case "image":
         imageInputRef.current?.click();
@@ -75,6 +124,7 @@ const Canvas = () => {
         isDrawing,
         selectedShapeRef,
         shapeRef,
+        syncShapeInStorage,
       });
     });
 
@@ -86,15 +136,16 @@ const Canvas = () => {
         activeObjectRef,
         selectedShapeRef,
         setActiveElement,
+        syncShapeInStorage,
       });
     });
 
     canvas.on("path:created", (options) => {
-      handlePathCreated({ options });
+      handlePathCreated({ options, syncShapeInStorage });
     });
 
     canvas.on("object:modified", (options) => {
-      handleCanvasObjectModified({ options });
+      handleCanvasObjectModified({ options, syncShapeInStorage });
     });
 
     canvas.on("object:moving", (options) => {
@@ -116,6 +167,8 @@ const Canvas = () => {
       handleKeyDown({
         e,
         canvas: fabricRef.current,
+        syncShapeInStorage,
+        deleteShapeFromStorage,
       })
     );
 
@@ -130,11 +183,19 @@ const Canvas = () => {
         handleKeyDown({
           e,
           canvas: fabricRef.current,
+          syncShapeInStorage,
+          deleteShapeFromStorage,
         })
       );
     };
-  }, [canvasRef, fabricRef]);
-
+  }, [canvasRef]);
+  // useEffect(() => {
+  //   renderCanvas({
+  //     fabricRef,
+  //     canvasObjects,
+  //     activeObjectRef,
+  //   });
+  // }, [canvasObjects]);
   return (
     <div className="h-screen overflow-hidden">
       <Toolbar
@@ -146,15 +207,17 @@ const Canvas = () => {
             file: e.target.files[0],
             canvas: fabricRef,
             shapeRef,
+            syncShapeInStorage,
           });
         }}
         handleActiveElement={handleActiveElement}
       />
       <div
         className="relative flex h-full w-full flex-1 items-center justify-center"
-        id="canvas"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop} id="canvas"
       >
-        <canvas ref={canvasRef} />
+        <canvas ref={canvasRef}  />
       </div>
     </div>
   );
