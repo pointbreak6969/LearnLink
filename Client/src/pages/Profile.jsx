@@ -3,8 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileDetails } from "@/store/profileReducer";
@@ -80,7 +78,6 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar />
       {status === "loading" && (
         <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
           <Skeleton className="h-16 w-16 rounded-full mb-4" />
@@ -253,7 +250,6 @@ const Profile = () => {
               </Tabs>
             </div>
           </div>
-          <Footer />
         </>
       )}
     {status === "failed" && (

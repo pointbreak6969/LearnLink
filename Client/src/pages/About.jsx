@@ -1,5 +1,3 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Crown, Award, ThumbsUp, Briefcase, BookOpen, Lightbulb, Users, Zap } from "lucide-react";
@@ -7,7 +5,6 @@ import { Crown, Award, ThumbsUp, Briefcase, BookOpen, Lightbulb, Users, Zap } fr
 const About = () => {
   return (
     <>
-      <Navbar />
       <div className="bg-gradient-to-r from-blue-50 to-white min-h-screen">
         <div className="container mx-auto px-4 py-16">
 
@@ -23,7 +20,7 @@ const About = () => {
           <section className="mb-16">
             <h2 className="text-4xl font-semibold text-center text-gray-800 mb-8">Our Achievements</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
+              {[ 
                 { icon: Crown, title: "Trusted by Thousands", description: "We have helped thousands of students and educators connect and share knowledge, enhancing their learning experience." },
                 { icon: Award, title: "High-Quality Resources", description: "Our platform hosts a wide variety of top-notch educational materials, recognized for their accuracy and effectiveness." },
                 { icon: ThumbsUp, title: "Positive User Feedback", description: "We consistently receive glowing reviews from our users, who appreciate the ease of use and value of our platform." },
@@ -50,7 +47,7 @@ const About = () => {
               We believe that education should be accessible and engaging for everyone. Through our platform, we aim to:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
+              {[ 
                 { icon: BookOpen, title: "Facilitate Knowledge Sharing", description: "We aim to create a space where learners and educators can easily share and access a wide range of educational resources." },
                 { icon: Lightbulb, title: "Encourage Continuous Learning", description: "Our platform is designed to inspire lifelong learning, helping users discover new topics and expand their knowledge." },
                 { icon: Users, title: "Build a Collaborative Community", description: "We foster a supportive environment where users can engage in discussions, ask questions, and learn from each other." },
@@ -80,9 +77,23 @@ const About = () => {
               Join Now
             </Button>
           </div>
+
+          {/* Collaborators Section */}
+          <section className="mt-16 text-center">
+            <h2 className="text-3xl font-semibold text-gray-800 mb-6">Meet the Collaborators</h2>
+            <div className="text-lg text-gray-700 max-w-2xl mx-auto">
+              <p><strong>Ashim Gautam</strong></p>
+              <p>Email: <a href="mailto:ashimgautam01@gmail.com" className="text-blue-500">ashimgautam01@gmail.com</a></p>
+              <p>Location: Pokhara, Nepal</p>
+              <br />
+              <p><strong>Biraj Baral</strong></p>
+              <p>Email: <a href="mailto:baralbiraj74@gmail.com" className="text-blue-500">baralbiraj74@gmail.com</a></p>
+              <p>Location: Pokhara, Nepal</p>
+            </div>
+          </section>
+
         </div>
       </div>
-      <Footer/>
     </>
   );
 };

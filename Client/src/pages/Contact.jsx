@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Facebook, Linkedin, MapPin, Phone, Send, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -19,7 +17,6 @@ const Contact = () => {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -145,7 +142,6 @@ const Contact = () => {
           </div>
         </motion.div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import { Upload, Users, Star, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 const Reward = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,7 +13,6 @@ const Reward = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-orange-50 py-12">
         <div className="container mx-auto px-4">
           <motion.h1
@@ -116,7 +113,6 @@ const Reward = () => {
           </motion.div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }
