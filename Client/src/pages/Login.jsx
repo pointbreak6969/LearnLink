@@ -18,7 +18,7 @@ const Login = () => {
       const session = await authService.login(data);
       if (session) {
         dispatch(authLogin({ user: session.data.user }));
-        navigate("/");
+        navigate("/classroom");
       }
     } catch (error) {
       setError(error.message);
