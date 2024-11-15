@@ -1,9 +1,10 @@
 import axios from "axios";
+import { baseUrl } from "@/lib/constants";
 export class AuthService {
   async createUser({ fullName, email, password }) {
     try {
       const response = await axios.post(
-        "http://localhost:5050/api/v1/user/register",
+        `${baseUrl}/user/register`,
         { fullName, email, password },
         {
           withCredentials: true,
@@ -21,7 +22,7 @@ export class AuthService {
   async login({ email, password }) {
     try {
      const response = await axios.post(
-        "http://localhost:5050/api/v1/user/login",
+      `${baseUrl}/user/login`,
         { email, password },
         {
           withCredentials: true,
@@ -34,7 +35,7 @@ export class AuthService {
   }
   async getCurrentUser(){
     try {
-        return await axios.get("http://localhost:5050/api/user/me", {
+        return await axios.get( `${baseUrl}/user/me`, {
           withCredentials: true,
         });
     } catch (error) {
@@ -44,7 +45,7 @@ export class AuthService {
   }
   async logout(){
     try {
-        return await axios.post("http://localhost:5050/api/user/logout", {
+        return await axios.post(`${baseUrl}/user/logout`, {
           withCredentials: true,
         });
     } catch (error) {

@@ -187,7 +187,7 @@ const getClassroomDetails = asyncHandler(async (req, res) => {
     );
 });
 const joinClassroom = asyncHandler(async (req, res) => {
-  const { code } = req.body;
+  const { code } = req.body || req.params;
   const userId = req.user._id;
   const classroom = await Classroom.findOne({ code });
   if (!classroom) {

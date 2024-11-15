@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseUrl } from "@/lib/constants";
 class ProfileService {
   async completeProfile({
     profilePicture,
@@ -9,7 +10,7 @@ class ProfileService {
   }) {
     try {
       const response = await axios.post(
-        "http://localhost:5050/api/v1/profile/complete",
+        `${baseUrl}/profile/complete`,
         { profilePicture, phone, location, university, college },
         {
           withCredentials: true,
@@ -18,7 +19,7 @@ class ProfileService {
           },
         }
       );
-      console.log(response.data);
+      return response.data.data
     } catch (error) {
       console.log("something went wrong while completing the profile");
     }
@@ -26,7 +27,7 @@ class ProfileService {
   async editProfile({ phone, location, university, college }) {
     try {
       const response = await axios.patch(
-        "http://localhost:5050/api/v1/profile/edit",
+        `${baseUrl}/profile/edit`,
         {
           phone,
           location,
@@ -37,7 +38,7 @@ class ProfileService {
           withCredentials: true,
         }
       );
-      console.log(response.data);
+      return response.data.data
     } catch (error) {
       console.log("Something went wrong while editing the details");
     }
@@ -45,7 +46,8 @@ class ProfileService {
   async editProfilePicture({ profilePicture }) {
     try {
       const response = await axios.patch(
-        "http://localhost:5050/api/v1/profile/editProfilePic",
+        `${baseUrl}/profile/editProfilePic`,
+        { profilePicture },
         {
           withCredentials: true,
           headers: {
@@ -53,20 +55,23 @@ class ProfileService {
           },
         }
       );
-      return response.data
+      return response.data.data;
     } catch (error) {
-      console.log("error while updating the user profile")
+      console.log("error while updating the user profile");
     }
   }
   async getProfileDetails() {
     try {
-      const response = await axios.get("http://localhost:5050/api/v1/profile/get", {
-        withCredentials: true
-      })
-      return response.data?.data?.[0] || null
+      const response = await axios.get(
+        `${baseUrl}/profile/get`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data?.data?.[0] || null;
     } catch (error) {
-      console.error(error.message)
-      throw error
+      console.error(error.message);
+      throw error;
     }
   }
 }
