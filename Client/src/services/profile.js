@@ -19,7 +19,7 @@ class ProfileService {
           },
         }
       );
-      return response.data.data
+      return response.data.data;
     } catch (error) {
       console.log("something went wrong while completing the profile");
     }
@@ -38,7 +38,7 @@ class ProfileService {
           withCredentials: true,
         }
       );
-      return response.data.data
+      return response.data.data;
     } catch (error) {
       console.log("Something went wrong while editing the details");
     }
@@ -62,12 +62,9 @@ class ProfileService {
   }
   async getProfileDetails() {
     try {
-      const response = await axios.get(
-        `${baseUrl}/profile/get`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`${baseUrl}/profile/get`, {
+        withCredentials: true,
+      });
       return response.data?.data?.[0] || null;
     } catch (error) {
       console.error(error.message);

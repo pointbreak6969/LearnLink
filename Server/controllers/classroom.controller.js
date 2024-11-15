@@ -145,21 +145,28 @@ const getAllClassrooms = asyncHandler(async (req, res) => {
 });
 const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
   const { universityName, facultyName } = { ...req.query, ...req.body };
-  if (!(universityName && facultyName)) {
-    throw new ApiError(400, "All fields are required");
+  if (!universityName && !facultyName) {
+    throw new ApiError(400,  "At least one filter (university or faculty) is required");
   }
-  const response = await Classroom.aggregate([
-    {
+  const matchConditions = [];
+
+  if (universityName) {
+    matchConditions.push({
       $match: {
-        university: new RegExp(universityName, "i"),
-      },
-    },
-    {
+        university: new RegExp(universityName, "i")
+      }
+    });
+  }
+
+  if (facultyName) {
+    matchConditions.push({
       $match: {
-        faculty: new RegExp(facultyName, "i"),
-      },
-    },
-  ]);
+        faculty: new RegExp(facultyName, "i")
+      }
+    });
+  }
+
+  const response = await Classroom.aggregate(matchConditions);
 
   if (!response) {
     throw new ApiError(500, "Server error while finding the documents");
@@ -187,7 +194,8 @@ const getClassroomDetails = asyncHandler(async (req, res) => {
     );
 });
 const joinClassroom = asyncHandler(async (req, res) => {
-  const { code } = req.body || req.params;
+  const { code } = {...req.body, ...req.params};
+  console.log(code)
   const userId = req.user._id;
   const classroom = await Classroom.findOne({ code });
   if (!classroom) {

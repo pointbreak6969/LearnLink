@@ -16,10 +16,19 @@ const Login = () => {
     setError("");
     try {
       const session = await authService.login(data);
-      if (session) {
-        dispatch(authLogin({ user: session.data.user }));
+      if (session?.data) {
+        dispatch(authLogin({ 
+            user: {
+                _id: session.data._id,
+                fullName: session.data.fullName,
+                email: session.data.email,
+            }
+        }));
+        
         navigate("/");
-      }
+    } else {
+        setError("Invalid response from server");
+    }
     } catch (error) {
       setError(error.message);
     }
