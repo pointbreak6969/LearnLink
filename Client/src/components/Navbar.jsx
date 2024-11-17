@@ -50,7 +50,7 @@ const Navbar = () => {
               {/* Protected Routes */}
               {authStatus && (
                 <>
-                  <Link to="/classRoom" className="cursor-pointer hover:text-orange-200">Classroom</Link>
+                  <Link to="/classroom" className="cursor-pointer hover:text-orange-200">Classroom</Link>
                   <Link to="/searchnotes" className="cursor-pointer hover:text-orange-200">SearchNotes</Link>
                   <Link to="/profile" className="cursor-pointer hover:text-orange-200">Profile</Link>
                   <Link to="/reward" className="cursor-pointer hover:text-orange-200">Reward</Link>

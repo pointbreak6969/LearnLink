@@ -218,31 +218,16 @@ const SingleClass = () => {
                   <CardHeader>
                     <CardTitle className="flex justify-between items-center">
                       <span>Resources</span>
-                      <Button varient="default">
-                        <Upload className="mr-2" />
-                        Upload
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleAddResource} className="mb-4">
-                      <div className="flex flex-col md:flex-row items-center space-x-2">
-                        <Input
-                          placeholder="Resource name"
-                          className="flex-1 border border-gray-300 rounded-lg mb-2 md:mb-0"
-                        />
-                        <Button
-                          type="submit"
-                          varient="default"
-                        >
+                    
+                           
                           <Dialog
                             open={isAddResourceDialogOpen}
                             onOpenChange={setIsAddResourceDialogOpen}
                           >
                             <DialogTrigger asChild>
                               <Button varient="default">
-                                <Search className="mr-2" />
-                                Search
+                              <Upload className="mr-2" />
+                                Upload
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[425px]">
@@ -284,7 +269,17 @@ const SingleClass = () => {
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
-                        </Button>
+                      
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <form onSubmit={handleAddResource} className="mb-4">
+                      <div className="flex flex-col md:flex-row items-center space-x-2">
+                        <Input
+                          placeholder="Resource name to find"
+                          className="flex-1 border border-gray-300 rounded-lg mb-2 md:mb-0"
+                        />
+                        
                       </div>
                     </form>
                     <ul className="space-y-2">
