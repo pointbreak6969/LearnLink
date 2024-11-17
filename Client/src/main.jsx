@@ -18,6 +18,7 @@ import SearchNotes from './pages/SearchNotes';
 import Reward from './pages/Reward';
 import Protected from './components/Protected';
 import Canvas from './components/canvas/Canvas.jsx';
+import Test from './components/Test.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
         element: (
           <Protected authentication>
             <Profile />
+          </Protected>
+        ),
+      },
+      { 
+        path: '/test', 
+        element: (
+          <Protected authentication>
+            <Test />
           </Protected>
         ),
       },

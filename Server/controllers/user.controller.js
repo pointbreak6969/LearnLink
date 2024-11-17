@@ -110,12 +110,11 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "User found successfully"));
 });
 const getUserAllClassrooms = asyncHandler(async (req, res) => {
-
-  const userClassrooms =await User.aggregate([
+  const userClassrooms = await User.aggregate([
     {
       $match: {
-        _id: new mongoose.Types.ObjectId(req.user?._id)
-      }
+        _id: new mongoose.Types.ObjectId(req.user?._id),
+      },
     },
     {
       $lookup: {
@@ -126,19 +125,45 @@ const getUserAllClassrooms = asyncHandler(async (req, res) => {
       },
     },
     {
+      $unwind: "$results",
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "results.admin",
+        foreignField: "_id",
+        as: "results.adminDetails",
+      },
+    },
+    {
+      $unwind: "$results.adminDetails",
+    },
+    {
       $project: {
-        results: 1,
+        "results._id": 1,
+        "results.name": 1,
+        "results.university": 1,
+        "results.faculty": 1,
+        "results.users": 1,
+        "results.resources": 1,
+        "results.code": 1,
+        "results.createdAt": 1,
+        "results.updatedAt": 1,
+        "results.__v": 1,
+        "results.adminDetails.fullName": 1, // Only keeping fullName from admin details
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        results: { $push: "$results" },
       },
     },
   ]);
   return res
     .status(200)
     .json(
-      new ApiResponse(
-        200,
-        userClassrooms,
-        "User classrooms found successfully"
-      )
+      new ApiResponse(200, userClassrooms, "User classrooms found successfully")
     );
 });
 export {

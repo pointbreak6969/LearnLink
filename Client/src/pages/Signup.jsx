@@ -22,7 +22,13 @@ const Signup = () => {
     try {
       const createdUser = await authService.createUser(data);
       if (createdUser) {
-        dispatch(login({ user: createdUser.data.user }));
+        dispatch(login({ 
+          user: {
+              _id: createdUser.data._id,
+              fullName: createdUser.data.fullName,
+              email: createdUser.data.email,
+          }
+      }));
         navigate("/");
       }
     } catch (error) {

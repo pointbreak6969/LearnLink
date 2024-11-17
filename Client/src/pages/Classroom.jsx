@@ -8,14 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusCircle} from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { classrooms, suggestedClassrooms } from "@/lib/list";
+import { suggestedClassrooms } from "@/lib/list";
 import CardCollection from "@/components/CardCollection";
-
+import classroomService from "@/services/classroom";
+import { useNavigate } from "react-router-dom";
 const Classroom = () => {
-  const [classCode, setClassCode] = useState("");
+  const navigate = useNavigate();
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [classrooms, setClassrooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
   const itemsToShow = 4;
   const autoScrollInterval = 3000;
 
@@ -30,14 +34,36 @@ const Classroom = () => {
     }, autoScrollInterval);
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setIsLoading(true)
+        const response = await classroomService.getUserAllClassroom();
+        if (response) {
+          setClassrooms(response);
+          console.log(response[0].results)
+        }
+      } catch (error) {
+        false;
+      }
+      finally {
+        setIsLoading(false)
+      }
+    }
+    fetchData();
+  }, []);
 
-  const handleJoinClass = (e) => {
+  const handleJoinClass = async (e) => {
     e.preventDefault();
-    if (!classCode) {
+    if (!code) {
       setError("Please enter a valid class code.");
     } else {
       setError("");
-      console.log("Joining class with code:", classCode);
+      const response = await classroomService.joinClassroomByCode(code);
+      console.log(response);
+      if (response) {
+        navigate("/");
+      }
     }
   };
 
@@ -67,8 +93,8 @@ const Classroom = () => {
                   <Input
                     type="text"
                     placeholder="Enter class code"
-                    value={classCode}
-                    onChange={(e) => setClassCode(e.target.value)}
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
                     className="flex-grow border-2 border-orange-300 focus:border-orange-500 transition-all duration-200"
                   />
                   <Button
@@ -83,11 +109,16 @@ const Classroom = () => {
               </CardContent>
             </Card>
           </motion.div>
+          {classrooms.length > 0 ? (
+            <div>
+              {" "}
+              <h2 className="text-2xl font-bold mb-4">Your Classrooms</h2>
+              <CardCollection array={classrooms} />
+            </div>
+          ) : null}
 
-          <h2 className="text-2xl font-bold mb-4">Your Classrooms</h2>
-          <CardCollection array={classrooms}/>
           <h2 className="text-2xl font-bold mb-4 mt-8">Suggested Classrooms</h2>
-          <CardCollection array={suggestedClassrooms}/>
+          <CardCollection array={suggestedClassrooms} />
         </main>
       </div>
     </>

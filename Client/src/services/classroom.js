@@ -125,7 +125,9 @@ class ClassroomService {
   }
   async getUserAllClassroom() {
     try {
-      const response = await axios.get(`${baseUrl}/user/getUserAllClassrooms`);
+      const response = await axios.get(`${baseUrl}/user/getUserAllClassrooms`, {
+        withCredentials: true,
+      });
       return response.data.data;
     } catch (error) {
       console.error(error);
