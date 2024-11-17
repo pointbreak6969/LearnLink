@@ -25,7 +25,7 @@ const Login = () => {
             }
         }));
         
-        navigate("/");
+        navigate("/classroom");
     } else {
         setError("Invalid response from server");
     }
