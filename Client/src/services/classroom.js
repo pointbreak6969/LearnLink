@@ -134,12 +134,15 @@ class ClassroomService {
     }
   }
   async getClassroomDetails({ classroomId }) {
+    console.log(classroomId)
     if (!classroomId) {
       throw new Error("Classroom id not found");
     }
     try {
       const response = await axios.get(
-        `${baseUrl}/classroom/getClassroomDetails/${classroomId}`
+        `${baseUrl}/classroom/getClassroomDetails/${classroomId}`, {
+          withCredentials: true,
+        }
       );
       return response.data.data;
     } catch (error) {

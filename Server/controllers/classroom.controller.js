@@ -195,7 +195,7 @@ const getClassroomDetails = asyncHandler(async (req, res) => {
 });
 const joinClassroom = asyncHandler(async (req, res) => {
   const { code } = {...req.body, ...req.params};
-  console.log(code)
+
   const userId = req.user._id;
   const classroom = await Classroom.findOne({ code });
   if (!classroom) {
@@ -208,7 +208,7 @@ const joinClassroom = asyncHandler(async (req, res) => {
   await classroom.save();
   return res
     .status(200)
-    .json(new ApiResponse(200, {}, "Classroom joined successfully"));
+    .json(new ApiResponse(200, {id: classroom._id}, "Classroom joined successfully"));
 });
 export {
   createClassroom,

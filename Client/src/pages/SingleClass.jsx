@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,9 +25,15 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Label } from "@/components/ui/label";
+import classroomService from "@/services/classroom";
+import { useParams } from "react-router-dom";
 
 const SingleClass = () => {
   const [isAddResourceDialogOpen, setIsAddResourceDialogOpen] = useState(false);
+  const classroomId = useParams();
+  const [loading, isLoading] = useState(false);
+  const [classroomDetails, setClassroomDetails] = useState({});
+  const [error, setError] = useState("");
   const [newResource, setNewResource] = useState({
     title: "",
     description: "",
@@ -61,6 +67,29 @@ const SingleClass = () => {
     { id: "2", name: "Week 1 Lecture Slides", type: "PPTX" },
     { id: "3", name: "Assignment 1 Guidelines", type: "DOCX" },
   ]);
+
+  useEffect(() => {
+    async function fetchClassDetails() {
+      try {
+        isLoading(true);
+        setError("");
+        const response = await classroomService.getClassroomDetails({
+          classroomId: classroomId?.classCode,
+        });
+        if (response) {
+          console.log(response);
+          // setClassroomDetails(response)
+        } else {
+          setError("Error while fetching Classroom Details");
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        isLoading(false);
+      }
+    }
+    fetchClassDetails();
+  }, []);
   const handlePostAnnouncement = (e) => {
     e.preventDefault();
   };
@@ -94,9 +123,7 @@ const SingleClass = () => {
 
         {/* Main Content */}
         <main className="container mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-8">
-          <aside className="w-full lg:w-64">
-      
-          </aside>
+          <aside className="w-full lg:w-64"></aside>
           <div className="flex-1">
             <Tabs
               value={activeTab}
@@ -218,58 +245,56 @@ const SingleClass = () => {
                   <CardHeader>
                     <CardTitle className="flex justify-between items-center">
                       <span>Resources</span>
-                    
-                           
-                          <Dialog
-                            open={isAddResourceDialogOpen}
-                            onOpenChange={setIsAddResourceDialogOpen}
-                          >
-                            <DialogTrigger asChild>
-                              <Button varient="default">
-                              <Upload className="mr-2" />
-                                Upload
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                              <DialogHeader>
-                                <DialogTitle>Add New Resource</DialogTitle>
-                              </DialogHeader>
-                              <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label htmlFor="title" className="text-right">
-                                    Title
-                                  </Label>
-                                  <Input id="title" className="col-span-3" />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label
-                                    htmlFor="description"
-                                    className="text-right"
-                                  >
-                                    Description
-                                  </Label>
-                                  <Textarea
-                                    id="description"
-                                    className="col-span-3"
-                                  />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label htmlFor="file" className="text-right">
-                                    File
-                                  </Label>
-                                  <Input
-                                    id="file"
-                                    type="file"
-                                    className="col-span-3"
-                                  />
-                                </div>
-                              </div>
-                              <DialogFooter>
-                                <Button type="submit">Add Resource</Button>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                      
+
+                      <Dialog
+                        open={isAddResourceDialogOpen}
+                        onOpenChange={setIsAddResourceDialogOpen}
+                      >
+                        <DialogTrigger asChild>
+                          <Button varient="default">
+                            <Upload className="mr-2" />
+                            Upload
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Add New Resource</DialogTitle>
+                          </DialogHeader>
+                          <div className="grid gap-4 py-4">
+                            <div className="grid grid-cols-4 items-center gap-4">
+                              <Label htmlFor="title" className="text-right">
+                                Title
+                              </Label>
+                              <Input id="title" className="col-span-3" />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                              <Label
+                                htmlFor="description"
+                                className="text-right"
+                              >
+                                Description
+                              </Label>
+                              <Textarea
+                                id="description"
+                                className="col-span-3"
+                              />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                              <Label htmlFor="file" className="text-right">
+                                File
+                              </Label>
+                              <Input
+                                id="file"
+                                type="file"
+                                className="col-span-3"
+                              />
+                            </div>
+                          </div>
+                          <DialogFooter>
+                            <Button type="submit">Add Resource</Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -279,7 +304,6 @@ const SingleClass = () => {
                           placeholder="Resource name to find"
                           className="flex-1 border border-gray-300 rounded-lg mb-2 md:mb-0"
                         />
-                        
                       </div>
                     </form>
                     <ul className="space-y-2">
