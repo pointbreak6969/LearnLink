@@ -70,10 +70,9 @@ const CardCollection = ({ array }) => {
               <MyCard
                 id={item.id}
                 name={item.name}
-                teacher={item.teacher}
-                description={item.description}
+                admin={item.admin}
                 price={item.price}
-              
+                university={item.university}
               />
             </div>
           ))}

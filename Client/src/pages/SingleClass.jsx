@@ -76,7 +76,7 @@ const SingleClass = () => {
         <header className="border-b shadow-md">
           <div className="container mx-auto px-4 py-6">
             <h1 className="text-4xl font-bold text-black">B.E. Computer</h1>
-            <p className="text-lg text-gray-800">III Semester</p>
+            <p className="text-lg text-gray-800">Pokhara University</p>
           </div>
         </header>
 
