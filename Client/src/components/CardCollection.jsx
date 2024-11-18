@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import MyCard from "./MyCard";
 import "../App.css";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
-
 const CardCollection = ({ array }) => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-  const [contentFits, setContentFits] = useState(false); // New state to check content fitting
+  const [contentFits, setContentFits] = useState(false); 
 
   // Function to check scroll position
   const scrollRef = useRef(null);
@@ -28,11 +27,11 @@ const CardCollection = ({ array }) => {
       });
     }
   };
-
+console.log(array);
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      
+
       // Check if the user is at the start of the scroll (hide left arrow)
       setShowLeftArrow(scrollLeft > 0);
 
@@ -66,13 +65,13 @@ const CardCollection = ({ array }) => {
       <div className="max-w-7xl mx-auto p-4 relative">
         <div ref={scrollRef} className="flex scrollbar-hide overflow-x-scroll">
           {array.map((item) => (
-            <div key={item.id} className="p-3">
+            <div key={item._id} className="p-3">
               <MyCard
-                id={item.id}
+                id={item?._id}
                 name={item.name}
-                admin={item.admin}
-                price={item.price}
-                university={item.university}
+                teacher={item?.adminDetails?.fullName}
+                description={item?.description}
+                price={item?.price}
               />
             </div>
           ))}

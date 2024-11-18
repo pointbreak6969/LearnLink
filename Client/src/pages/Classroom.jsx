@@ -14,56 +14,42 @@ import { suggestedClassrooms } from "@/lib/list";
 import CardCollection from "@/components/CardCollection";
 import classroomService from "@/services/classroom";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 const Classroom = () => {
   const navigate = useNavigate();
-  const [code, setCode] = useState("");
+  const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
   const [classrooms, setClassrooms] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const itemsToShow = 4;
   const autoScrollInterval = 3000;
 
   const extendedClassrooms = [...suggestedClassrooms, ...suggestedClassrooms];
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex(
-        (prevIndex) =>
-          (prevIndex + 1) % Math.ceil(extendedClassrooms.length / itemsToShow)
-      );
-    }, autoScrollInterval);
-    return () => clearInterval(interval);
-  }, []);
-  useEffect(() => {
     async function fetchData() {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         const response = await classroomService.getUserAllClassroom();
         if (response) {
-          setClassrooms(response);
-          console.log(response[0].results)
+          setClassrooms(response[0].results);
         }
       } catch (error) {
         false;
-      }
-      finally {
-        setIsLoading(false)
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchData();
   }, []);
 
-  const handleJoinClass = async (e) => {
-    e.preventDefault();
-    if (!code) {
-      setError("Please enter a valid class code.");
-    } else {
-      setError("");
-      const response = await classroomService.joinClassroomByCode(code);
-      console.log(response);
-      if (response) {
-        navigate("/");
-      }
+  const handleJoinClass = async (data) => {
+    setError("");
+    try {
+     const response =  await classroomService.joinClassroomByCode(data)
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -81,20 +67,20 @@ const Classroom = () => {
                 <CardTitle className="text-lg font-bold">
                   Join a New Class
                 </CardTitle>
-                <CardDescription>
-                  Enter the class code provided by your teacher
-                </CardDescription>
+                <CardDescription>Enter the class code</CardDescription>
               </CardHeader>
               <CardContent>
                 <form
-                  onSubmit={handleJoinClass}
+                  onSubmit={handleSubmit(handleJoinClass)}
                   className="flex items-center space-x-2"
                 >
                   <Input
                     type="text"
+                    id="email"
                     placeholder="Enter class code"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
+                    {...register("code", {
+                      required: true,
+                    })}
                     className="flex-grow border-2 border-orange-300 focus:border-orange-500 transition-all duration-200"
                   />
                   <Button
