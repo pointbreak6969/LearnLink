@@ -5,7 +5,7 @@ import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 const CardCollection = ({ array }) => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-  const [contentFits, setContentFits] = useState(false); // New state to check content fitting
+  const [contentFits, setContentFits] = useState(false); 
 
   // Function to check scroll position
   const scrollRef = useRef(null);
@@ -27,7 +27,7 @@ const CardCollection = ({ array }) => {
       });
     }
   };
-
+console.log(array);
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;

@@ -104,7 +104,7 @@ const Classroom = () => {
           ) : null}
 
           <h2 className="text-2xl font-bold mb-4 mt-8">Suggested Classrooms</h2>
-          <CardCollection array={classrooms} />
+          <CardCollection array={suggestedClassrooms} />
         </main>
       </div>
     </>

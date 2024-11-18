@@ -1,20 +1,5 @@
-const classrooms = [
-    {
-      id: "1",
-      name: "Advanced Web Development",
-      teacher: "Dr. Jane Smith",
-      description: "Learn the latest web technologies and frameworks.",
-      price: 2000,
-    },
-    {
-      id: "2",
-      name: "Data Structures and Algorithms",
-      teacher: "Prof. John Doe",
-      description: "Deep dive into data structures and algorithm design.",
-      price: 1500,
-    },
-  ];
-  
+
+
   const suggestedClassrooms = [
     {
       id: "3",
