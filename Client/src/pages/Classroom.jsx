@@ -98,7 +98,7 @@ const Classroom = () => {
           {classrooms.length > 0 ? (
             <div>
               {" "}
-              <h2 className="text-2xl font-bold mb-4">Your Classrooms</h2>
+              <h2 className="text-2xl font-bold mb-4">My Classrooms</h2>
               <CardCollection array={classrooms} />
             </div>
           ) : null}
