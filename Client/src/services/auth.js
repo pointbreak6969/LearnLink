@@ -45,7 +45,7 @@ export class AuthService {
   }
   async logout(){
     try {
-        return await axios.post(`${baseUrl}/user/logout`, {
+        return await axios.post(`${baseUrl}/user/logout`,{}, {
           withCredentials: true,
         });
     } catch (error) {

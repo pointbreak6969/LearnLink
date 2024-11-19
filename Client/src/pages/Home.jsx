@@ -5,8 +5,9 @@ import { Input } from '@/components/ui/input'
 import { ArrowRight, BookOpen, ChevronRightCircle, Star, Users, Zap } from 'lucide-react'
 import React from 'react'
 import FewCourses from '@/components/FewCourses'
-
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
+  const navigate = useNavigate()
   return (
     <div className="min-h-screen flex flex-col">
       <main className="">
@@ -21,8 +22,10 @@ const Home = () => {
             </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Input placeholder="Enter your email" className="max-w-md text-lg h-14 rounded-lg" />
-              <Button size="lg" className="group text-xl h-14 px-8">
+              
+              <Button size="lg" className="group text-xl h-14 px-8" onClick={()=>{
+                navigate("/signup")
+              }}>
                 Get Started
                 <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
