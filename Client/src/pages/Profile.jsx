@@ -98,17 +98,17 @@ const Profile = () => {
               <div className="flex items-center gap-5">
                 <div className="relative">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src={profileDetails.profilePicture.url} />
+                    <AvatarImage src={profileDetails?.profilePicture.url} />
                     <AvatarFallback>profile pic</AvatarFallback>
                   </Avatar>
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold text-[#FF9500]">
-                    {profileDetails.user_details.fullName}
+                    {profileDetails?.user_details.fullName}
                   </h1>
                   <p className="text-gray-600 flex items-center">
                     <MapPin className="w-4 h-4 mr-1" />
-                    {profileDetails.contactInfo.location}
+                    {profileDetails?.contactInfo.location}
                   </p>
                 </div>
               </div>

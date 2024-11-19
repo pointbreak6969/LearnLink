@@ -3,14 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./Sidebar";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "@/store/authSlice"; 
+import { useSelector} from "react-redux";
+
+import LogoutBtn from "./LogoutBtn";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const authStatus = useSelector(state => state.auth.status); 
-
+  const handleNavigation =()=>{
+    if (authStatus) {
+      navigate("/classroom")
+    } else {
+      navigate("/")
+    }
+  }
   return (
     <div>
       {/* Top Banner */}
@@ -24,7 +30,7 @@ const Navbar = () => {
       <header className="bg-orange-500 text-white py-2">
         <div className="flex justify-between px-5 md:hidden">
           <div className="text-2xl font-bold" aria-label="Logo">
-            <button onClick={() => navigate("/")}>L</button>
+            <button onClick={handleNavigation}>L</button>
           </div>
           <div>
             <SidebarProvider>
@@ -70,13 +76,7 @@ const Navbar = () => {
                 </Button>
               </>
             ) : (
-              <Button
-                variant="ghost"
-                className="border-white text-lg hover:bg-orange-600"
-                onClick={() => dispatch(logout())}
-              >
-                Log Out
-              </Button>
+             <LogoutBtn/>
             )}
           </div>
         </div>
