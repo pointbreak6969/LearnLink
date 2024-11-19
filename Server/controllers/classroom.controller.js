@@ -146,23 +146,26 @@ const getAllClassrooms = asyncHandler(async (req, res) => {
 const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
   const { universityName, facultyName } = { ...req.query, ...req.body };
   if (!universityName && !facultyName) {
-    throw new ApiError(400,  "At least one filter (university or faculty) is required");
+    throw new ApiError(
+      400,
+      "At least one filter (university or faculty) is required"
+    );
   }
   const matchConditions = [];
 
   if (universityName) {
     matchConditions.push({
       $match: {
-        university: new RegExp(universityName, "i")
-      }
+        university: new RegExp(universityName, "i"),
+      },
     });
   }
 
   if (facultyName) {
     matchConditions.push({
       $match: {
-        faculty: new RegExp(facultyName, "i")
-      }
+        faculty: new RegExp(facultyName, "i"),
+      },
     });
   }
 
@@ -194,7 +197,7 @@ const getClassroomDetails = asyncHandler(async (req, res) => {
     );
 });
 const joinClassroom = asyncHandler(async (req, res) => {
-  const { code } = {...req.body, ...req.params};
+  const { code } = { ...req.body, ...req.params };
 
   const userId = req.user._id;
   const classroom = await Classroom.findOne({ code });
@@ -208,7 +211,59 @@ const joinClassroom = asyncHandler(async (req, res) => {
   await classroom.save();
   return res
     .status(200)
-    .json(new ApiResponse(200, {id: classroom._id}, "Classroom joined successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { id: classroom._id },
+        "Classroom joined successfully"
+      )
+    );
+});
+const getSuggestedClassrooms = asyncHandler(async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    let suggestedClassrooms;
+    let total;
+
+    if (req.user) {
+        // User is logged in - exclude their enrolled classrooms
+        const userClassrooms = await Classroom.find({ users: req.user._id }).select('_id');
+        const userClassroomIds = userClassrooms.map(classroom => classroom._id);
+        console.log("User's joined classroom IDs:", userClassroomIds); // Debug log
+        suggestedClassrooms = await Classroom.find({
+            _id: { $nin: userClassroomIds }
+        })
+        .populate('admin', 'name email')
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+        total = await Classroom.countDocuments({
+            _id: { $nin: userClassroomIds }
+        });
+    } else {
+        // No user - return all classrooms
+        suggestedClassrooms = await Classroom.find()
+            .populate('admin', 'name email')
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        total = await Classroom.countDocuments();
+    }
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, {
+          classrooms: suggestedClassrooms,
+          totalPages: Math.ceil(total / limit),
+          currentPage: page,
+          hasMore: page * limit < total,
+        }, "Classrooms fetched successfully")
+      );
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
 export {
   createClassroom,
@@ -218,4 +273,5 @@ export {
   getClassroomByUniversityAndFaculty,
   joinClassroom,
   getClassroomDetails,
+  getSuggestedClassrooms,
 };

@@ -36,7 +36,7 @@ const Navbar = () => {
 
         <div className="hidden container mx-auto md:flex justify-between items-center">
           <div className="text-2xl font-bold" aria-label="Logo">
-            <button onClick={() => navigate("/")}>L</button>
+          {authStatus ?<Link to={'/classroom'}>L</Link>:<Link to={'/'}>L</Link>}
           </div>
 
           {/* Navigation Links */}

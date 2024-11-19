@@ -27,6 +27,7 @@ const CardCollection = ({ array }) => {
       });
     }
   };
+
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
