@@ -47,7 +47,11 @@ const registerUser = asyncHandler(async (req, res) => {
     .status(201)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(201, createdUser, "User created successfully"));
+    .json(new ApiResponse(201, {createdUser:{
+      _id: createdUser._id,
+      fullName: createdUser.fullName,
+      email: createdUser.fullName
+    }}, "User created successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -78,7 +82,13 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, loggedInUser, "User logged in successfully"));
+    .json(new ApiResponse(200, {
+      loggedInUser: {
+        _id: loggedInUser._id,
+        fullName: loggedInUser.fullName,
+        email: loggedInUser.email
+      }
+    }, "User logged in successfully"));
 });
 
 const logoutUser = asyncHandler(async (req, res) => {

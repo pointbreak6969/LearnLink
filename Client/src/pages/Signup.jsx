@@ -21,14 +21,16 @@ const Signup = () => {
     }
     try {
       const createdUser = await authService.createUser(data);
+      const userData = {
+        _id: createdUser.data.loggedInUser._id,
+        fullName: createdUser.data.loggedInUser.fullName,
+        email: createdUser.data.loggedInUser.email,
+       
+      };
+      console.log(userData)
       if (createdUser) {
-        dispatch(login({ 
-          user: {
-              _id: createdUser.data._id,
-              fullName: createdUser.data.fullName,
-              email: createdUser.data.email,
-          }
-      }));
+        dispatch(login(userData));
+      
         navigate("/");
       }
     } catch (error) {

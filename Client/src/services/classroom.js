@@ -134,7 +134,6 @@ class ClassroomService {
     }
   }
   async getClassroomDetails({ classroomId }) {
-    console.log(classroomId)
     if (!classroomId) {
       throw new Error("Classroom id not found");
     }
@@ -145,6 +144,26 @@ class ClassroomService {
         }
       );
       return response.data.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async getSuggestedClassrooms () {
+    try {
+      const response = await axios.get(`${baseUrl}/classroom/getSuggestedClassrooms`, {
+        withCredentials : true
+      })
+      return response.data.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  async getPublicClassrooms () {
+    try {
+      const response = await axios.get(`${baseUrl}/classroom/getPublicClassrooms`, {
+        withCredentials: true
+      })
+      return response.data.data
     } catch (error) {
       console.error(error);
     }

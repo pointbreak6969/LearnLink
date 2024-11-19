@@ -16,19 +16,20 @@ const Login = () => {
     setError("");
     try {
       const session = await authService.login(data);
+      const userData = {
+        _id: session.data.loggedInUser._id,
+        fullName: session.data.loggedInUser.fullName,
+        email: session.data.loggedInUser.email,
+      };
       if (session?.data) {
-        dispatch(authLogin({ 
-            user: {
-                _id: session.data._id,
-                fullName: session.data.fullName,
-                email: session.data.email,
-            }
-        }));
-        
+        dispatch(
+          authLogin(userData)
+        );
+       
         navigate("/classroom");
-    } else {
+      } else {
         setError("Invalid response from server");
-    }
+      }
     } catch (error) {
       setError(error.message);
     }
@@ -92,16 +93,20 @@ const Login = () => {
                 >
                   Email
                 </label>
-                <Input type="email" id="email" placeholder="Enter your email"{
-                  ...register("email", {
-                    required: true, 
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  {...register("email", {
+                    required: true,
                     validate: {
                       matchPatern: (value) =>
-                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                        "Email address must be a valid address",
+                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
+                          value
+                        ) || "Email address must be a valid address",
                     },
-                  })
-                } />
+                  })}
+                />
               </div>
               <div>
                 <label
@@ -134,7 +139,9 @@ const Login = () => {
               >
                 Login
               </Button>
-              {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+              {error && (
+                <p className="text-red-600 mt-4 text-center">{error}</p>
+              )}
               <div className="text-center text-gray-500">OR</div>
               <Button variant="outline" className="w-full py-3 rounded-lg">
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
