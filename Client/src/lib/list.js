@@ -44,4 +44,4 @@
         price: 2700,
       },
   ];
-  export {classrooms, suggestedClassrooms}
+  export { classrooms, suggestedClassrooms}
