@@ -42,7 +42,7 @@ const Navbar = () => {
 
         <div className="hidden container mx-auto md:flex justify-between items-center">
           <div className="text-2xl font-bold" aria-label="Logo">
-            <button onClick={() => navigate("/")}>L</button>
+            <button onClick={handleNavigation}>L</button>
           </div>
 
           {/* Navigation Links */}
