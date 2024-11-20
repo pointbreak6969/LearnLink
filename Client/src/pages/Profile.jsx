@@ -21,6 +21,9 @@ import {
   Award,
   ChevronRight,
   ChevronLeft,
+  AlertTriangle,
+  Building,
+  GraduationCap
 } from "lucide-react";
 import {
   Dialog,
@@ -45,6 +48,27 @@ const Profile = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [error, setError] = useState("");
   const tabsListRef = useRef(null);
+  
+  const getUserFullName = () => {
+    // First try to get name from profile details
+    if (profileDetails?.user_details?.fullName) {
+      return profileDetails.user_details.fullName;
+    }
+    // If no profile details, fall back to auth store data
+    if (authUser?.fullName) {
+      return authUser.fullName;
+    }
+    // If neither exists, return empty string
+    return "";
+  };
+
+  const getProfileData = (path) => {
+    return path?.trim() || "";
+  };
+
+  const getProfileImage = () => {
+    return profileDetails?.profilePicture?.url || DEFAULT_PROFILE_IMAGE;
+  };
 
   const scrollRight = () => {
     if (tabsListRef.current) {
@@ -72,9 +96,7 @@ const Profile = () => {
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
 
-  const handleTabChange = (value) => {
-    setActiveTab(value);
-  };
+
   const handleEditProfile = () => {
     console.log("edit");
   };
@@ -87,6 +109,44 @@ const Profile = () => {
       dispatch(fetchProfileDetails());
     }
   }, [dispatch, status]);
+
+  const handleTabChange = (value) => {
+    setActiveTab(value);
+  };
+
+  if (status === "loading") {
+    return (
+      <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
+        <Skeleton className="h-16 w-16 rounded-full mb-4" />
+        <Skeleton className="h-8 w-1/2 mb-2" />
+        <Skeleton className="h-4 w-1/3 mb-4" />
+        <Progress value={profileCompletion} className="w-full mb-2 bg-orange-200" />
+        <Skeleton className="h-6 w-full mb-4" />
+        <Tabs>
+          <Skeleton className="h-10 w-1/4 mb-2" />
+          <Skeleton className="h-10 w-1/4 mb-2" />
+        </Tabs>
+      </div>
+    );
+  }
+
+  if (status === "failed") {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen text-center p-4">
+        <Alert variant="destructive" className="mb-4 max-w-lg">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            Failed to load profile details. Please try again later or contact support if the issue persists.
+          </AlertDescription>
+        </Alert>
+        <img
+          src="/api/placeholder/400/300"
+          alt="Error"
+          className="max-w-full h-auto rounded-lg shadow-lg"
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -225,44 +285,40 @@ const Profile = () => {
                 {error && <p className="text-red-500 mt-2">{error}</p>}
               </DialogContent>
             </Dialog>
-            <div className="mb-8 animate-fade-in">
-              <h2 className="text-sm text-gray-500 mb-2 flex items-center">
-                <Award className="w-4 h-4 mr-1" /> Profile Completion
-              </h2>
-              <Progress
-                value={profileCompletion}
-                className="w-full mb-2 bg-orange-200 [&>div]:bg-[#FF9500] transition-all"
-              />
-              <p className="text-sm text-gray-600">
-                {profileCompletion}% Complete
-              </p>
-            </div>
+            
 
-            {/* Tabs for larger screens */}
-            <div className="max-w-7xl mx-auto relative">
-              <Tabs value={activeTab} onValueChange={handleTabChange}>
-                <div className="relative">
-                  {/* Left Arrow */}
-                  {showLeftArrow && (
-                    <button
-                      onClick={scrollLeft}
-                      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
-                      aria-label="Scroll left"
-                    >
-                      <ChevronLeft className="h-5 w-5 text-gray-600" />
-                    </button>
-                  )}
+      <div className="mb-8 animate-fade-in">
+        <h2 className="text-sm text-gray-500 mb-2 flex items-center">
+          <Award className="w-4 h-4 mr-1" /> Profile Completion
+        </h2>
+        <Progress
+          value={profileCompletion}
+          className="w-full mb-2 bg-orange-200 [&>div]:bg-[#FF9500] transition-all"
+        />
+        <p className="text-sm text-gray-600">{profileCompletion}% Complete</p>
+      </div>
 
-                  {/* Right Arrow */}
-                  {showRightArrow && (
-                    <button
-                      onClick={scrollRight}
-                      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
-                      aria-label="Scroll right"
-                    >
-                      <ChevronRight className="h-5 w-5 text-gray-600" />
-                    </button>
-                  )}
+      <div className="max-w-7xl mx-auto relative">
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
+          <div className="relative">
+            {showLeftArrow && (
+              <button
+                onClick={scrollLeft}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="h-5 w-5 text-gray-600" />
+              </button>
+            )}
+            {showRightArrow && (
+              <button
+                onClick={scrollRight}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="h-5 w-5 text-gray-600" />
+              </button>
+            )}
 
                   {/* Scrollable TabsList */}
                   <div className="overflow-hidden">

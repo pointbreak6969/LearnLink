@@ -226,10 +226,9 @@ const getSuggestedClassrooms = asyncHandler(async (req, res) => {
     let total;
 
     if (req.user) {
-        // User is logged in - exclude their enrolled classrooms
+    
         const userClassrooms = await Classroom.find({ users: req.user._id }).select('_id');
         const userClassroomIds = userClassrooms.map(classroom => classroom._id);
-        console.log("User's joined classroom IDs:", userClassroomIds); // Debug log
         suggestedClassrooms = await Classroom.find({
             _id: { $nin: userClassroomIds }
         })
