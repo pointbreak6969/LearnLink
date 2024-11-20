@@ -3,20 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./Sidebar";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 import LogoutBtn from "./LogoutBtn";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const authStatus = useSelector(state => state.auth.status); 
-  const handleNavigation =()=>{
+  const authStatus = useSelector((state) => state.auth.status);
+  const handleNavigation = () => {
     if (authStatus) {
-      navigate("/classroom")
+      navigate("/classroom");
     } else {
-      navigate("/")
+      navigate("/");
     }
-  }
+  };
   return (
     <div>
       {/* Top Banner */}
@@ -48,18 +48,57 @@ const Navbar = () => {
           {/* Navigation Links */}
           <nav className="flex space-x-4 text-lg">
             <ul className="flex space-x-4">
-             {!authStatus &&( <Link to="/" className="cursor-pointer hover:text-orange-200">Home</Link>)}
-              <Link to="/courses" className="cursor-pointer hover:text-orange-200">Courses</Link>
-              <Link to="/about" className="cursor-pointer hover:text-orange-200">About Us</Link>
-              <Link to="/contact" className="cursor-pointer hover:text-orange-200">Contact</Link>
+              {!authStatus && (
+                <Link to="/" className="cursor-pointer hover:text-orange-200">
+                  Home
+                </Link>
+              )}
+              <Link
+                to="/courses"
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Courses
+              </Link>
+              <Link
+                to="/about"
+                className="cursor-pointer hover:text-orange-200"
+              >
+                About Us
+              </Link>
+              <Link
+                to="/contact"
+                className="cursor-pointer hover:text-orange-200"
+              >
+                Contact
+              </Link>
 
               {/* Protected Routes */}
               {authStatus && (
                 <>
-                  <Link to="/classroom" className="cursor-pointer hover:text-orange-200">Classroom</Link>
-                  <Link to="/searchnotes" className="cursor-pointer hover:text-orange-200">SearchNotes</Link>
-                  <Link to="/profile" className="cursor-pointer hover:text-orange-200">Profile</Link>
-                  <Link to="/reward" className="cursor-pointer hover:text-orange-200">Reward</Link>
+                  <Link
+                    to="/classroom"
+                    className="cursor-pointer hover:text-orange-200"
+                  >
+                    Classroom
+                  </Link>
+                  <Link
+                    to="/searchnotes"
+                    className="cursor-pointer hover:text-orange-200"
+                  >
+                    SearchNotes
+                  </Link>
+                  <Link
+                    to="/profile"
+                    className="cursor-pointer hover:text-orange-200"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/reward"
+                    className="cursor-pointer hover:text-orange-200"
+                  >
+                    Reward
+                  </Link>
                 </>
               )}
             </ul>
@@ -68,15 +107,23 @@ const Navbar = () => {
           <div className="space-x-2 hidden md:block">
             {!authStatus ? (
               <>
-                <Button variant="ghost" className="border-white text-lg hover:bg-orange-600">
+                <Button
+                  variant="ghost"
+                  className="border-white text-lg hover:bg-orange-600"
+                >
                   <Link to="/signup">Sign Up</Link>
                 </Button>
-                <Button variant="default" className="border-white text-white text-lg hover:bg-orange-600 bg-orange-500">
+                <Button
+                  variant="default"
+                  className="border-white text-white text-lg hover:bg-orange-600 bg-orange-500"
+                >
                   <Link to="/login">Log In</Link>
                 </Button>
               </>
             ) : (
-             <LogoutBtn/>
+              <div>
+                <LogoutBtn />
+              </div>
             )}
           </div>
         </div>

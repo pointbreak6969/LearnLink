@@ -148,14 +148,18 @@ class ClassroomService {
       console.error(error);
     }
   }
-  async getSuggestedClassrooms () {
+  async getSuggestedClassrooms(page = 1) {
     try {
-      const response = await axios.get(`${baseUrl}/classroom/getSuggestedClassrooms`, {
-        withCredentials : true
-      })
+      const response = await axios.get(
+        `${baseUrl}/classroom/getSuggestedClassrooms?page=${page}`,
+        {
+          withCredentials: true
+        }
+      );
       return response.data.data;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
   async getPublicClassrooms () {
