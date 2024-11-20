@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogTrigger,
@@ -65,9 +64,11 @@ const Classroom = () => {
             >
               <div>
                 <div className="text-lg font-semibold text-gray-800 mb-2 flex">
-                <p className="leading-relaxed text-gray-500 italic">
-    Share Resources,Collabrate,Communicate and make learning more organized and engaging. Join now to explore classrooms and enhance your learning experience.
-    </p>
+                  <p className="leading-relaxed text-gray-500 italic">
+                    Share Resources,Collabrate,Communicate and make learning
+                    more organized and engaging. Join now to explore classrooms
+                    and enhance your learning experience.
+                  </p>
                   <div className="text-right mb-4">
                     <Button
                       onClick={() => setDialogOpen(true)}
@@ -96,7 +97,7 @@ const Classroom = () => {
                         id="classCode"
                         name="classCode"
                         placeholder="Enter class code"
-                        className="flex-grow border-2 border-orange-300 focus:border-orange-500 transition-all duration-200"
+                        className="flex-grow border-2 border-gray-300 focus:border-gray-500 transition-all duration-200"
                       />
                       <Button
                         type="submit"
