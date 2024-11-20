@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
@@ -57,6 +58,31 @@ const SingleClass = () => {
     { id: "2", name: "Week 1 Lecture Slides", type: "PPTX" },
     { id: "3", name: "Assignment 1 Guidelines", type: "DOCX" },
   ]);
+
+  // users to join classroom
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [joinRequests, setJoinRequests] = useState([
+    { id: 1, name: "Ram poudel" },
+    { id: 2, name: "Hari Sharma" },
+    { id: 3, name: "Ganga Poudel" },
+  ]);
+  const [studentsInClassroom, setStudentsInClassroom] = useState([
+    { id: 1, name: "Nischal regmi" },
+    { id: 2, name: "Ramit Kc" },
+  ]);
+  const handleAccept = (id) => {
+    setJoinRequests((prevRequests) =>
+      prevRequests.filter((user) => user.id !== id)
+    );
+    console.log(`User ${id} accepted`);
+  };
+
+  const handleReject = (id) => {
+    setJoinRequests((prevRequests) =>
+      prevRequests.filter((user) => user.id !== id)
+    );
+    console.log(`User ${id} rejected`);
+  };
 
   useEffect(() => {
     async function fetchClassDetails() {
@@ -339,17 +365,81 @@ const SingleClass = () => {
                 </TabsContent>
 
                 <TabsContent value="people">
-                  <Card className="animate-fade-in shadow-lg rounded-lg">
-                    <CardHeader>
-                      <CardTitle>People</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600">
-                        List of students and teachers will go here.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+  <Card className="animate-fade-in shadow-lg rounded-lg">
+    <CardHeader>
+      <CardTitle>People</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p className="text-gray-600">
+        List of students will go here.
+      </p>
+      <div className="flex justify-end mb-1">
+        <Button onClick={() => setDialogOpen(true)} className="relative">
+          Join Requests
+          {joinRequests.length > 0 && (
+            <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+              {joinRequests.length}
+            </span>
+          )}
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 -mt-10">
+        <div>
+          <ul className="space-y-4">
+            {studentsInClassroom.map((user) => (
+              <li
+                key={user.id}
+                className="flex items-center p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105"
+              >
+                <span className="text-lg font-medium text-gray-900 flex-grow">
+                  {user.name}
+                </span>
+                <div className="ml-4"></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Join Requests Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger />
+        <DialogContent className="w-full max-w-lg p-6">
+          <DialogTitle>Join Requests</DialogTitle>
+          <DialogDescription>
+            <ul className="space-y-4">
+              {joinRequests.length === 0 ? (
+                <li>No users are requesting to join at the moment.</li>
+              ) : (
+                joinRequests.map((user) => (
+                  <li key={user.id} className="flex justify-between items-center">
+                    <span>{user.name}</span>
+                    <div className="space-x-2">
+                      <Button
+                        onClick={() => handleAccept(user.id)}
+                        className="bg-green-500 text-white"
+                      >
+                        Accept
+                      </Button>
+                      <Button
+                        onClick={() => handleReject(user.id)}
+                        className="bg-red-500 text-white"
+                      >
+                        Reject
+                      </Button>
+                    </div>
+                  </li>
+                ))
+              )}
+            </ul>
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+    </CardContent>
+  </Card>
+</TabsContent>
+
               </Tabs>
             </div>
           </main>
