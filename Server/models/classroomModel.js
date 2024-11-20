@@ -7,6 +7,7 @@ const ClassroomSchema = new Schema({
     },
     admin: {
         type: Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     university: {

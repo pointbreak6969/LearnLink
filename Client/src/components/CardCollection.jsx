@@ -6,7 +6,6 @@ const CardCollection = ({ array }) => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [contentFits, setContentFits] = useState(false); 
-
   // Function to check scroll position
   const scrollRef = useRef(null);
 
@@ -69,8 +68,9 @@ const CardCollection = ({ array }) => {
               <MyCard
                 id={item?._id}
                 name={item.name}
-                teacher={item?.adminDetails?.fullName}
-                description={item?.description}
+                admin={item?.admin?.fullName}
+                faculty = {item?.faculty}
+                university = {item?.university}
                 price={item?.price}
               />
             </div>

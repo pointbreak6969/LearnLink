@@ -226,40 +226,43 @@ const getSuggestedClassrooms = asyncHandler(async (req, res) => {
     let total;
 
     if (req.user) {
-    
         const userClassrooms = await Classroom.find({ users: req.user._id }).select('_id');
         const userClassroomIds = userClassrooms.map(classroom => classroom._id);
         suggestedClassrooms = await Classroom.find({
             _id: { $nin: userClassroomIds }
         })
-        .populate('admin', 'name email')
+        .populate({
+            path: 'admin',
+            model: 'User',
+            select: 'fullName -_id'
+        })
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit);
-
         total = await Classroom.countDocuments({
             _id: { $nin: userClassroomIds }
         });
     } else {
-        // No user - return all classrooms
         suggestedClassrooms = await Classroom.find()
-            .populate('admin', 'name email')
+            .populate({
+                path: 'admin',
+                model: 'User',
+                select: 'fullName -_id'
+            })
             .sort({ createdAt: -1 })
             .skip((page - 1) * limit)
             .limit(limit);
-
         total = await Classroom.countDocuments();
     }
-    return res
-      .status(200)
-      .json(
+
+    return res.status(200).json(
         new ApiResponse(200, {
-          classrooms: suggestedClassrooms,
-          totalPages: Math.ceil(total / limit),
-          currentPage: page,
-          hasMore: page * limit < total,
+            classrooms: suggestedClassrooms,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            hasMore: page * limit < total,
         }, "Classrooms fetched successfully")
-      );
+    );
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

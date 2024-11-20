@@ -142,11 +142,11 @@ const getUserAllClassrooms = asyncHandler(async (req, res) => {
         from: "users",
         localField: "results.admin",
         foreignField: "_id",
-        as: "results.adminDetails",
+        as: "results.admin",
       },
     },
     {
-      $unwind: "$results.adminDetails",
+      $unwind: "$results.admin",
     },
     {
       $project: {
@@ -160,7 +160,7 @@ const getUserAllClassrooms = asyncHandler(async (req, res) => {
         "results.createdAt": 1,
         "results.updatedAt": 1,
         "results.__v": 1,
-        "results.adminDetails.fullName": 1, // Only keeping fullName from admin details
+        "results.admin.fullName": 1, // Only keeping fullName from admin details
       },
     },
     {

@@ -24,7 +24,8 @@ const Classroom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedClassrooms, setSuggestedClassrooms] = useState([]);
   const [suggestedClassroomsPage, setSuggestedClassroomsPage] = useState(1);
-  const [hasMoreSuggestedClassrooms, setHasMoreSuggestedClassrooms] = useState(true);
+  const [hasMoreSuggestedClassrooms, setHasMoreSuggestedClassrooms] =
+    useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
@@ -62,7 +63,7 @@ const Classroom = () => {
         if (page === 1) {
           setSuggestedClassrooms(response.classrooms);
         } else {
-          setSuggestedClassrooms(prev => [...prev, ...response.classrooms]);
+          setSuggestedClassrooms((prev) => [...prev, ...response.classrooms]);
         }
         setHasMoreSuggestedClassrooms(response.hasMore);
         setSuggestedClassroomsPage(response.currentPage);
@@ -99,21 +100,14 @@ const Classroom = () => {
               transition={{ duration: 0.5 }}
             >
               <div>
-                <div className="text-lg font-semibold text-gray-800 mb-2 flex">
-                  <p className="leading-relaxed text-gray-500 italic">
-                    Share Resources,Collabrate,Communicate and make learning
-                    more organized and engaging. Join now to explore classrooms
-                    and enhance your learning experience.
-                  </p>
-                  <div className="text-right mb-4">
-                    <Button
-                      onClick={() => setDialogOpen(true)}
-                      className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                    >
-                      <PlusCircle className="mr-2 h-4 w-4" />
-                      Join Classroom
-                    </Button>
-                  </div>
+                <div className="text-right mb-4">
+                  <Button
+                    onClick={() => setDialogOpen(true)}
+                    className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
+                  >
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Join Classroom
+                  </Button>
                 </div>
 
                 <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
@@ -134,6 +128,7 @@ const Classroom = () => {
                         name="classCode"
                         placeholder="Enter class code"
                         className="flex-grow border-2 border-gray-300 focus:border-gray-500 transition-all duration-200"
+                        {...register("code", { required: true })}
                       />
                       <Button
                         type="submit"
@@ -174,7 +169,7 @@ const Classroom = () => {
                             Loading...
                           </>
                         ) : (
-                          'Load More'
+                          "Load More"
                         )}
                       </Button>
                     </div>
