@@ -48,5 +48,17 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),
+	function ({ addComponents }) {
+		addComponents({
+		  '.truncate-multiline': {
+			display: '-webkit-box',
+			'-webkit-line-clamp': '2',
+			'-webkit-box-orient': 'vertical',
+			overflow: 'hidden',
+			'text-overflow': 'ellipsis',
+		  },
+		});
+	  },
+  ],
 }
