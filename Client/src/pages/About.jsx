@@ -10,8 +10,9 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { motion } from "framer-motion"; // Import motion from framer-motion
+import biraj from '../assets/imgs/biraj.jpg'
+import ashim from '../assets/imgs/ashim.jpg'
+import { motion } from "framer-motion"; 
 
 const About = () => {
   return (
@@ -36,7 +37,6 @@ const About = () => {
             </p>
           </motion.div>
 
-          {/* Achievements Section with Animation */}
           <motion.section
             className="mb-16"
             initial={{ opacity: 0 }}
@@ -161,43 +161,43 @@ const About = () => {
               Join Now
             </Button>
           </div>
+          <section className="px-4">
+  <div className="mx-auto max-w-3xl text-center">
+    <h3 className="mb-6 text-3xl font-bold">Meet Collaborator</h3>
+    <p className="mb-6 pb-2 text-neutral-500 dark:text-neutral-300 md:mb-12 italic">
+      Meet our diverse community of collaborators, working together to inspire and elevate your educational journey
+    </p>
+  </div>
 
-          <section class="px-4">
-            <div class="mx-auto max-w-3xl text-center">
-              <h3 class="mb-6 text-3xl font-bold">Meet Collaborator</h3>
-              <p class="mb-6 pb-2 text-neutral-500 dark:text-neutral-300 md:mb-12 italic">
-              Meet our diverse community of collaborators, working together to inspire and elevate your educational journey
-              </p>
-            </div>
+  <div className="grid gap-12 text-center md:grid-cols-2">
+    <div className="mb-6 md:mb-0">
+      <div className="mb-6 flex justify-center">
+        <img
+          src={ashim}
+          className="w-32 h-32 rounded-full object-cover shadow-lg dark:shadow-black/30"
+        />
+      </div>
+      <p className="my-4 text-xl text-neutral-700 dark:text-neutral-300 italic">
+        "Building LearnLink has been an exciting journey, creating a space where developers and learners can come together to share knowledge and grow"
+      </p>
+      <p className="italic font-bold">- Ashim Gautam</p>
+    </div>
 
-            <div class="grid gap-12 text-center md:grid-cols-2">
-              <div class="mb-6 md:mb-0">
-                <div class="mb-6 flex justify-center">
-                  <img
-                    src="https://th.bing.com/th/id/OIP.ANNPNzln0x5NcIFGerDLWwHaHa?w=2000&h=2000&rs=1&pid=ImgDetMain"
-                    class="w-24 rounded-full shadow-lg dark:shadow-black/30"
-                  />
-                </div>
-                <p class="my-4 text-xl text-neutral-700 dark:text-neutral-300 italic">
-               "Building LearnLink has been an exciting journey, creating a space where developers and learners can come together to share knowledge and grow"
-                </p>
-                <p class="italic font-bold">- Ashim Gautam</p>
-              </div>
+    <div className="mb-0">
+      <div className="mb-6 flex justify-center">
+        <img
+          src={biraj}
+          className="w-32 h-32 rounded-full object-cover shadow-lg dark:shadow-black/30"
+        />
+      </div>
+      <p className="my-4 text-xl text-neutral-700 dark:text-neutral-300 italic">
+        "Working on LearnLink has been a fantastic opportunity to contribute to an evolving platform that's all about fostering collaboration and continuous learning"
+      </p>
+      <p className="italic font-bold">- Biraj Baral</p>
+    </div>
+  </div>
+</section>
 
-              <div class="mb-0">
-                <div class="mb-6 flex justify-center">
-                  <img
-                    src="https://th.bing.com/th/id/OIP.ANNPNzln0x5NcIFGerDLWwHaHa?w=2000&h=2000&rs=1&pid=ImgDetMain"
-                    class="w-24 rounded-full shadow-lg dark:shadow-black/30"
-                  />
-                </div>
-                <p class="my-4 text-xl text-neutral-700 dark:text-neutral-300 italic">
-                  "Working on LearnLink has been a fantastic opportunity to contribute to an evolving platform thats all about fostering collaboration and continuous learning"
-                </p>
-                <p class="italic font-bold">- Biraj Baral</p>
-              </div>
-            </div>
-          </section>
         </div>
       </div>
     </>
