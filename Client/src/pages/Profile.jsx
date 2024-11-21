@@ -25,11 +25,11 @@ import {
   Building,
   GraduationCap
 } from "lucide-react";
-import UploadResources from "@/components/UploadResources";
 import ClassroomHandle from "@/components/ClassroomHandle";
 import PointsEarned from "@/components/PointsEarned";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import Resources from "@/components/Resources";
 
 const DEFAULT_PROFILE_IMAGE = "https://i.sstatic.net/l60Hf.png";
 
@@ -222,9 +222,9 @@ const Profile = () => {
                 <TabsTrigger value="points" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
                   <Star className="w-4 h-4 mr-2 inline" /> Points Earned
                 </TabsTrigger>
-                <TabsTrigger value="classrooms" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
+                {/* <TabsTrigger value="classrooms" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-[#FF9500] data-[state=active]:text-white rounded-lg transition-all duration-300">
                   <BookOpen className="w-4 h-4 mr-2 inline" /> Classrooms
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
             </div>
           </div>
@@ -269,53 +269,20 @@ const Profile = () => {
           </TabsContent>
 
           <TabsContent value="saved">
-            <Card className="animate-fade-in-up">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-[#FF9500]">Saved Resources</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {profileDetails?.savedResources?.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {profileDetails.savedResources.map((resource) => (
-                      <div key={resource._id} className="border border-[#FF9500] p-2 rounded-lg hover:shadow-lg transition-all duration-300">
-                        <img
-                          src="https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg"
-                          alt="Resource Thumbnail"
-                          width={150}
-                          height={100}
-                          className="mb-2 rounded-md"
-                        />
-                        <p className="text-sm">Resource Title 1</p>
-                        <p className="text-xs text-gray-500 flex items-center">
-                          <Clock className="w-3 h-3 mr-1" /> Saved on: 2024-01-01
-                        </p>
-                        <Button
-                          variant="link"
-                          className="text-xs p-0 text-[#FF9500] hover:text-[#E68600] transition-colors duration-300"
-                        >
-                          <Trash2 className="w-3 h-3 mr-1" /> Remove
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-center text-gray-500">No saved resources yet</p>
-                )}
-              </CardContent>
-            </Card>
+            <Resources uploadedResources={profileDetails?.savedResources || []} />
           </TabsContent>
 
           <TabsContent value="uploaded">
-            <UploadResources uploadedResources={profileDetails?.uploadedResources || []} />
+            <Resources uploadedResources={profileDetails?.uploadedResources || []} />
           </TabsContent>
 
           <TabsContent value="points">
             <PointsEarned pointsEarned={profileDetails?.pointsEarned || 0} />
           </TabsContent>
 
-          <TabsContent value="classrooms">
+          {/* <TabsContent value="classrooms">
             <ClassroomHandle classrooms={profileDetails?.createdClassroom || []} />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./Sidebar";
 import { useSelector } from "react-redux";
-
 import LogoutBtn from "./LogoutBtn";
 
 const Navbar = () => {
@@ -28,9 +27,9 @@ const Navbar = () => {
       </div>
 
       <header className="bg-orange-500 text-white py-2">
-        <div className="flex justify-between px-5 md:hidden">
+        <div className="flex justify-between items-center  md:hidden">
           <div className="text-2xl font-bold" aria-label="Logo">
-            <button onClick={handleNavigation}>L</button>
+            <button className="ml-8" onClick={handleNavigation}>L-earn</button>
           </div>
           <div>
             <SidebarProvider>
@@ -40,9 +39,9 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="hidden container mx-auto md:flex justify-between items-center">
+        <div className="hidden container mx-auto px-15 md:flex justify-between items-center">
           <div className="text-2xl font-bold" aria-label="Logo">
-            <button onClick={handleNavigation}>L</button>
+            <button onClick={handleNavigation}>L-earn</button>
           </div>
 
           {/* Navigation Links */}
@@ -121,7 +120,7 @@ const Navbar = () => {
                 </Button>
               </>
             ) : (
-              <div>
+              <div className="mr-auto">
                 <LogoutBtn />
               </div>
             )}

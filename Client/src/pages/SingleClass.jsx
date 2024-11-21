@@ -18,6 +18,7 @@ import { MoreVertical, FileText, Upload, Save } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import classroomService from "@/services/classroom";
 import { useParams } from "react-router-dom";
+import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 
 const SingleClass = () => {
   const [isAddResourceDialogOpen, setIsAddResourceDialogOpen] = useState(false);
@@ -366,15 +367,15 @@ const SingleClass = () => {
 
                 <TabsContent value="people">
   <Card className="animate-fade-in shadow-lg rounded-lg">
-    <CardHeader>
-      <CardTitle>People</CardTitle>
+    <CardHeader className=" pb-4">
+      <CardTitle className="text-xl font-semibold text-gray-800">People</CardTitle>
     </CardHeader>
     <CardContent>
-      <p className="text-gray-600">
-        List of students will go here.
-      </p>
-      <div className="flex justify-end mb-1">
-        <Button onClick={() => setDialogOpen(true)} className="relative">
+      <div className="flex justify-end mb-4">
+        <Button
+          onClick={() => setDialogOpen(true)}
+          className="relative rounded-xl  transition-all"
+        >
           Join Requests
           {joinRequests.length > 0 && (
             <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
@@ -384,18 +385,38 @@ const SingleClass = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 -mt-10">
-        <div>
-          <ul className="space-y-4">
+      <div>
+        <div className="p-6 bg-white rounded-lg -mt-10">
+          <p className="text-xl font-bold text-gray-800 flex items-center gap-2 ">
+            <FaChalkboardTeacher className="text-blue-500" /> Teachers
+          </p>
+          <ul className="space-y-3 mt-4 text-gray-700 font-medium">
+            <li className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-8 h-8 bg-green-100 rounded-full">
+                <FaUserGraduate className="text-green-500" />
+              </div>
+              Teacher 1
+            </li>
+          </ul>
+        </div>
+
+        {/* Classmates Section */}
+        <div className="p-6 bg-white rounded-lg ">
+          <p className="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <FaUserGraduate className="text-purple-500" /> Classmates
+          </p>
+          <ul className="space-y-4 mt-4">
             {studentsInClassroom.map((user) => (
               <li
                 key={user.id}
-                className="flex items-center p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105"
+                className="flex items-center gap-3 p-1  rounded-lg "
               >
-                <span className="text-lg font-medium text-gray-900 flex-grow">
+                <div className="flex items-center justify-center w-8 h-8 bg-transparent rounded-full">
+                  <FaUserGraduate className="text-orange-500" />
+                </div>
+                <span className="text-sm font-medium text-gray-900">
                   {user.name}
                 </span>
-                <div className="ml-4"></div>
               </li>
             ))}
           </ul>
@@ -405,26 +426,35 @@ const SingleClass = () => {
       {/* Join Requests Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger />
-        <DialogContent className="w-full max-w-lg p-6">
-          <DialogTitle>Join Requests</DialogTitle>
-          <DialogDescription>
+        <DialogContent className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
+          <DialogTitle className="text-lg font-bold text-gray-800">
+            Join Requests
+          </DialogTitle>
+          <DialogDescription className="mt-4 text-gray-600">
             <ul className="space-y-4">
               {joinRequests.length === 0 ? (
-                <li>No users are requesting to join at the moment.</li>
+                <li className="text-sm text-gray-500">
+                  No users are requesting to join at the moment.
+                </li>
               ) : (
                 joinRequests.map((user) => (
-                  <li key={user.id} className="flex justify-between items-center">
-                    <span>{user.name}</span>
+                  <li
+                    key={user.id}
+                    className="flex justify-between items-center border-b pb-2"
+                  >
+                    <span className="text-sm font-medium text-gray-800">
+                      {user.name}
+                    </span>
                     <div className="space-x-2">
                       <Button
                         onClick={() => handleAccept(user.id)}
-                        className="bg-green-500 text-white"
+                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1  rounded-xl"
                       >
                         Accept
                       </Button>
                       <Button
                         onClick={() => handleReject(user.id)}
-                        className="bg-red-500 text-white"
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl"
                       >
                         Reject
                       </Button>

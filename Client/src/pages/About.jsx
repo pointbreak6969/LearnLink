@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Crown, Award, ThumbsUp, Briefcase, BookOpen, Lightbulb, Users, Zap } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 
 const About = () => {
   return (
@@ -8,39 +10,56 @@ const About = () => {
       <div className="bg-gradient-to-r from-blue-50 to-white min-h-screen">
         <div className="container mx-auto px-4 py-16">
 
-          <div className="text-center mb-16">
+          {/* Section Header with Animation */}
+          <motion.div 
+            className="text-center mb-16" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 1 }}
+          >
             <h1 className="text-5xl font-extrabold mb-4 text-gray-800">About LearnLink</h1>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
               Welcome to LearnLink, where we are passionate about empowering individuals to master the world of education and knowledge sharing.
               Our platform is designed to help learners and educators connect, share, and grow together in their educational journey.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Achievements Section */}
-          <section className="mb-16">
-            <h2 className="text-4xl font-semibold text-center text-gray-800 mb-8">Our Achievements</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[ 
-                { icon: Crown, title: "Trusted by Thousands", description: "We have helped thousands of students and educators connect and share knowledge, enhancing their learning experience." },
-                { icon: Award, title: "High-Quality Resources", description: "Our platform hosts a wide variety of top-notch educational materials, recognized for their accuracy and effectiveness." },
-                { icon: ThumbsUp, title: "Positive User Feedback", description: "We consistently receive glowing reviews from our users, who appreciate the ease of use and value of our platform." },
-                { icon: Briefcase, title: "Educational Partnerships", description: "We've established strong connections with leading educational institutions, bringing the best resources to our users." },
-              ].map((item, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-2xl transition-shadow rounded-xl">
-                  <CardContent className="flex items-start p-6">
-                    <item.icon className="w-10 h-10 text-orange-500 mr-4" />
-                    <div>
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                      <p className="text-sm text-gray-600">{item.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* Our Goals Section */}
-          <section className="mb-16">
+          {/* Achievements Section with Animation */}
+          <motion.section 
+        className="mb-16" 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        transition={{ duration: 1, delay: 0.2 }}
+      >
+        <h2 className="text-4xl font-semibold text-center text-gray-800 mb-8">Our Achievements</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[ 
+            { icon: Crown, title: "Trusted by Thousands", description: "We have helped thousands of students and educators connect and share knowledge, enhancing their learning experience." },
+            { icon: Award, title: "High-Quality Resources", description: "Our platform hosts a wide variety of top-notch educational materials, recognized for their accuracy and effectiveness." },
+            { icon: ThumbsUp, title: "Positive User Feedback", description: "We consistently receive glowing reviews from our users, who appreciate the ease of use and value of our platform." },
+            { icon: Briefcase, title: "Educational Partnerships", description: "We've established strong connections with leading educational institutions, bringing the best resources to our users." },
+          ].map((item, index) => (
+            <motion.div 
+              key={index} 
+              initial={{ y: 50, opacity: 0 }} 
+              animate={{ y: 0, opacity: 1 }} 
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+            >
+              <Card className="flex flex-col h-full">
+                <CardContent className="flex items-start p-6 flex-grow">
+                  <item.icon className="w-10 h-10 text-orange-500 mr-4" />
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+         
+        
             <h2 className="text-4xl font-semibold text-center text-gray-800 mb-8">Our Goals</h2>
             <p className="text-lg text-gray-700 text-center mb-12 max-w-2xl mx-auto">
               At LearnLink, our goal is to revolutionize education by creating a vibrant community where knowledge flows freely. 
@@ -53,20 +72,22 @@ const About = () => {
                 { icon: Users, title: "Build a Collaborative Community", description: "We foster a supportive environment where users can engage in discussions, ask questions, and learn from each other." },
                 { icon: Zap, title: "Innovate Education Technology", description: "We continuously evolve our platform, incorporating the latest ed-tech innovations to enhance the learning experience." },
               ].map((item, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-2xl transition-shadow rounded-xl">
-                  <CardContent className="flex items-start p-6">
-                    <item.icon className="w-10 h-10 text-orange-500 mr-4" />
-                    <div>
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                      <p className="text-sm text-gray-600">{item.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                
+              
+                  <Card>
+                    <CardContent className="flex items-start p-6">
+                      <item.icon className="w-10 h-10 text-orange-500 mr-4" />
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                        <p className="text-sm text-gray-600">{item.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+               
               ))}
             </div>
-          </section>
 
-          <div className="text-center bg-gradient-to-r from-orange-400 to-orange-500 py-12 rounded-lg shadow-lg">
+          <div className="bg-orange-500 text-center p-5 m-5">
             <h2 className="text-4xl font-bold text-white mb-4">
               Together, let's shape the future of education
             </h2>
@@ -76,22 +97,8 @@ const About = () => {
             <Button size="lg" className="bg-white text-orange-500 hover:bg-gray-100">
               Join Now
             </Button>
-          </div>
-
-          {/* Collaborators Section */}
-          <section className="mt-16 text-center">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-6">Meet the Collaborators</h2>
-            <div className="text-lg text-gray-700 max-w-2xl mx-auto">
-              <p><strong>Ashim Gautam</strong></p>
-              <p>Email: <a href="mailto:ashimgautam01@gmail.com" className="text-blue-500">ashimgautam01@gmail.com</a></p>
-              <p>Location: Pokhara, Nepal</p>
-              <br />
-              <p><strong>Biraj Baral</strong></p>
-              <p>Email: <a href="mailto:baralbiraj74@gmail.com" className="text-blue-500">baralbiraj74@gmail.com</a></p>
-              <p>Location: Pokhara, Nepal</p>
+          
             </div>
-          </section>
-
         </div>
       </div>
     </>
