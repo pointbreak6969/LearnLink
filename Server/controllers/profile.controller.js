@@ -9,7 +9,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const CompleteProfile = asyncHandler(async (req, res) => {
   const { phone, location, university, college } = req.body;
-
+  if (!(phone && location && university && college)) {
+    throw new ApiError(400, "All fields are required");
+  }
   const Profilelocation = req.files?.profilePicture?.[0]?.path;
 
   if (!Profilelocation) {
@@ -65,50 +67,57 @@ const getProfile = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, userProfile, "user found successfully"));
 });
 
-const EditProfileDetails = asyncHandler(async (req, res) => {
-  const userId = req.user._id;
+const updateProfile = asyncHandler(async (req, res) => {
+  const userId = req.user?._id;
+
+  // Find the user's profile
   const user = await UserProfile.findOne({ user: userId });
   if (!user) {
     throw new ApiError(404, "User not found");
   }
-  Object.assign(user.contactInfo, req.body);
 
+  // Update profile details if provided in the request body
+  if (req.body && Object.keys(req.body).length > 0) {
+    Object.assign(user.contactInfo, req.body);
+  }
+
+  // Update profile picture if a new one is uploaded
+  if (req.file) {
+    const newProfilePicLocalPath = req.file.path;
+
+    if (!newProfilePicLocalPath) {
+      throw new ApiError(400, "New profile picture is required");
+    }
+
+    try {
+      const newProfilePic = await uploadOnCloudinary(newProfilePicLocalPath);
+      if (!newProfilePic) {
+        throw new ApiError(500, "Failed to upload new profile picture");
+      }
+
+      // Delete the old profile picture from Cloudinary
+      if (user.profilePicture?.publicId) {
+        await deleteFromCloudinary(user.profilePicture.publicId);
+      }
+
+      // Update user's profile picture details
+      user.profilePicture = {
+        publicId: newProfilePic.public_id,
+        url: newProfilePic.url,
+      };
+    } catch (error) {
+      console.error(error.message);
+      throw new ApiError(500, "Error updating profile picture");
+    }
+  }
+
+  // Save the updated profile
   await user.save();
-  res.status(200).json(new ApiResponse(200, user, "User updated successfully"));
-});
-const editProfilePicture = asyncHandler(async (req, res) => {
-  const userId = req.user?._id;
-  const user = await UserProfile.findOne({user: userId})
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-  const newProfilePicLocalPath = req.file?.path;
 
-  if (!newProfilePicLocalPath) {
-    throw new ApiError(400, "new profile pic needed");
-  }
-  try {
-    const newProfilePic = await uploadOnCloudinary(newProfilePicLocalPath);
-    if (!newProfilePic) {
-      throw new ApiError(500, "Profile can't be updated");
-    }
-    const newProfileDetails = await UserProfile.findByIdAndUpdate(user._id, {
-      $set: {
-        "profilePicture.publicId" :  `${newProfilePic.public_id}`,
-        "profilePicture.url": `${newProfilePic.url}`
-      },
-    }, {
-      new: true,
-    });
-    if (!newProfileDetails) {
-      throw new ApiError(500, "Failed while updating the profile pic");
-    }
-    await deleteFromCloudinary(user.profilePicture.publicId)
-    return res.status(200).json(new ApiResponse(200, newProfileDetails, "Profile Pic updated successfully"))
-  } catch (error) {
-    console.log(error.message)
-    throw new ApiError(500, "Server Error")
-  }
+  // Respond with the updated user profile
+  res.status(200).json(
+    new ApiResponse(200, user, "Profile updated successfully")
+  );
 });
 
-export { CompleteProfile, getProfile, EditProfileDetails, editProfilePicture };
+export { CompleteProfile, getProfile, updateProfile };

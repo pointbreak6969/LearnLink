@@ -1,30 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useEffect } from "react";
+import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileDetails } from "@/store/profileReducer";
-import {
-  User,
-  MapPin,
-  Upload,
-  Star,
-  BookOpen,
-  Save,
-  Award,
-  ChevronRight,
-  ChevronLeft,
-  AlertTriangle,
-  Edit,
-  Mail,
-  Phone,
-  GraduationCap,
-  Building,
-} from "lucide-react";
-import ClassroomHandle from "@/components/ClassroomHandle";
-import PointsEarned from "@/components/PointsEarned";
+import ProfileTabs from "@/components/ProfileTabs";
+import { MapPin, Award, AlertTriangle, Edit } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -36,67 +18,39 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import Resources from "@/components/Resources";
+import profileService from "@/services/profile";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
-  const [savedResources, setSavedResources] = useState(3);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [error, setError] = useState("");
-  const [showRightArrow, setShowRightArrow] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
-  const tabsListRef = useRef(null);
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
+  const { register, handleSubmit } = useForm();
+  const updateProfile = async (data) =>{
+    setError("")
+    try {
+      const updatedProfile = await profileService.updateProfile(data);
+      if (updatedProfile) {
+        dispatch(fetchProfileDetails());
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  }
   const profileDetails = useSelector(
     (state) => state.profile.profileDetails || null
   );
   const status = useSelector((state) => state.profile.status);
   const userData = useSelector((state) => state.auth.userData);
-
   const fullName = userData?.fullName || "N/A";
   const data = {
-    phone: profileDetails?.contactInfo?.phone || null,
-    email: profileDetails?.user_details?.email || null,
-    university: profileDetails?.contactInfo?.university || null,
-    college: profileDetails?.contactInfo?.college || null,
-    location: profileDetails?.contactInfo?.location,
-    profilePicture: profileDetails?.profilePicture?.url || "https://via.placeholder.com/150"
+    profilePicture:
+      profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
   };
-
-  const scrollRight = () => {
-    if (tabsListRef.current) {
-      tabsListRef.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
-
-  const scrollLeft = () => {
-    if (tabsListRef.current) {
-      tabsListRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
-
-  const checkScroll = () => {
-    if (tabsListRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = tabsListRef.current;
-      setShowLeftArrow(scrollLeft > 0);
-      setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
-    }
-  };
-
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener("resize", checkScroll);
-    return () => window.removeEventListener("resize", checkScroll);
-  }, []);
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchProfileDetails());
     }
   }, [dispatch, status]);
-
-  const handleTabChange = (value) => {
-    setActiveTab(value);
-  };
 
   if (status === "loading") {
     return (
@@ -135,7 +89,6 @@ const Profile = () => {
       </div>
     );
   }
-
   return (
     <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
       <div className="flex items-center justify-between mb-6 animate-fade-in">
@@ -163,7 +116,7 @@ const Profile = () => {
             <DialogContent className="w-full max-w-md p-6">
               <DialogTitle>Edit Profile</DialogTitle>
               <DialogDescription>Enter the folowing Details:</DialogDescription>
-              <form className="flex items-center space-x-2 mt-4 flex-col space-y-4">
+              <form className="flex items-center space-x-2 mt-4 flex-col space-y-4" onSubmit={handleSubmit(updateProfile)}>
                 <div className="flex flex-col w-full">
                   <label htmlFor="profile" className="text-gray-700">
                     Upload Profile
@@ -173,6 +126,7 @@ const Profile = () => {
                     id="profilePicture"
                     name="profilePicture"
                     className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                    {...register("profilePicture")}
                   />
                 </div>
                 <div className="flex flex-col w-full">
@@ -185,6 +139,7 @@ const Profile = () => {
                     name="phone"
                     placeholder="Enter your phone number"
                     className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                    {...register("phone")}
                   />
                 </div>
                 <div className="flex flex-col w-full">
@@ -197,6 +152,7 @@ const Profile = () => {
                     name="location"
                     placeholder="Enter your location"
                     className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                    {...register("location")}
                   />
                 </div>
                 <div className="flex flex-col w-full">
@@ -209,6 +165,7 @@ const Profile = () => {
                     name="university"
                     placeholder="Enter university name"
                     className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                    {...register("university")}
                   />
                 </div>
                 <div className="flex flex-col w-full">
@@ -221,6 +178,7 @@ const Profile = () => {
                     name="college"
                     placeholder="Enter your college"
                     className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                    {...register("college")}
                   />
                 </div>
 
@@ -232,7 +190,7 @@ const Profile = () => {
                 </Button>
               </form>
               {/* Display error message if class code is missing */}
-              {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
+              {error && <p className="text-red-500 mt-2">{error}</p>}
             </DialogContent>
           </Dialog>
         </div>
@@ -250,155 +208,7 @@ const Profile = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <div className="relative">
-            {showLeftArrow && (
-              <button
-                onClick={scrollLeft}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="h-5 w-5 text-gray-600" />
-              </button>
-            )}
-
-            {showRightArrow && (
-              <button
-                onClick={scrollRight}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="h-5 w-5 text-gray-600" />
-              </button>
-            )}
-
-            <div className="overflow-hidden">
-              <TabsList
-                ref={tabsListRef}
-                className="bg-orange-100 p-1 rounded-lg flex justify-start overflow-x-auto scrollbar-hide"
-                onScroll={checkScroll}
-              >
-                <TabsTrigger
-                  value="overview"
-                  className="px-4 py-2 whitespace-nowrap"
-                >
-                  <User className="w-4 h-4 mr-2 inline" /> Profile Overview
-                </TabsTrigger>
-                <TabsTrigger
-                  value="saved"
-                  className="px-4 py-2 whitespace-nowrap"
-                >
-                  <Save className="w-4 h-4 mr-2 inline" /> Saved Resources
-                  <span className="ml-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full">
-                    {savedResources}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="uploaded"
-                  className="px-4 py-2 whitespace-nowrap"
-                >
-                  <Upload className="w-4 h-4 mr-2 inline" /> Uploaded Resources
-                </TabsTrigger>
-                <TabsTrigger
-                  value="points"
-                  className="px-4 py-2 whitespace-nowrap"
-                >
-                  <Star className="w-4 h-4 mr-2 inline" /> Points Earned
-                </TabsTrigger>
-                {/* <TabsTrigger
-                  value="classrooms"
-                  className="px-4 py-2 whitespace-nowrap"
-                >
-                  <BookOpen className="w-4 h-4 mr-2 inline" /> Classrooms
-                </TabsTrigger> */}
-              </TabsList>
-            </div>
-          </div>
-
-          <TabsContent value="overview">
-            <Card className="animate-fade-in-up">
-              <CardHeader>
-                <CardTitle className="text-2xl font-semibold text-[#FF9500]">
-                  Overview
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {profileDetails ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h3 className="text-lg font-semibold mb-3 text-[#FF9500]">
-                        Personal Information
-                      </h3>
-                      <p className="flex items-center mb-2">
-                        <User className="text-[#FF9500] mr-2" />
-                        <strong className="text-[#FF9500]">
-                          Full Name: &nbsp;
-                        </strong>{" "}
-                        {fullName}
-                      </p>
-                      <p className="flex items-center mb-2">
-                        <Mail className="text-[#FF9500] mr-2" />
-                        <strong className="text-[#FF9500]">
-                          Email: &nbsp;{" "}
-                        </strong>
-                        {data.email}
-                      </p>
-                      <p className="flex items-center mb-2">
-                        <Phone className="text-[#FF9500] mr-2" />
-                        <strong className="text-[#FF9500]">
-                          Contact Number: &nbsp;
-                        </strong>{" "}
-                        {data.phone}
-                      </p>
-                      <p className="flex items-center mb-2">
-                        <MapPin className="text-[#FF9500] mr-2" />
-                        <strong className="text-[#FF9500]">
-                          Location: &nbsp;
-                        </strong>{" "}
-                        {data.location}
-                      </p>
-                      <p className="flex items-center mb-2">
-                        <GraduationCap className="text-[#FF9500] mr-2" />
-                        <strong className="text-[#FF9500]">
-                          University: &nbsp;
-                        </strong>{" "}
-                        {data.university}
-                      </p>
-                      <p className="flex items-center mb-2">
-                        <Building className="text-[#FF9500] mr-2" />
-                        <strong className="text-[#FF9500]">
-                          College: &nbsp;
-                        </strong>{" "}
-                        {data.college}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-gray-600">
-                    Welcome to your profile! Explore your resources and manage
-                    classrooms here.
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="saved">
-            <Resources />
-          </TabsContent>
-
-          <TabsContent value="uploaded">
-            <Resources />
-          </TabsContent>
-
-          <TabsContent value="points">
-            <PointsEarned />
-          </TabsContent>
-
-          {/* <TabsContent value="classrooms">
-            <ClassroomHandle />
-          </TabsContent> */}
-        </Tabs>
+        <ProfileTabs />
       </div>
     </div>
   );

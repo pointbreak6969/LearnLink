@@ -24,40 +24,38 @@ class ProfileService {
       console.log("something went wrong while completing the profile");
     }
   }
-  async editProfile({ phone, location, university, college }) {
+
+  async updateProfile({ newProfilePicture, ...contactInfo }) {
     try {
-      const response = await axios.patch(
-        `${baseUrl}/profile/edit`,
-        {
-          phone,
-          location,
-          university,
-          college,
-        },
-        {
-          withCredentials: true,
+      const formData = new FormData();
+      
+      // Only append file if provided
+      if (newProfilePicture) {
+        formData.append('file', newProfilePicture);
+      }
+  
+      // Only append non-null contact info fields
+      Object.entries(contactInfo).forEach(([key, value]) => {
+        if (value !== "" && value !== null && value !== undefined) {
+          formData.append(key, value);
         }
-      );
-      return response.data.data;
-    } catch (error) {
-      console.log("Something went wrong while editing the details");
-    }
-  }
-  async editProfilePicture({ profilePicture }) {
-    try {
+      });
+  
       const response = await axios.patch(
-        `${baseUrl}/profile/editProfilePic`,
-        { profilePicture },
+        `${baseUrl}/profile/updateProfile`,
+        formData,
         {
           withCredentials: true,
           headers: {
-            "Content-Length": "multipart/form-data",
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         }
       );
+  
       return response.data.data;
     } catch (error) {
-      console.log("error while updating the user profile");
+      console.error("Error updating profile:", error);
+      throw error;
     }
   }
   async getProfileDetails() {
