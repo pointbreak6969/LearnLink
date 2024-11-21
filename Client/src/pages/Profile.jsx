@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import Resources from "@/components/Resources";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
   const [savedResources, setSavedResources] = useState(3);
@@ -300,12 +301,12 @@ const Profile = () => {
                 >
                   <Star className="w-4 h-4 mr-2 inline" /> Points Earned
                 </TabsTrigger>
-                <TabsTrigger
+                {/* <TabsTrigger
                   value="classrooms"
                   className="px-4 py-2 whitespace-nowrap"
                 >
                   <BookOpen className="w-4 h-4 mr-2 inline" /> Classrooms
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
             </div>
           </div>
@@ -327,20 +328,20 @@ const Profile = () => {
           </TabsContent>
 
           <TabsContent value="saved">
-            <UploadResources />
+            <Resources />
           </TabsContent>
 
           <TabsContent value="uploaded">
-            <UploadResources />
+            <Resources />
           </TabsContent>
 
           <TabsContent value="points">
             <PointsEarned />
           </TabsContent>
 
-          <TabsContent value="classrooms">
+          {/* <TabsContent value="classrooms">
             <ClassroomHandle />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

@@ -93,7 +93,7 @@ const Resources = () => {
               {Resources.map((resource) => (
                 <Card
                   key={resource.id}
-                  className="overflow-hidden transition-all duration-300 rounded-lg shadow-md"
+                  className="overflow-hidden hover:scale-105 transition-all duration-300 rounded-lg shadow-md"
                 >
                   <CardHeader className="p-0">
                     {/* Image adjusted to be smaller */}
