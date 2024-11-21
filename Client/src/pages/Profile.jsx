@@ -18,6 +18,10 @@ import {
   ChevronLeft,
   AlertTriangle,
   Edit,
+  Mail,
+  Phone,
+  GraduationCap,
+  Building
 } from "lucide-react";
 import ClassroomHandle from "@/components/ClassroomHandle";
 import PointsEarned from "@/components/PointsEarned";
@@ -37,19 +41,20 @@ const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
   const [savedResources, setSavedResources] = useState(3);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const tabsListRef = useRef(null);
   const dispatch = useDispatch();
   const profileDetails = useSelector(
-    (state) => state.profile.profileDetails?.[0] || {}
+    (state) => state.profile.profileDetails || {}
   );
+
   const status = useSelector((state) => state.profile.status);
   const userData = useSelector((state) => state.auth.userData);
 
   const fullName = userData?.fullName || "N/A";
-
+console.log(profileDetails?.user_details.email)
   const getProfileData = (data) => (data !== undefined ? data : "N/A");
 
   const scrollRight = () => {
@@ -319,10 +324,60 @@ const Profile = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
-                  Welcome to your profile! Explore your resources and manage
-                  classrooms here.
-                </p>
+                {profileDetails ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-3 text-[#FF9500]">
+                        Personal Information
+                      </h3>
+                      <p className="flex items-center mb-2">
+                        <User className="text-[#FF9500] mr-2" />
+                        <strong className="text-[#FF9500]">
+                          Full Name: &nbsp;
+                        </strong>{" "}
+                        {fullName}
+                      </p>
+                      <p className="flex items-center mb-2">
+                        <Mail className="text-[#FF9500] mr-2" />
+                        <strong className="text-[#FF9500]">Email: &nbsp; </strong> 
+                     {profileDetails?.user_details.email}
+                      </p>
+                      <p className="flex items-center mb-2">
+                        <Phone className="text-[#FF9500] mr-2" />
+                        <strong className="text-[#FF9500]">
+                          Contact Number: &nbsp;
+                        </strong>{" "}
+                      {profileDetails?.contactInfo?.phone}
+                      </p>
+                      <p className="flex items-center mb-2">
+                        <MapPin className="text-[#FF9500] mr-2" />
+                        <strong className="text-[#FF9500]">
+                          Location: &nbsp;
+                        </strong>{" "}
+                        {profileDetails?.contactInfo?.location}
+                      </p>
+                      <p className="flex items-center mb-2">
+                        <GraduationCap className="text-[#FF9500] mr-2" />
+                        <strong className="text-[#FF9500]">
+                          University: &nbsp;
+                        </strong>{" "}
+                        {profileDetails?.contactInfo?.university}
+                      </p>
+                      <p className="flex items-center mb-2">
+                        <Building className="text-[#FF9500] mr-2" />
+                        <strong className="text-[#FF9500]">
+                          College: &nbsp;
+                        </strong>{" "}
+                        {profileDetails?.contactInfo?.college}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-gray-600">
+                    Welcome to your profile! Explore your resources and manage
+                    classrooms here.
+                  </p>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
