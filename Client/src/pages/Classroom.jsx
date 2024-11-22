@@ -3,15 +3,11 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import CardCollection from "@/components/CardCollection";
 import classroomService from "@/services/classroom";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 import ClassroomDropDown from "@/components/ClassroomDropDown";
 
 const Classroom = () => {
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
-  const [error, setError] = useState("");
+
   const [classrooms, setClassrooms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedClassrooms, setSuggestedClassrooms] = useState([]);
@@ -29,7 +25,7 @@ const Classroom = () => {
           setClassrooms(response[0].results);
         }
       } catch (error) {
-        console.error("Error fetching user classrooms:", error);
+        console.error("Error fetching classrooms:", error);
       } finally {
         setIsLoading(false);
       }

@@ -16,12 +16,14 @@ import { useDispatch } from "react-redux";
 import authService from "../services/auth.js";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Skeleton } from "@/components/ui/skeleton";
 function UserAvatar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const profileDetails = useSelector(
     (state) => state.profile.profileDetails || null
   );
+  const status = useSelector((state) => state.profile.status);
   const data = {
     profilePicture:
       profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
@@ -37,10 +39,20 @@ function UserAvatar() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="p-0 bg-transparent focus:bg-transparent active:bg-transparent hover:bg-transparent">
-          <Avatar>
-            <AvatarImage src={data.profilePicture} />
-          </Avatar>
+        <Button
+          variant="ghost"
+          className="p-0 bg-transparent focus:bg-transparent active:bg-transparent hover:bg-transparent"
+        >
+          {status === "loading" ? (
+            <Skeleton className="h-10 w-10 rounded-full" />
+          ) : (
+            <Avatar>
+              <AvatarImage src={data.profilePicture} />
+              <AvatarFallback>
+                {profileDetails?.fullName?.charAt(0) || "?"}
+              </AvatarFallback>
+            </Avatar>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

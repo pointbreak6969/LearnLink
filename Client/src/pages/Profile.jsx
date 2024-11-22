@@ -46,11 +46,6 @@ const Profile = () => {
       profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
   };
 
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchProfileDetails());
-    }
-  }, [dispatch, status]);
 
   if (status === "loading") {
     return (
