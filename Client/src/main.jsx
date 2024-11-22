@@ -19,6 +19,7 @@ import Protected from "./components/Protected";
 import Canvas from "./components/canvas/Canvas.jsx";
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
+import VerifyOtp from "./pages/VerifyOtp.jsx";
 // Define public routes
 const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -27,7 +28,7 @@ const publicRoutes = [
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },
   { path: "/canvas", element: <Canvas /> },
-  {path:'/verifyotp',element:<VerifyOtp/>},
+  {path:'/verifyotp',element:<VerifyOtp />},
 ];
 
 // Define auth routes (accessible only when logged out)
