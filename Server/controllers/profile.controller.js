@@ -7,12 +7,12 @@ import {
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const CompleteProfile = asyncHandler(async (req, res) => {
+const completeProfile = asyncHandler(async (req, res) => {
   const { phone, location, university, college } = req.body;
   if (!(phone && location && university && college)) {
     throw new ApiError(400, "All fields are required");
   }
-  const Profilelocation = req.files?.profilePicture?.[0]?.path;
+  const Profilelocation = req.file.path;
 
   if (!Profilelocation) {
     throw new ApiError(401, "Failed to upload Profile");
@@ -120,4 +120,4 @@ const updateProfile = asyncHandler(async (req, res) => {
   );
 });
 
-export { CompleteProfile, getProfile, updateProfile };
+export { completeProfile, getProfile, updateProfile };

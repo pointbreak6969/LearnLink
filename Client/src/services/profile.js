@@ -9,9 +9,18 @@ class ProfileService {
     college,
   }) {
     try {
+      const formData = new FormData();
+      if (!profilePicture || !phone || !location || !university || !college) {
+        throw new Error("All fields are required");
+      }
+      formData.append("profilePicture", profilePicture[0]);
+      formData.append("phone", phone);
+      formData.append("location", location);
+      formData.append("university", university);
+      formData.append("college", college);
       const response = await axios.post(
         `${baseUrl}/profile/complete`,
-        { profilePicture, phone, location, university, college },
+        formData,
         {
           withCredentials: true,
           headers: {
@@ -31,7 +40,7 @@ class ProfileService {
       
       // Only append file if provided
       if (newProfilePicture) {
-        formData.append('file', newProfilePicture);
+        formData.append('file', newProfilePicture[0]);
       }
   
       // Only append non-null contact info fields

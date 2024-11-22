@@ -27,7 +27,12 @@ import {
   Building,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import profileService from "@/services/profile";
+import { useDispatch } from "react-redux";
+import { fetchProfileDetails } from "@/store/profileReducer";
 const ProfileTabs = () => {
+  const dispatch = useDispatch();
   const profileDetails = useSelector(
     (state) => state.profile.profileDetails || null
   );
@@ -63,7 +68,19 @@ const ProfileTabs = () => {
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
-
+  const [error, setError] = useState("");
+  const {register, handleSubmit} = useForm(); 
+  const completeProfile = async (data)=>{
+    setError("");
+    try {
+     const completeProfile =await profileService.completeProfile(data);      
+     if (completeProfile) {
+       dispatch(fetchProfileDetails());
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  }
   const data = {
     fullName: profileDetails?.user_details?.fullName || null,
     phone: profileDetails?.contactInfo?.phone || null,
@@ -200,16 +217,17 @@ const ProfileTabs = () => {
                       <DialogDescription>
                         Enter the folowing Details:
                       </DialogDescription>
-                      <form className="flex items-center space-x-2 mt-4 flex-col space-y-4">
+                      <form className="flex items-center space-x-2 mt-4 flex-col space-y-4" onSubmit={handleSubmit(completeProfile)}>
                         <div className="flex flex-col w-full">
                           <label htmlFor="profile" className="text-gray-700">
-                            Upload Profile
+                            Complete Profile
                           </label>
                           <Input
                             type="file"
                             id="profilePicture"
                             name="profilePicture"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            {...register("profilePicture", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
@@ -222,6 +240,7 @@ const ProfileTabs = () => {
                             name="phone"
                             placeholder="Enter your phone number"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            {...register("phone", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
@@ -234,6 +253,7 @@ const ProfileTabs = () => {
                             name="location"
                             placeholder="Enter your location"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            {...register("location", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
@@ -246,6 +266,7 @@ const ProfileTabs = () => {
                             name="university"
                             placeholder="Enter university name"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            {...register("university", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
@@ -258,6 +279,7 @@ const ProfileTabs = () => {
                             name="college"
                             placeholder="Enter your college"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            {...register("college", {required: true})}
                           />
                         </div>
 
@@ -269,7 +291,7 @@ const ProfileTabs = () => {
                         </Button>
                       </form>
                       {/* Display error message if class code is missing */}
-                      {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
+                      {error && <p className="text-red-500 mt-2">{error}</p>}
                     </DialogContent>
                   </Dialog>
                 </div>
