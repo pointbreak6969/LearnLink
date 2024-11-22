@@ -6,10 +6,13 @@ import { login, logout } from "./store/authSlice";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
+import { fetchProfileDetails } from "./store/profileReducer";
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProfileDetails());
+  }, [dispatch]);
 
   useEffect(() => {
     const checkAuth = async () => {

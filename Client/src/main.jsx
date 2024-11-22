@@ -19,6 +19,7 @@ import Protected from "./components/Protected";
 import Canvas from "./components/canvas/Canvas.jsx";
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
+import VerifyOtp from "./pages/VerifyOtp.jsx";
 // Define public routes
 const publicRoutes = [
   { path: "/", element: <Home /> },
