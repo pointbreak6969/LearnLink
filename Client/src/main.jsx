@@ -18,9 +18,11 @@ import Reward from "./pages/Reward";
 import Protected from "./components/Protected";
 import Canvas from "./components/canvas/Canvas.jsx";
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
+import UserAvatar from "./components/UserAvatar.jsx";
 // Define public routes
 const publicRoutes = [
   { path: "/", element: <Home /> },
+  {path: "/userAvatar", element: <UserAvatar/>},
   { path: "/courses", element: <Courses /> },
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./Sidebar";
 import { useSelector } from "react-redux";
-import LogoutBtn from "./LogoutBtn";
+import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -64,12 +64,7 @@ const Navbar = () => {
               >
                 About Us
               </Link>
-              <Link
-                to="/contact"
-                className="cursor-pointer hover:text-orange-200"
-              >
-                Contact
-              </Link>
+              
 
               {/* Protected Routes */}
               {authStatus && (
@@ -84,20 +79,9 @@ const Navbar = () => {
                     to="/searchclassrooms"
                     className="cursor-pointer hover:text-orange-200"
                   >
-                    SearchClassroom
+                    Search
                   </Link>
-                  <Link
-                    to="/profile"
-                    className="cursor-pointer hover:text-orange-200"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    to="/reward"
-                    className="cursor-pointer hover:text-orange-200"
-                  >
-                    Reward
-                  </Link>
+          
                 </>
               )}
             </ul>
@@ -121,7 +105,7 @@ const Navbar = () => {
               </>
             ) : (
               <div className="mr-auto">
-                <LogoutBtn />
+                <UserAvatar/>
               </div>
             )}
           </div>
