@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  CompleteProfile,
+  completeProfile,
   updateProfile,
   getProfile,
 } from "../controllers/profile.controller.js";
@@ -9,14 +9,8 @@ import { verifyJwt } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/complete").post(
-  verifyJwt,
-  upload.fields([
-    {
-      name: "profilePicture",
-      maxCount: 1,
-    },
-  ]),
-  CompleteProfile
+  verifyJwt, upload.single("profilePicture"),
+  completeProfile
 );
 
 router.route("/get").get(verifyJwt, getProfile);
