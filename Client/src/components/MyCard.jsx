@@ -20,7 +20,7 @@ const MyCard = ({ id, name, admin, university, faculty }) => {
           <CardDescription>By: {admin}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col justify-between flex-grow">
-          <p className="text-sm mb-2">{faculty}</p>
+          <p className="text-sm mb-2 ">{faculty}</p>
           <p className="text-sm mb-2">{university}</p>
 
           <Button
