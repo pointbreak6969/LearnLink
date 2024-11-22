@@ -26,6 +26,7 @@ const createClassroom = asyncHandler(async (req, res) => {
     admin,
     university: universityName,
     faculty: facultyName,
+    users: [admin],
     code: classroomCode,
   });
   if (!response) {
