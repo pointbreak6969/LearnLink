@@ -57,7 +57,7 @@ const CardCollection = ({ array }) => {
         current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [array]); // Add `array` dependency to recheck content fitting if the array changes
+  }, [array]); 
 
   return (
     <>

@@ -25,6 +25,7 @@ const publicRoutes = [
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },
   { path: "/canvas", element: <Canvas /> },
+  // {path:'/forgetpassword',element:<ForgotPasswordForm/>},
 ];
 
 // Define auth routes (accessible only when logged out)
@@ -81,6 +82,7 @@ const protectedRoutes = [
       </Protected>
     ),
   },
+
   {
     path: "/reward",
     element: (

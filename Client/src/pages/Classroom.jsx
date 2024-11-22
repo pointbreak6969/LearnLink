@@ -37,7 +37,6 @@ const Classroom = () => {
     fetchData();
   }, []);
 
- 
 
   const fetchSuggestedClassrooms = async (page = 1) => {
     try {
