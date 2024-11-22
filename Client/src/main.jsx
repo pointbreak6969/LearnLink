@@ -14,10 +14,10 @@ import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
 import SingleClass from "./pages/SingleClass";
-import SearchNotes from "./pages/SearchNotes";
 import Reward from "./pages/Reward";
 import Protected from "./components/Protected";
 import Canvas from "./components/canvas/Canvas.jsx";
+import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 // Define public routes
 const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -75,10 +75,10 @@ const protectedRoutes = [
     ),
   },
   {
-    path: "/searchnotes",
+    path: "/searchclassrooms",
     element: (
       <Protected authentication={true}>
-        <SearchNotes />
+        <SearchClassrooms/>
       </Protected>
     ),
   },

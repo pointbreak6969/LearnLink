@@ -153,7 +153,7 @@ const ClassroomDropDown = () => {
                         <SelectItem value="mu">
                           Manipal University (MU)
                         </SelectItem>
-                        <SelectItem value="ru">
+                        <SelectItem value="pou">
                           Pokhara University (PU)
                         </SelectItem>
                         <SelectItem value="lu">

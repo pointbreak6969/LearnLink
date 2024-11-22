@@ -81,10 +81,10 @@ const Navbar = () => {
                     Classroom
                   </Link>
                   <Link
-                    to="/searchnotes"
+                    to="/searchclassrooms"
                     className="cursor-pointer hover:text-orange-200"
                   >
-                    SearchNotes
+                    SearchClassroom
                   </Link>
                   <Link
                     to="/profile"

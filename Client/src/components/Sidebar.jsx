@@ -36,6 +36,10 @@ const items = [
     url: "/classroom",
   },
   {
+    title: "Search Classrooms",
+    url: "/searchclassrooms",
+  },
+  {
     title: "Reward",
     url: "/reward",
   },
