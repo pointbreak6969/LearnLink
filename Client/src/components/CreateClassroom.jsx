@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+
 import {
   Dialog,
   DialogContent,
@@ -21,6 +21,7 @@ import { useState } from "react";
 import classroomService from "@/services/classroom";
 import { useNavigate } from "react-router-dom";
 import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 export const universities = [
   { value: "Tribhuvan University", label: "Tribhuvan University (TU)" },
   { value: "Kathmandu University", label: "Kathmandu University (KU)" },

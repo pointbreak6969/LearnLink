@@ -57,6 +57,7 @@ export default {
 			'-webkit-box-orient': 'vertical',
 			overflow: 'hidden',
 			'text-overflow': 'ellipsis',
+			'max-width':'8.9rem'
 		  },
 		});
 	  },

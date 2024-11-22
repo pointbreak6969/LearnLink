@@ -27,7 +27,7 @@ const publicRoutes = [
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },
   { path: "/canvas", element: <Canvas /> },
-  // {path:'/forgetpassword',element:<ForgotPasswordForm/>},
+  {path:'/verifyotp',element:<VerifyOtp/>},
 ];
 
 // Define auth routes (accessible only when logged out)

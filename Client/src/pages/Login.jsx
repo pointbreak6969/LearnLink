@@ -40,7 +40,11 @@ const Login = () => {
     } catch (error) {
       setError(error.message);
     }
+   
   };
+  const handleEmailSubmit=()=>{
+    navigate('/verifyotp')
+  }
   return (
     <>
       <div className="min-h-screen flex flex-col bg-gray-50">
@@ -151,15 +155,20 @@ const Login = () => {
                     <DialogDescription className="italic">
                       Kindly enter valid email address
                     </DialogDescription>
-                    <span  className="font-semibold text-gray-800">Email:</span>
+                    <form onSubmit={handleEmailSubmit}>
+                    <span  className="font-semibold text-gray-800 ">Email:</span>
                     <Input
                       id="email"
                       name="email"
                       placeholder="Enter valid email"
+                      type="email"
+                      required
                     />
                      <DialogFooter>
-                    <Button className="rounded-xl">Send Otp</Button>
+                    <Button className="rounded-xl2 hover:scale-105 hover:text-white mt-4" >Send Otp</Button>
+                    
                   </DialogFooter>
+                  </form>
                   </DialogContent>
                  
                 </Dialog>
