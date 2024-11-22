@@ -24,8 +24,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState("");
   const { register, handleSubmit } = useForm();
-  const updateProfile = async (data) =>{
-    setError("")
+  const updateProfile = async (data) => {
+    setError("");
     try {
       const updatedProfile = await profileService.updateProfile(data);
       if (updatedProfile) {
@@ -34,7 +34,7 @@ const Profile = () => {
     } catch (error) {
       setError(error.message);
     }
-  }
+  };
   const profileDetails = useSelector(
     (state) => state.profile.profileDetails || null
   );
@@ -107,92 +107,99 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
-                <Edit className="w-4 h-4 mr-2" /> Edit Profile
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-full max-w-md p-6">
-              <DialogTitle>Edit Profile</DialogTitle>
-              <DialogDescription>Enter the folowing Details:</DialogDescription>
-              <form className="flex items-center space-x-2 mt-4 flex-col space-y-4" onSubmit={handleSubmit(updateProfile)}>
-                <div className="flex flex-col w-full">
-                  <label htmlFor="profile" className="text-gray-700">
-                    Upload Profile
-                  </label>
-                  <Input
-                    type="file"
-                    id="profilePicture"
-                    name="profilePicture"
-                    className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                    {...register("profilePicture")}
-                  />
-                </div>
-                <div className="flex flex-col w-full">
-                  <label htmlFor="phone" className="text-gray-700">
-                    Phone Number
-                  </label>
-                  <Input
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    placeholder="Enter your phone number"
-                    className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                    {...register("phone")}
-                  />
-                </div>
-                <div className="flex flex-col w-full">
-                  <label htmlFor="location" className="text-gray-700">
-                    Location
-                  </label>
-                  <Input
-                    type="text"
-                    id="location"
-                    name="location"
-                    placeholder="Enter your location"
-                    className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                    {...register("location")}
-                  />
-                </div>
-                <div className="flex flex-col w-full">
-                  <label htmlFor="university" className="text-gray-700">
-                    University Name
-                  </label>
-                  <Input
-                    type="text"
-                    id="university"
-                    name="university"
-                    placeholder="Enter university name"
-                    className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                    {...register("university")}
-                  />
-                </div>
-                <div className="flex flex-col w-full">
-                  <label htmlFor="college" className="text-gray-700">
-                    College Name
-                  </label>
-                  <Input
-                    type="text"
-                    id="college"
-                    name="college"
-                    placeholder="Enter your college"
-                    className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                    {...register("college")}
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                >
-                  Submit
+          {profileDetails && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
+                  <Edit className="w-4 h-4 mr-2" /> Edit Profile
                 </Button>
-              </form>
-              {/* Display error message if class code is missing */}
-              {error && <p className="text-red-500 mt-2">{error}</p>}
-            </DialogContent>
-          </Dialog>
+              </DialogTrigger>
+              <DialogContent className="w-full max-w-md p-6">
+                <DialogTitle>Edit Profile</DialogTitle>
+                <DialogDescription>
+                  Enter the folowing Details:
+                </DialogDescription>
+                <form
+                  className="flex items-center space-x-2 mt-4 flex-col space-y-4"
+                  onSubmit={handleSubmit(updateProfile)}
+                >
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="profile" className="text-gray-700">
+                      Upload Profile
+                    </label>
+                    <Input
+                      type="file"
+                      id="profilePicture"
+                      name="profilePicture"
+                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      {...register("profilePicture")}
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="phone" className="text-gray-700">
+                      Phone Number
+                    </label>
+                    <Input
+                      type="text"
+                      id="phone"
+                      name="phone"
+                      placeholder="Enter your phone number"
+                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      {...register("phone")}
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="location" className="text-gray-700">
+                      Location
+                    </label>
+                    <Input
+                      type="text"
+                      id="location"
+                      name="location"
+                      placeholder="Enter your location"
+                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      {...register("location")}
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="university" className="text-gray-700">
+                      University Name
+                    </label>
+                    <Input
+                      type="text"
+                      id="university"
+                      name="university"
+                      placeholder="Enter university name"
+                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      {...register("university")}
+                    />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="college" className="text-gray-700">
+                      College Name
+                    </label>
+                    <Input
+                      type="text"
+                      id="college"
+                      name="college"
+                      placeholder="Enter your college"
+                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      {...register("college")}
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
+                  >
+                    Submit
+                  </Button>
+                </form>
+                {/* Display error message if class code is missing */}
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
       </div>
 
