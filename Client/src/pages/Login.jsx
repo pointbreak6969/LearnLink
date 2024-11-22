@@ -7,11 +7,20 @@ import authService from "../services/auth.js";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { login as authLogin } from "../store/authSlice";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
   const login = async (data) => {
     setError("");
     try {
@@ -22,10 +31,8 @@ const Login = () => {
         email: session.data.loggedInUser.email,
       };
       if (session?.data) {
-        dispatch(
-          authLogin(userData)
-        );
-       
+        dispatch(authLogin(userData));
+
         navigate("/classroom");
       } else {
         setError("Invalid response from server");
@@ -129,9 +136,33 @@ const Login = () => {
                     Remember Me
                   </label>
                 </div>
-                <Link href="#" className="text-orange-600 hover:underline">
+
+                <button
+                  onClick={() => setDialogOpen(true)}
+                  className=" ml-auto text-orange-600 hover:underline"
+                >
                   Forgot Password?
-                </Link>
+                </button>
+
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <DialogTrigger />
+                  <DialogContent>
+                    <DialogTitle>Enter your registered email</DialogTitle>
+                    <DialogDescription className="italic">
+                      Kindly enter valid email address
+                    </DialogDescription>
+                    <span  className="font-semibold text-gray-800">Email:</span>
+                    <Input
+                      id="email"
+                      name="email"
+                      placeholder="Enter valid email"
+                    />
+                     <DialogFooter>
+                    <Button className="rounded-xl">Send Otp</Button>
+                  </DialogFooter>
+                  </DialogContent>
+                 
+                </Dialog>
               </div>
               <Button
                 type="submit"
