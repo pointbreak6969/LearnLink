@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { ArrowRight, BookOpen, ChevronRightCircle, Star, Users, Zap } from 'lucide-react'
 import React from 'react'
 import FewCourses from '@/components/FewCourses'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 const Home = () => {
   const navigate = useNavigate()
   return (
@@ -87,7 +87,7 @@ const Home = () => {
               Join thousands of learners who are advancing their careers and expanding their knowledge with LearnLink.
             </p>
             <Button  size="lg" className="text-xl px-12 py-6">
-              <a href='/signup' >Get Started Now</a>
+              <Link to={'/signup'} >Get Started Now</Link>
             </Button>
           </div>
         </section>
