@@ -36,14 +36,12 @@ const Profile = () => {
       setError(error.message);
     }
   };
- const {profileDetails, status} = useProfile();
+  const { profileDetails, status } = useProfile();
   const userData = useSelector((state) => state.auth.userData);
   const fullName = userData?.fullName || "N/A";
   const data = {
-    profilePicture:
-      profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
+    profilePicture: profileDetails?.profilePicture?.url || "?",
   };
-
 
   if (status === "loading") {
     return (
@@ -89,7 +87,12 @@ const Profile = () => {
           <div className="relative">
             <Avatar className="h-16 w-16">
               <AvatarImage src={data.profilePicture} />
-              <AvatarFallback>{fullName.charAt(0)}</AvatarFallback>
+              <AvatarFallback>
+                {fullName
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </AvatarFallback>
             </Avatar>
           </div>
           <div>

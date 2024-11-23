@@ -268,6 +268,66 @@ const getSuggestedClassrooms = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+const getClassroomUsers = asyncHandler(async (req, res)=>{
+  const {classroomId} = req.params;
+  if(!classroomId){
+    throw new ApiError(400, "Classroom Id is required");
+  }
+  const response = await Classroom.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(classroomId)
+      }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "users",
+        foreignField: "_id",
+        as: "results"
+      }
+    },
+    {
+      $unwind: "$results"
+    },
+    {
+      $lookup: {
+        from: "userprofiles",
+        localField: "results._id",
+        foreignField: "user",
+        as: "results.profileDetails"
+      }
+    },
+    {
+      $set: {
+        "results.profileDetails": { $arrayElemAt: ["$results.profileDetails", 0] }
+      }
+    },
+    {
+      $group: {
+        _id: "$_id",
+        results: {
+          $push: {
+            _id: "$results._id",
+            fullName: "$results.fullName",
+            profileDetails: {
+              profilePicture: "$results.profileDetails.profilePicture"
+            }
+          }
+        }
+      }
+    },
+    {
+      $project: {
+        results: 1
+      }
+    }
+  ])
+  if (!response) {
+    throw new ApiError(500, "Server Error");
+  }
+  return res.status(200).json(new ApiResponse(200, response, "Success"));
+})
 export {
   createClassroom,
   deleteClassroom,
@@ -277,4 +337,5 @@ export {
   joinClassroom,
   getClassroomDetails,
   getSuggestedClassrooms,
+  getClassroomUsers,
 };

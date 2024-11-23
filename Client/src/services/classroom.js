@@ -172,6 +172,16 @@ class ClassroomService {
       console.error(error);
     }
   }
+  async getClassroomUsers(classroomId) {
+    try {
+      const response = await axios.get(`${baseUrl}/classroom/getClassroomUsers/${classroomId}`, {
+        withCredentials: true
+      })
+      return response.data.data
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 const classroomService = new ClassroomService();

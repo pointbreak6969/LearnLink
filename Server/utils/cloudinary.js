@@ -1,5 +1,6 @@
-import {v2 as cloudinary} from "cloudinary";
-import fs from "fs"
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import pLimit from "p-limit";
 //cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,7 +11,7 @@ cloudinary.config({
 const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (localFilePath) {
-        //upload the file on cloudinary
+      //upload the file on cloudinary
       const response = await cloudinary.uploader.upload(localFilePath, {
         resource_type: "auto",
       });
@@ -24,7 +25,31 @@ const uploadOnCloudinary = async (localFilePath) => {
     return null;
   }
 };
+// Function to split files into batches
+const chunkArray = (array, chunkSize) => {
+  const results = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    results.push(array.slice(i, i + chunkSize));
+  }
+  return results;
+};
 
+// Upload files in batches
+const uploadFilesInBatches = async (localFilePaths) => {
+  const fileChunks = chunkArray(localFilePaths, 10); // Split into batches of 10
+  const responses = [];
+
+  for (const chunk of fileChunks) {
+    const limit = pLimit(10); // Limit concurrent uploads within each chunk
+    const uploadPromises = chunk.map((filePath) =>
+      limit(() => uploadOnCloudinary(filePath))
+    );
+    const chunkResponses = await Promise.all(uploadPromises);
+    responses.push(...chunkResponses);
+  }
+
+  return responses; // Flattened array of all responses
+};
 
 const deleteFromCloudinary = async (publicId) => {
   try {
@@ -49,5 +74,4 @@ const deleteFromCloudinary = async (publicId) => {
   }
 };
 
-
-export {uploadOnCloudinary,deleteFromCloudinary};
+export { uploadOnCloudinary, deleteFromCloudinary, uploadFilesInBatches };

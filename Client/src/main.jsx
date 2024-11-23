@@ -13,7 +13,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Classroom from "./pages/Classroom";
-import SingleClass from "./pages/SingleClass";
+import SingleClass from "./pages/Class/SingleClass.jsx";
 import Reward from "./pages/Reward";
 import Protected from "./components/Protected";
 import Canvas from "./components/canvas/Canvas.jsx";

@@ -9,6 +9,7 @@ import {
   joinClassroom,
   getClassroomDetails,
   getSuggestedClassrooms,
+  getClassroomUsers,
 } from "../controllers/classroom.controller.js";
 const router = Router();
 
@@ -24,4 +25,5 @@ router
   .get(verifyJwt, getClassroomDetails);
 router.route("/getSuggestedClassrooms").get(verifyJwt, getSuggestedClassrooms);
 router.route("/getPublicClassrooms").get(getSuggestedClassrooms);
+router.route("/getClassroomUsers/:classroomId").get(verifyJwt, getClassroomUsers);
 export default router;

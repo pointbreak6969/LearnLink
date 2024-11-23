@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logout } from "../store/authSlice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import authService from "../services/auth.js";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,8 +22,11 @@ function UserAvatar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { profileDetails, status } = useProfile();
-  const profilePicture = useMemo(() => 
-    profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
+  const userData = useSelector((state) => state.auth.userData);
+  const fullName = userData?.fullName || "N/A";
+  const profilePicture = useMemo(
+    () =>
+      profileDetails?.profilePicture?.url || "?",
     [profileDetails]
   );
   const handleLogout = async () => {
@@ -46,8 +49,11 @@ function UserAvatar() {
           ) : (
             <Avatar>
               <AvatarImage src={profilePicture} />
-              <AvatarFallback>
-                {profileDetails?.fullName?.charAt(0) || "?"}
+              <AvatarFallback className="bg-black text-white flex items-center justify-center font-bold">
+                {fullName
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("") || "?"}
               </AvatarFallback>
             </Avatar>
           )}
