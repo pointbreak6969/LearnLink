@@ -26,46 +26,6 @@ const ResourcesTab = ({ resources = [] }) => {
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Resources</span>
-
-          <Dialog
-            open={isAddResourceDialogOpen}
-            onOpenChange={setIsAddResourceDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button varient="default">
-                <Upload className="mr-2" />
-                Upload
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Resource</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="title" className="text-right">
-                    Title
-                  </Label>
-                  <Input id="title" className="col-span-3" />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="description" className="text-right">
-                    Description
-                  </Label>
-                  <Textarea id="description" className="col-span-3" />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="file" className="text-right">
-                    File
-                  </Label>
-                  <Input id="file" type="file" className="col-span-3" />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Add Resource</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </CardTitle>
       </CardHeader>
       <CardContent>
