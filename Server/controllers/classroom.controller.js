@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import Classroom from "../models/classroomModel.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import generateRandomString from "../utils/randomString.js";
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 const createClassroom = asyncHandler(async (req, res) => {
   const { classroomName } = req.body;
   if (!classroomName) {
@@ -282,6 +282,32 @@ const getClassroomUsers = asyncHandler(async (req, res)=>{
     {
       $lookup: {
         from: "users",
+        localField: "admin",
+        foreignField: "_id",
+        as: "adminDetails"
+      }
+    },
+    {
+      $set: {
+        "adminDetails": { $arrayElemAt: ["$adminDetails", 0] }
+      }
+    },
+    {
+      $lookup: {
+        from: "userprofiles",
+        localField: "admin",  // Using admin directly since it's the user ID
+        foreignField: "user", // Matching with the user field in userprofiles
+        as: "adminProfileDetails"
+      }
+    },
+    {
+      $set: {
+        "adminProfileDetails": { $arrayElemAt: ["$adminProfileDetails", 0] }
+      }
+    },
+    {
+      $lookup: {
+        from: "users",
         localField: "users",
         foreignField: "_id",
         as: "results"
@@ -306,6 +332,14 @@ const getClassroomUsers = asyncHandler(async (req, res)=>{
     {
       $group: {
         _id: "$_id",
+        admin: {
+          $first: {
+            fullName: "$adminDetails.fullName",
+            profileDetails: {
+              profilePicture: "$adminProfileDetails.profilePicture"
+            }
+          }
+        },
         results: {
           $push: {
             _id: "$results._id",
@@ -319,6 +353,7 @@ const getClassroomUsers = asyncHandler(async (req, res)=>{
     },
     {
       $project: {
+        admin: 1,
         results: 1
       }
     }

@@ -29,7 +29,7 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
-
+  const [admin, setAdmin] = useState({});
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -37,6 +37,7 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
       const response = await classroomService.getClassroomUsers(classroomId);
       if (response) {
         setUsers(response[0].results);
+        setAdmin(response[0].admin)
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -95,20 +96,34 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
         <div>
           <div className="p-6 bg-white rounded-lg -mt-10">
             <p className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <FaChalkboardTeacher className="text-blue-500" /> Teachers
+              <FaChalkboardTeacher className="text-blue-500" /> Admin
             </p>
             <ul className="space-y-3 mt-4 text-gray-700 font-medium">
-              {loading ? (
-                <UserSkeleton />
-              ) : (
-                <li className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8 bg-green-100 rounded-full">
-                    <FaUserGraduate className="text-green-500" />
-                  </div>
-                  Teacher 1
-                </li>
-              )}
-            </ul>
+            {loading ? (
+              <UserSkeleton />
+            ) : admin && admin.fullName ? (
+              <li className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-8 h-8 bg-transparent rounded-full">
+                  <Avatar>
+                    <AvatarImage
+                      src={admin?.profileDetails?.profilePicture?.url || "?"}
+                    />
+                    <AvatarFallback>
+                      {admin.fullName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <span className="text-sm font-medium text-gray-900">                     
+                  {admin.fullName}
+                </span>
+              </li>
+            ) : (
+              <UserSkeleton />
+            )}
+          </ul>
           </div>
 
           <div className="p-6 bg-white rounded-lg">
@@ -124,10 +139,12 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
                 </>
               ) : (
                 users.map((user) => (
+                  
                   <li
                     key={user._id}
                     className="flex items-center gap-3 p-1 rounded-lg"
                   >
+                  
                     <div className="flex items-center justify-center w-8 h-8 bg-transparent rounded-full">
                       <Avatar>
                         <AvatarImage
