@@ -10,7 +10,7 @@ router.route('/add').post(
     upload.fields([
         {
             name:"resource",
-            maxCount:10
+            maxCount:25
         },
     ]),
     AddResources

@@ -13,12 +13,7 @@ const ResourceSchema = new Schema(
       ref: "User",
       required: true,
     },
-    admins: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+
     text: {
       type: String,
       trim: true,
@@ -26,6 +21,7 @@ const ResourceSchema = new Schema(
     classroom: {
       type: mongoose.Types.ObjectId,
       ref: "Classroom",
+      required: true,
     },
     views: {
       type: Number,

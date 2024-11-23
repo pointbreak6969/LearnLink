@@ -129,7 +129,7 @@ const SingleClass = () => {
             </TabsList>
 
             <TabsContent value="stream">
-              <StreamTab announcements={announcements} />
+              <StreamTab announcements={announcements}  classroomId={classroomId} />
             </TabsContent>
 
             <TabsContent value="classwork">

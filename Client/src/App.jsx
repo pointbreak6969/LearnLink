@@ -7,6 +7,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { fetchProfileDetails } from "./store/profileReducer";
+import { Toaster } from "sonner";
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -17,8 +18,8 @@ function App() {
         setLoading(true);
         const session = await authService.getCurrentUser();
         if (session?.data?.data) {
-     dispatch(login(session.data.data));
-         dispatch(fetchProfileDetails());
+          dispatch(login(session.data.data));
+          dispatch(fetchProfileDetails());
         } else {
           dispatch(logout());
         }
@@ -31,9 +32,9 @@ function App() {
     };
 
     checkAuth();
-    return ()=>{
+    return () => {
       setLoading(false);
-    }
+    };
   }, [dispatch]);
 
   if (loading) {
@@ -46,6 +47,12 @@ function App() {
 
   return (
     <>
+      <Toaster
+        position="top-center"
+        richColors
+        closeButton
+        theme="light"
+      />
       <Navbar />
       <Outlet />
       <Footer />

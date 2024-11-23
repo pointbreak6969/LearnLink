@@ -11,67 +11,91 @@ import mongoose from "mongoose";
 const AddResources = asyncHandler(async (req, res) => {
   const { text, title } = req.body;
   const resourceFiles = req.files?.resource || [];
-  const classroomId = req.params?.classroomId || req.body?.classroomId;
+  const classroomId = req.body?.classroomId;
 
-  if (!resourceFiles.length) {
-    throw new ApiError(400, "No resources provided");
+  // Validate classroom ID
+  if (!classroomId) {
+    throw new ApiError(400, "Classroom ID is required");
   }
 
-  const resourceLocations = resourceFiles.map((file) => file.path);
-
-  // For single file, use direct upload instead of batch processing
-  let uploadedResources;
-  if (resourceLocations.length === 1) {
-    const uploadResult = await uploadOnCloudinary(resourceLocations[0]);
-    uploadedResources = uploadResult ? [uploadResult] : [];
-  } else {
-    // For multiple files, use batch processing
-    uploadedResources = await uploadFilesInBatches(resourceLocations);
+  // Check if at least one field is provided
+  if (!text && !title && resourceFiles.length === 0) {
+    throw new ApiError(400, "At least one of text, title, or resource file is required");
   }
 
-  // Filter out any failed uploads
-  const successfulUploads = uploadedResources.filter(
-    (upload) => upload !== null
-  );
-  const failedUploads = resourceLocations.filter(
-    (_, index) => !uploadedResources[index]
-  );
+  // Initialize resourceUrls and failedUploads as empty arrays
+  let resourceUrls = [];
+  let failedUploads = [];
 
-  if (successfulUploads.length === 0) {
-    throw new ApiError(400, "File upload failed");
+  // Handle file uploads if files are provided
+  if (resourceFiles.length > 0) {
+    if (resourceFiles.length > 20) {
+      throw new ApiError(400, "Can't upload more than 20 files at once");
+    }
+
+    const resourceLocations = resourceFiles.map((file) => file.path);
+    
+    // For single file, use direct upload instead of batch processing
+    let uploadedResources;
+    if (resourceLocations.length === 1) {
+      const uploadResult = await uploadOnCloudinary(resourceLocations[0]);
+      uploadedResources = uploadResult ? [uploadResult] : [];
+    } else {
+      // For multiple files, use batch processing
+      uploadedResources = await uploadFilesInBatches(resourceLocations);
+    }
+
+    // Filter out any failed uploads
+    const successfulUploads = uploadedResources.filter(
+      (upload) => upload !== null
+    );
+    failedUploads = resourceLocations.filter(
+      (_, index) => !uploadedResources[index]
+    );
+
+    if (resourceFiles.length > 0 && successfulUploads.length === 0) {
+      throw new ApiError(400, "File upload failed");
+    }
+
+    resourceUrls = successfulUploads.map((resource) => resource.url);
   }
 
-  const resourceUrls = successfulUploads.map((resource) => resource.url);
-
-  // Create the resource document in the database
-  const CreatedResource = await Resource.create({
+  // Create the resource document with optional fields
+  const resourceData = {
     owner: req.user?._id,
-    title,
-    text,
-    resource: resourceUrls,
     classroom: classroomId,
-  });
+    ...(title && { title }), // Only include if title exists
+    ...(text && { text }), // Only include if text exists
+    ...(resourceUrls.length > 0 && { resource: resourceUrls }), // Only include if files were uploaded
+  };
+
+  const CreatedResource = await Resource.create(resourceData);
 
   if (!CreatedResource) {
     throw new ApiError(400, "Failed to add resource");
   }
+
+  // Prepare response message based on what was added
+  let successMessage = "Successfully added resource with";
+  const components = [];
+  if (title) components.push("title");
+  if (text) components.push("text");
+  if (resourceUrls.length > 0) {
+    components.push(`${resourceUrls.length} file${resourceUrls.length > 1 ? 's' : ''}`);
+  }
+  successMessage = `${successMessage} ${components.join(", ")}`;
 
   return res.status(200).json(
     new ApiResponse(
       200,
       {
         resource: CreatedResource,
-        failedUploads: failedUploads.length ? failedUploads : undefined,
+        failedUploads: failedUploads.length > 0 ? failedUploads : undefined,
       },
-      successfulUploads.length === 1
-        ? "Successfully added resource"
-        : `Successfully added ${successfulUploads.length} resources${
-            failedUploads.length ? ` (${failedUploads.length} failed)` : ""
-          }`
+      successMessage
     )
   );
 });
-
 const getResourceByTitle = asyncHandler(async (req, res) => {
   const { title } = req.body;
   const resource = await Resource.find({ $text: { $search: title } });

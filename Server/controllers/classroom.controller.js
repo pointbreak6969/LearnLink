@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import Classroom from "../models/classroomModel.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import generateRandomString from "../utils/randomString.js";
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 const createClassroom = asyncHandler(async (req, res) => {
   const { classroomName } = req.body;
   if (!classroomName) {
