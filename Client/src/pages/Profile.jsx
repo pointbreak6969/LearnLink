@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import profileService from "@/services/profile";
+import { useProfile } from "@/hooks/useProfile";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
   const dispatch = useDispatch();
@@ -35,10 +36,7 @@ const Profile = () => {
       setError(error.message);
     }
   };
-  const profileDetails = useSelector(
-    (state) => state.profile.profileDetails || null
-  );
-  const status = useSelector((state) => state.profile.status);
+ const {profileDetails, status} = useProfile();
   const userData = useSelector((state) => state.auth.userData);
   const fullName = userData?.fullName || "N/A";
   const data = {

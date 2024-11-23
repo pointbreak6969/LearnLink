@@ -27,7 +27,7 @@ const Navbar = () => {
       </div>
 
       <header className="bg-orange-500 text-white py-2">
-        <div className="flex justify-between items-center  md:hidden">
+        <div className="flex justify-around items-center  md:hidden">
           <div className="text-2xl font-bold" aria-label="Logo">
             <button className="ml-8" onClick={handleNavigation}>L-earn</button>
           </div>
@@ -39,7 +39,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="hidden container mx-auto px-15 md:flex justify-between items-center">
+        <div className="hidden container mx-auto px-15 md:flex justify-around items-center">
           <div className="text-2xl font-bold" aria-label="Logo">
             <button onClick={handleNavigation}>L-earn</button>
           </div>

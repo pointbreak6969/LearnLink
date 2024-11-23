@@ -10,9 +10,6 @@ import { fetchProfileDetails } from "./store/profileReducer";
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchProfileDetails());
-  }, [dispatch]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -20,7 +17,8 @@ function App() {
         setLoading(true);
         const session = await authService.getCurrentUser();
         if (session?.data?.data) {
-          dispatch(login(session.data.data));
+     dispatch(login(session.data.data));
+         dispatch(fetchProfileDetails());
         } else {
           dispatch(logout());
         }
@@ -33,6 +31,9 @@ function App() {
     };
 
     checkAuth();
+    return ()=>{
+      setLoading(false);
+    }
   }, [dispatch]);
 
   if (loading) {

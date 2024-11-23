@@ -15,19 +15,17 @@ import { logout } from "../store/authSlice.js";
 import { useDispatch } from "react-redux";
 import authService from "../services/auth.js";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProfile } from "@/hooks/useProfile.js";
+import { useMemo } from "react";
 function UserAvatar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const profileDetails = useSelector(
-    (state) => state.profile.profileDetails || null
+  const { profileDetails, status } = useProfile();
+  const profilePicture = useMemo(() => 
+    profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
+    [profileDetails]
   );
-  const status = useSelector((state) => state.profile.status);
-  const data = {
-    profilePicture:
-      profileDetails?.profilePicture?.url || "https://via.placeholder.com/150",
-  };
   const handleLogout = async () => {
     try {
       await authService.logout();
@@ -47,7 +45,7 @@ function UserAvatar() {
             <Skeleton className="h-10 w-10 rounded-full" />
           ) : (
             <Avatar>
-              <AvatarImage src={data.profilePicture} />
+              <AvatarImage src={profilePicture} />
               <AvatarFallback>
                 {profileDetails?.fullName?.charAt(0) || "?"}
               </AvatarFallback>
