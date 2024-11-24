@@ -141,12 +141,12 @@ const Login = () => {
                   </label>
                 </div>
 
-                <button
+                <a
                   onClick={() => setDialogOpen(true)}
-                  className=" ml-auto text-orange-600 hover:underline"
+                  className=" ml-auto text-orange-600 hover:underline cursor-pointer"
                 >
                   Forgot Password?
-                </button>
+                </a>
 
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger />
