@@ -29,7 +29,6 @@ const SingleClass = () => {
         });
         if (response) {
           setClassroomDetails(response);
-          console.log(response);
         } else {
           setError("Error while fetching Classroom Details");
         }
@@ -104,7 +103,7 @@ const SingleClass = () => {
             </TabsContent>
 
             <TabsContent value="classwork">
-              <ResourcesTab />
+              <ResourcesTab classroomId={classroomId.classCode} />
             </TabsContent>
 
             <TabsContent value="people">

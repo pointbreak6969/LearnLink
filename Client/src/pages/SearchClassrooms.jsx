@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import { universities } from "@/components/CreateClassroom";
 import classroomService from "@/services/classroom";
 import MyCard from "@/components/MyCard";
+import useDebounce from "@/hooks/useDebounce";
 
 const SearchClassrooms = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,11 +22,12 @@ const SearchClassrooms = () => {
   const [faculty, setFaculty] = useState("");
   const [subject, setSubject] = useState("");
   const [classrooms, setClassrooms] = useState([]);
-
+  const debouncedUniversity=useDebounce(university,300)
+  const debouncedFaculty=useDebounce(faculty,300)
   const filteredClassroom = classrooms.filter((classroom) => {
     return (
-      (!university || new RegExp(university, 'i').test(classroom.university)) &&
-      (!faculty || new RegExp(faculty, 'i').test(classroom.faculty)) &&
+      (!debouncedUniversity || new RegExp(university, 'i').test(classroom.university)) &&
+      (!debouncedFaculty || new RegExp(faculty, 'i').test(classroom.faculty)) &&
       (!subject || new RegExp(subject, 'i').test(classroom.subject))
     );
   });
@@ -34,17 +36,17 @@ const SearchClassrooms = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        if (university) {
+        if (debouncedUniversity) {
           const response = await classroomService.getClassroomByQuery( {universityName:university} );
           console.log(response);
           setClassrooms(response);
         } 
-        else if(faculty){
+        else if(debouncedFaculty){
           const response =await classroomService.getClassroomByQuery({facultyName:faculty})
           
           setClassrooms(response)
         }
-        else if(university && faculty){
+        else if(debouncedUniversity && debouncedFaculty){
           const response=await classroomService.getClassroomByQuery({universityName:university,facultyName:faculty})
              setClassrooms(response);
         }
@@ -58,7 +60,7 @@ const SearchClassrooms = () => {
     }
 
     fetchData();
-  }, [university || faculty]); 
+  }, [debouncedUniversity || debouncedFaculty]); 
 
  
 
