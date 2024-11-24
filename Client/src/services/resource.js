@@ -58,7 +58,8 @@ class ResourceService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getClassroomResources(classroomId) {
@@ -74,7 +75,8 @@ class ResourceService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async deleteResource(resourceId) {
@@ -87,7 +89,8 @@ class ResourceService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getResourceByTitle(title) {
@@ -98,7 +101,8 @@ class ResourceService {
       });
       return response.data.data;
     } catch (error) {
-    throw error;    
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
 }

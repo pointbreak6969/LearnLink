@@ -38,6 +38,8 @@ const Login = () => {
         setError("Invalid response from server");
       }
     } catch (error) {
+      console.log(error);
+      console.log(error.message);
       setError(error.message);
     }
    

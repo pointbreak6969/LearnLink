@@ -31,7 +31,8 @@ export class AuthService {
       );
       return response.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getCurrentUser(){

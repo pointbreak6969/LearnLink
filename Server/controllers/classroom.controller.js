@@ -207,7 +207,7 @@ const joinClassroom = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Not a valid classroom code");
   }
   if (classroom.users.includes(userId)) {
-    throw new ApiError(400, "User already exists");
+    throw new ApiError(400, "You are already in Classroom");
   }
   classroom.users.push(userId);
   await classroom.save();
