@@ -30,7 +30,7 @@ class ProfileService {
       );
       return response.data.data;
     } catch (error) {
-      console.log("something went wrong while completing the profile");
+      throw error;
     }
   }
 
@@ -63,7 +63,7 @@ class ProfileService {
   
       return response.data.data;
     } catch (error) {
-      console.error("Error updating profile:", error);
+
       throw error;
     }
   }
@@ -74,7 +74,7 @@ class ProfileService {
       });
       return response.data?.data?.[0] || null;
     } catch (error) {
-      console.error(error.message);
+
       throw error;
     }
   }

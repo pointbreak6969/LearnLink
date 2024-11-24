@@ -19,7 +19,7 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async updateClasroomDetails(
@@ -68,26 +68,27 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async getClassroomByQuery({ universityName, facultyName }) {
     try {
-      if (!universityName && !facultyName) {
+      const queryParams = {};
+      if (universityName) queryParams.universityName = universityName;
+      if (facultyName) queryParams.facultyName = facultyName;
+      if (Object.keys(queryParams).length === 0) {
         throw new Error(
           "At least one filter (university or faculty) is required"
         );
       }
-      const queryParams = {};
-      if (universityName) queryParams.universityName = universityName;
-      if (facultyName) queryParams.facultyName = facultyName;
+
       const response = await axios.get(
         `${baseUrl}/classroom/getClassroomByQuery`,
         { params: queryParams, withCredentials: true }
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async joinClassroomByCode({ code }) {
@@ -104,7 +105,7 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async joinClassroomByLink({ code }) {
@@ -120,7 +121,7 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async getUserAllClassroom() {
@@ -130,7 +131,7 @@ class ClassroomService {
       });
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async getClassroomDetails({ classroomId }) {
@@ -139,13 +140,14 @@ class ClassroomService {
     }
     try {
       const response = await axios.get(
-        `${baseUrl}/classroom/getClassroomDetails/${classroomId}`, {
+        `${baseUrl}/classroom/getClassroomDetails/${classroomId}`,
+        {
           withCredentials: true,
         }
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async getSuggestedClassrooms(page = 1) {
@@ -153,33 +155,38 @@ class ClassroomService {
       const response = await axios.get(
         `${baseUrl}/classroom/getSuggestedClassrooms?page=${page}`,
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       return response.data.data;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
-  async getPublicClassrooms () {
+  async getPublicClassrooms() {
     try {
-      const response = await axios.get(`${baseUrl}/classroom/getPublicClassrooms`, {
-        withCredentials: true
-      })
-      return response.data.data
+      const response = await axios.get(
+        `${baseUrl}/classroom/getPublicClassrooms`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
   async getClassroomUsers(classroomId) {
     try {
-      const response = await axios.get(`${baseUrl}/classroom/getClassroomUsers/${classroomId}`, {
-        withCredentials: true
-      })
-      return response.data.data
+      const response = await axios.get(
+        `${baseUrl}/classroom/getClassroomUsers/${classroomId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data.data;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 }

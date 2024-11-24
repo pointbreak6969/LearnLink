@@ -16,7 +16,7 @@ export class AuthService {
         return response.data;
       }
     } catch (error) {
-      console.log("Something went wrong while creating user");
+      throw error;
     }
   }
   async login({ email, password }) {
@@ -30,7 +30,7 @@ export class AuthService {
       );
       return response.data;
     } catch (error) {
-      console.log("Something went wrong while logging in");
+      throw error;
     }
   }
   async getCurrentUser(){
@@ -39,7 +39,7 @@ export class AuthService {
           withCredentials: true,
         });
     } catch (error) {
-        console.log("Something went wrong while getting current user");
+      throw error;
     }
     return null;
   }
@@ -49,7 +49,7 @@ export class AuthService {
           withCredentials: true,
         });
     } catch (error) {
-        console.log("Something went wrong while logging out");
+      throw error;
     }
   }
 }
