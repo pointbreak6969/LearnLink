@@ -58,7 +58,7 @@ const SearchClassrooms = () => {
         console.error("Error fetching classrooms:", error);
       }
     }
-
+    console.log(classrooms.admin);
     fetchData();
   }, [debouncedUniversity || debouncedFaculty]); 
 
@@ -103,13 +103,13 @@ const SearchClassrooms = () => {
                   name="faculty"
                   onChange={(e)=>setFaculty(e.target.value)}
                 />
-                <Input
+                {/* <Input
                   type="text"
                   placeholder="Enter Subject"
                   id="subject"
                   name="subject"
                   onChange={(e)=>setSubject(e.target.value)}
-                />
+                /> */}
               </div>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">

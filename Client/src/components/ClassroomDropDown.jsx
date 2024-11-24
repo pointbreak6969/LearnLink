@@ -23,6 +23,7 @@ import CreateClassroom from "./CreateClassroom";
 
 import classroomService from "@/services/classroom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const ClassroomDropDown = () => {
     const navigate=useNavigate()
@@ -36,6 +37,7 @@ const ClassroomDropDown = () => {
     try {
       const response = await classroomService.joinClassroomByCode(data);
       if (response) {
+        toast.success("Class joined successfully");
         navigate(`/classroom/${response.id}`);
       }
     } catch (error) {

@@ -64,7 +64,7 @@ const ResourcesTab = ({ classroomId }) => {
                 className="flex items-center justify-between border-b py-2 animate-fade-in"
               >
                 <span className="text-gray-800 flex items-center">
-                  <FaRegFilePdf className="w-4 h-4 mr-2" /> {resource.title}
+                  <FaRegFilePdf className="w-8 h-5 text-red-600 mr-2" /> {resource.title}
                 </span>
 
                 <div className="flex gap-2 items-center">

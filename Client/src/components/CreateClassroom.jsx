@@ -22,6 +22,7 @@ import classroomService from "@/services/classroom";
 import { useNavigate } from "react-router-dom";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { toast } from "sonner";
 export const universities = [
   { value: "Tribhuvan University", label: "Tribhuvan University (TU)" },
   { value: "Kathmandu University", label: "Kathmandu University (KU)" },
@@ -52,7 +53,9 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
     try {
       const response = await classroomService.createClassroom(data);
       if (response) {
-        navigate(`/classroom/${response.id}`);
+        console.log(response);
+        toast.success("Classroom created successfully");
+        navigate(`/classroom/${response._id}`);
       }
     } catch (error) {
       setError(error.message);

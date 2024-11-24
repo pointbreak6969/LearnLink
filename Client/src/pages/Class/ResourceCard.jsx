@@ -9,6 +9,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { FaFilePdf } from 'react-icons/fa'; // PDF icon
 
 const formatDate = (mongoDate) => {
   const date = new Date(mongoDate);
@@ -73,16 +74,14 @@ const ResourceCard = ({
             <p className="text-gray-600 mb-4">{text}</p>
           )}
           {resource.length > 0 && (
-            <div className="space-y-2">
+            <div className="flex items-center space-x-4">
               {resource.map((url, index) => (
                 <div
                   key={index}
                   onClick={() => handleResourceClick(url)}
-                  className="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  className="flex items-center p-2 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer"
                 >
-                  <div className="text-blue-600 hover:text-blue-800 truncate max-w-md">
-                    {url}
-                  </div>
+                  <FaFilePdf className="w-20 h-20 text-red-600" /> 
                 </div>
               ))}
             </div>
