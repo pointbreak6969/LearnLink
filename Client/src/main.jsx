@@ -22,13 +22,21 @@ import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
 // Define public routes
 const publicRoutes = [
-  { path: "/", element: <Home /> },
-  {path: "/userAvatar", element: <UserAvatar/>},
+  {
+    path: "/",
+    element: (
+      <Protected authentication={false} redirectPath="/classroom">
+        {" "}
+        <Home />
+      </Protected>
+    ),
+  },
+  { path: "/userAvatar", element: <UserAvatar /> },
   { path: "/courses", element: <Courses /> },
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },
   { path: "/canvas", element: <Canvas /> },
-  {path:'/verifyotp',element:<VerifyOtp />},
+  { path: "/verifyotp", element: <VerifyOtp /> },
 ];
 
 // Define auth routes (accessible only when logged out)
@@ -81,7 +89,7 @@ const protectedRoutes = [
     path: "/searchclassrooms",
     element: (
       <Protected authentication={true}>
-        <SearchClassrooms/>
+        <SearchClassrooms />
       </Protected>
     ),
   },
@@ -102,7 +110,6 @@ const router = createBrowserRouter([
     children: [...publicRoutes, ...authRoutes, ...protectedRoutes],
   },
 ]);
-
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

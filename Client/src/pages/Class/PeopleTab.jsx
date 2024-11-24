@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -14,7 +13,7 @@ import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import classroomService from "@/services/classroom";
-
+import AvatarComponent from "@/components/AvatarComponent";
 const UserSkeleton = () => (
   <div className="flex items-center gap-3 p-1">
     <Skeleton className="h-8 w-8 rounded-full" />
@@ -22,7 +21,7 @@ const UserSkeleton = () => (
   </div>
 );
 
-const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
+const PeopleTab = ({ joinRequests = [] }) => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const { classCode } = useParams();
   const classroomId = classCode;
@@ -37,7 +36,7 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
       const response = await classroomService.getClassroomUsers(classroomId);
       if (response) {
         setUsers(response[0].results);
-        setAdmin(response[0].admin)
+        setAdmin(response[0].admin);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -99,31 +98,26 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
               <FaChalkboardTeacher className="text-blue-500" /> Admin
             </p>
             <ul className="space-y-3 mt-4 text-gray-700 font-medium">
-            {loading ? (
-              <UserSkeleton />
-            ) : admin && admin.fullName ? (
-              <li className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-8 h-8 bg-transparent rounded-full">
-                  <Avatar>
-                    <AvatarImage
-                      src={admin?.profileDetails?.profilePicture?.url || "?"}
+              {loading ? (
+                <UserSkeleton />
+              ) : admin && admin.fullName ? (
+                <li className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-8 h-8 bg-transparent rounded-full">
+                    <AvatarComponent
+                      profilePicture={
+                        admin?.profileDetails?.profilePicture?.url || "?"
+                      }
+                      fullName={admin.fullName}
                     />
-                    <AvatarFallback>
-                      {admin.fullName
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-                <span className="text-sm font-medium text-gray-900">                     
-                  {admin.fullName}
-                </span>
-              </li>
-            ) : (
-              <UserSkeleton />
-            )}
-          </ul>
+                  </div>
+                  <span className="text-sm font-medium text-gray-900">
+                    {admin.fullName}
+                  </span>
+                </li>
+              ) : (
+                <UserSkeleton />
+              )}
+            </ul>
           </div>
 
           <div className="p-6 bg-white rounded-lg">
@@ -139,24 +133,16 @@ const PeopleTab = ({ studentsInClassroom = [], joinRequests = [] }) => {
                 </>
               ) : (
                 users.map((user) => (
-                  
                   <li
                     key={user._id}
                     className="flex items-center gap-3 p-1 rounded-lg"
                   >
-                  
                     <div className="flex items-center justify-center w-8 h-8 bg-transparent rounded-full">
-                      <Avatar>
-                        <AvatarImage
-                          src={user.profileDetails?.profilePicture?.url || "?"}
-                        />
-                        <AvatarFallback>
-                          {user.fullName
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
+                      <AvatarComponent
+                        profilePicture={
+                          user.profileDetails?.profilePicture?.url || "?"
+                        } fullName={user.fullName}
+                      />
                     </div>
                     <span className="text-sm font-medium text-gray-900">
                       {user.fullName}

@@ -145,7 +145,7 @@ const getAllClassrooms = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, allClasses, "Success"));
 });
 const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
-  const { universityName, facultyName } = { ...req.query, ...req.body };
+  const { universityName, facultyName } = req.query;
   if (!universityName && !facultyName) {
     throw new ApiError(
       400,
@@ -172,9 +172,10 @@ const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
 
   const response = await Classroom.aggregate(matchConditions);
 
-  if (!response) {
-    throw new ApiError(500, "Server error while finding the documents");
+  if (!response || response.length === 0) {
+    throw new ApiError(404, "No classrooms found matching the criteria");
   }
+
   return res
     .status(200)
     .json(new ApiResponse(200, response, "Fetched successfully"));

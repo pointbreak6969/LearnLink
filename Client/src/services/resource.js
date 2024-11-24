@@ -77,6 +77,30 @@ class ResourceService {
       throw error;
     }
   }
+  async deleteResource(resourceId) {
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/resource/delete/${resourceId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getResourceByTitle(title) {
+    try {
+      const response = await axios.get(`${baseUrl}/resource/get`, {
+        withCredentials: true,
+        params: { title },
+      });
+      return response.data.data;
+    } catch (error) {
+    throw error;    
+    }
+  }
 }
 const resourceService = new ResourceService();
 export default resourceService;

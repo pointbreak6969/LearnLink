@@ -12,45 +12,11 @@ const SingleClass = () => {
   const [classroomDetails, setClassroomDetails] = useState({});
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("stream");
-  
-  const [announcements, setAnnouncements] = useState([
-    {
-      id: "1",
-      user: "Ashim Gautam",
-      content: "Dear Students, Please find the class note for your reference.",
-      date: "29 Sept",
-      attachment: {
-        name: "english_class_note.pdf",
-        type: "PDF",
-      },
-    },
-    {
-      id: "2",
-      user: "Ram poudel",
-      content: "Dear Students, Please find the class note for your reference.",
-      date: "2 Sept",
-      attachment: {
-        name: "physics_class_note.pdf",
-        type: "PDF",
-      },
-    },
-  ]);
-  
-  const [resources, setResources] = useState([
-    { id: "1", name: "Course Syllabus", type: "PDF" },
-    { id: "2", name: "Week 1 Lecture Slides", type: "PPTX" },
-    { id: "3", name: "Assignment 1 Guidelines", type: "DOCX" },
-  ]);
 
   const [joinRequests, setJoinRequests] = useState([
     { id: 1, name: "Ram poudel" },
     { id: 2, name: "Hari Sharma" },
     { id: 3, name: "Ganga Poudel" },
-  ]);
-
-  const [studentsInClassroom, setStudentsInClassroom] = useState([
-    { id: 1, name: "Nischal regmi" },
-    { id: 2, name: "Ramit Kc" },
   ]);
 
   useEffect(() => {
@@ -63,6 +29,7 @@ const SingleClass = () => {
         });
         if (response) {
           setClassroomDetails(response);
+          console.log(response);
         } else {
           setError("Error while fetching Classroom Details");
         }
@@ -85,9 +52,9 @@ const SingleClass = () => {
       <header className="border-b shadow-md">
         <div className="container mx-auto px-4 py-6">
           <h1 className="text-4xl font-bold text-black">
-            {classroomDetails.faculty}
-          </h1>
-          <p className="text-lg text-gray-800">{classroomDetails.university}</p>
+            {classroomDetails.name}
+          </h1> 
+          <p className="text-lg text-gray-800">{classroomDetails.faculty}, {classroomDetails.university}</p>
         </div>
       </header>
 
@@ -106,7 +73,11 @@ const SingleClass = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-8">
         <div className="flex-1">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="border-b border-gray-300">
               <TabsTrigger
                 value="stream"
@@ -129,18 +100,15 @@ const SingleClass = () => {
             </TabsList>
 
             <TabsContent value="stream">
-              <StreamTab announcements={announcements}  classroomId={classroomId} />
+              <StreamTab classroomId={classroomId} />
             </TabsContent>
 
             <TabsContent value="classwork">
-              <ResourcesTab resources={resources} />
+              <ResourcesTab />
             </TabsContent>
 
             <TabsContent value="people">
-              <PeopleTab
-                studentsInClassroom={studentsInClassroom}
-                joinRequests={joinRequests}
-              />
+              <PeopleTab joinRequests={joinRequests} />
             </TabsContent>
           </Tabs>
         </div>

@@ -98,7 +98,7 @@ const AddResources = asyncHandler(async (req, res) => {
   );
 });
 const getResourceByTitle = asyncHandler(async (req, res) => {
-  const { title } = req.body;
+  const { title } = req.query;
   const resource = await Resource.find({ $text: { $search: title } });
   if (resource.length == 0) {
     throw new ApiError(400, "No resource found");
