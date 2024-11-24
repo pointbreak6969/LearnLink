@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import AvatarComponent from "@/components/AvatarComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileDetails } from "@/store/profileReducer";
 import ProfileTabs from "@/components/ProfileTabs";
@@ -85,15 +86,8 @@ const Profile = () => {
       <div className="flex items-center justify-between mb-6 animate-fade-in">
         <div className="flex items-center gap-5">
           <div className="relative">
-            <Avatar className="h-16 w-16">
-              <AvatarImage src={data.profilePicture} />
-              <AvatarFallback>
-                {fullName
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
-              </AvatarFallback>
-            </Avatar>
+
+            <AvatarComponent profilePicture={data.profilePicture} fullName={fullName}/>
           </div>
           <div>
             <h1 className="text-3xl font-bold text-[#FF9500]">{fullName}</h1>
