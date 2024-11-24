@@ -12,7 +12,8 @@ const AddResources = asyncHandler(async (req, res) => {
   const { text, title } = req.body;
   const resourceFiles = req.files?.resource || [];
   const classroomId = req.body?.classroomId;
-
+  console.log("Request body:", req.body);
+  console.log("Title received:", req.body.title);
   // Validate classroom ID
   if (!classroomId) {
     throw new ApiError(400, "Classroom ID is required");
@@ -208,11 +209,82 @@ const DeleteResource = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to delete resource from database");
   }
 });
-const getUserUploadedResource = asyncHandler(async (req, res) => {});
-
+const getUserUploadedResource = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const resources = await Resource.find({ owner: userId });
+  if (resources.length == 0) {
+    throw new ApiError(400, "No resource found");
+  }
+  res.status(200).json(new ApiResponse(200, resources, "Resources found"));
+});
+const getClassroomResources = asyncHandler(async (req, res) => {
+  const { classroomId } = req.query;
+  if (!classroomId) {
+    throw new ApiError(400, "Classroom ID is required");
+  }
+  const resources = await Resource.aggregate(
+    [
+      {
+        $match: {
+          classroom: new mongoose.Types.ObjectId(classroomId)
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "result"
+        }
+      },
+      {
+        $set: {
+          result: { $arrayElemAt: ["$result", 0] }
+        }
+      },
+      {
+        $lookup: {
+          from: "userprofiles",
+          localField: "owner",
+          foreignField: "user",
+          as: "profileDetails"
+        }
+      },
+      {
+        $set: {
+          "result.profileDetails": {
+            profilePicture: { $arrayElemAt: ["$profileDetails.profilePicture", 0] }
+          }
+        }
+      },
+      {
+        $project: {
+          resource: 1,
+          owner: 1,
+          text: 1,
+          title: 1,
+          classroom: 1,
+          views: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          result: {
+            fullName: "$result.fullName",
+            profileDetails: "$result.profileDetails"
+          }
+        }
+      },{
+        $sort: {
+          createdAt: -1
+        }
+      }
+    ]
+  )
+  res.status(200).json(new ApiResponse(200, resources, "Resources found"));
+});
 export {
   AddResources,
   getResourceByTitle,
   DeleteResource,
   getUserUploadedResource,
+  getClassroomResources
 };

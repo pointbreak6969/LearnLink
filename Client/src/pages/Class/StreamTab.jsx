@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MoreVertical, FileText } from "lucide-react";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useForm, useFieldArray } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Upload, X } from "lucide-react";
+import { Upload, X, PlusCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import resourceService from "@/services/resource";
 import { useState } from "react";
-const StreamTab = ({ classroomId, announcements }) => {
+import ResourceCard from "./ResourceCard";
+const StreamTab = ({ classroomId }) => {
   const classCode = classroomId.classCode;
+  const [announcements, setAnnouncements] = useState([]);
   const {
     register,
     handleSubmit,
@@ -32,6 +32,8 @@ const StreamTab = ({ classroomId, announcements }) => {
     control,
     name: "files",
   });
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files || []);
     if (fields.length + newFiles.length > 20) {
@@ -44,36 +46,54 @@ const StreamTab = ({ classroomId, announcements }) => {
   };
   const onSubmit = async (data) => {
     // Show uploading toast
-    const loadingToast = toast.loading('Uploading resources...');
-  
+    const loadingToast = toast.loading("Uploading resources...");
+
     try {
-      const files = data.files.map(fileObj => fileObj.file);
+      const files = data.files.map((fileObj) => fileObj.file);
       const response = await resourceService.createResource({
         title: data.title,
         text: data.text,
         files,
         classroomId: classCode,
       });
-  
+
       // Dismiss loading toast
       toast.dismiss(loadingToast);
-      
+
       // Show success message
-      toast.success('Resources added successfully');
-  
+      toast.success("Resources added successfully");
+
       // Reset form
       reset();
       setIsExpanded(false);
-  
     } catch (error) {
       // Dismiss loading toast
       toast.dismiss(loadingToast);
-      
+
       // Show error message
-      toast.error(error.message || 'Failed to add resources');
+      toast.error(error.message || "Failed to add resources");
     }
   };
-
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        setIsLoading(true);
+        const resources = await resourceService.getClassroomResources(
+          classCode
+        );
+        if (resources) {
+          setAnnouncements(resources);
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchResources();
+  }, []);
+  if (isLoading) return <div className="text-center p-4">Loading...</div>;
+  if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
   return (
     <div>
       {/* Announcement Input */}
@@ -214,50 +234,45 @@ const StreamTab = ({ classroomId, announcements }) => {
       )}
 
       {/* Announcements */}
-      {announcements.map((announcement) => (
-        <Card key={announcement.id} className="mb-6 shadow-lg rounded-lg">
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage
-                    src="/placeholder.svg?height=40&width=40"
-                    alt={announcement.user}
-                  />
-                  <AvatarFallback>{announcement.user[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold text-[#FF9500]">
-                    {announcement.user}
-                  </h3>
-                  <p className="text-sm text-gray-500">{announcement.date}</p>
-                </div>
+
+      <div>
+        {announcements.length > 0 ? (
+          announcements.map((resource) => (
+            <ResourceCard
+              key={resource._id}
+              createdAt={resource.createdAt}
+              resource={resource.resource}
+              fullName={resource.result.fullName}
+              profilePicture={resource.result.profileDetails.profilePicture.url}
+              text={resource.text}
+              title={resource.title}
+            />
+          ))
+        ) : isExpanded ? null : (
+          <Card className="bg-white/50 backdrop-blur-sm border-dashed">
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+              <div className="rounded-full bg-primary/10 p-4">
+                <PlusCircle className="h-12 w-12 text-primary" />
               </div>
-              <Button variant="ghost" size="icon" className="hover:bg-gray-200">
-                <MoreVertical className="h-4 w-4" />
+              <CardTitle className="text-2xl font-semibold text-gray-900">
+                No resources shared yet
+              </CardTitle>
+              <p className="text-gray-500 max-w-sm">
+                Be the first one to share valuable resources with the community.
+                Your contribution could help others learn and grow.
+              </p>
+              <Button
+                className="mt-4"
+                onClick={() => {
+                  setIsExpanded(true);
+                }}
+              >
+                Share a Resource
               </Button>
-            </div>
-            <p className="mb-4">{announcement.content}</p>
-            {announcement.attachment && (
-              <Card className="bg-gray-100 rounded-lg">
-                <CardContent className="p-4 flex items-center space-x-4">
-                  <div className="bg-gray-200 p-2 rounded">
-                    <FileText className="h-8 w-8 text-gray-500" />
-                  </div>
-                  <div>
-                    <p className="font-medium">
-                      {announcement.attachment.name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {announcement.attachment.type}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };

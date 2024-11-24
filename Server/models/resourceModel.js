@@ -13,7 +13,10 @@ const ResourceSchema = new Schema(
       ref: "User",
       required: true,
     },
-
+    title: {
+      type: String,
+      trim: true,
+    },
     text: {
       type: String,
       trim: true,
