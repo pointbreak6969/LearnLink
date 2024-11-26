@@ -58,23 +58,24 @@ class ResourceService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getClassroomResources(classroomId) {
-
     try {
       const response = await axios.get(
         `${baseUrl}/resource/getClassroomResources`,
- 
+
         {
           withCredentials: true,
-          params: {classroomId}
+          params: { classroomId },
         }
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async deleteResource(resourceId) {
@@ -87,7 +88,8 @@ class ResourceService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getResourceByTitle(title) {
@@ -98,7 +100,8 @@ class ResourceService {
       });
       return response.data.data;
     } catch (error) {
-    throw error;    
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
 }

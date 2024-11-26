@@ -31,7 +31,8 @@ export class AuthService {
       );
       return response.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getCurrentUser(){
@@ -40,7 +41,8 @@ export class AuthService {
           withCredentials: true,
         });
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
     return null;
   }
@@ -50,7 +52,8 @@ export class AuthService {
           withCredentials: true,
         });
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
 }

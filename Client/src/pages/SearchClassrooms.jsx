@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { universities } from "@/components/CreateClassroom";
 import classroomService from "@/services/classroom";
@@ -17,52 +16,53 @@ import MyCard from "@/components/MyCard";
 import useDebounce from "@/hooks/useDebounce";
 
 const SearchClassrooms = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [university, setUniversity] = useState("");
   const [faculty, setFaculty] = useState("");
-  const [subject, setSubject] = useState("");
+  const [error, setError] = useState("");
   const [classrooms, setClassrooms] = useState([]);
-  const debouncedUniversity=useDebounce(university,300)
-  const debouncedFaculty=useDebounce(faculty,300)
+  const debouncedUniversity = useDebounce(university, 300);
+  const debouncedFaculty = useDebounce(faculty, 300);
   const filteredClassroom = classrooms.filter((classroom) => {
     return (
-      (!debouncedUniversity || new RegExp(university, 'i').test(classroom.university)) &&
-      (!debouncedFaculty || new RegExp(faculty, 'i').test(classroom.faculty)) &&
-      (!subject || new RegExp(subject, 'i').test(classroom.subject))
+      (!debouncedUniversity ||
+        new RegExp(university, "i").test(classroom.university)) &&
+      (!debouncedFaculty || new RegExp(faculty, "i").test(classroom.faculty))
     );
   });
-  
 
   useEffect(() => {
     async function fetchData() {
       try {
+        setError("");
         if (debouncedUniversity) {
-          const response = await classroomService.getClassroomByQuery( {universityName:university} );
+          const response = await classroomService.getClassroomByQuery({
+            universityName: university,
+          });
           console.log(response);
           setClassrooms(response);
-        } 
-        else if(debouncedFaculty){
-          const response =await classroomService.getClassroomByQuery({facultyName:faculty})
-          
-          setClassrooms(response)
-        }
-        else if(debouncedUniversity && debouncedFaculty){
-          const response=await classroomService.getClassroomByQuery({universityName:university,facultyName:faculty})
-             setClassrooms(response);
-        }
-        else {
+        } else if (debouncedFaculty) {
+          const response = await classroomService.getClassroomByQuery({
+            facultyName: faculty,
+          });
+
+          setClassrooms(response);
+        } else if (debouncedUniversity && debouncedFaculty) {
+          const response = await classroomService.getClassroomByQuery({
+            universityName: university,
+            facultyName: faculty,
+          });
+          setClassrooms(response);
+        } else {
           const response = await classroomService.getSuggestedClassrooms();
           setClassrooms(response.classrooms);
         }
       } catch (error) {
-        console.error("Error fetching classrooms:", error);
+        setError(error.message);
       }
     }
     console.log(classrooms.admin);
     fetchData();
-  }, [debouncedUniversity || debouncedFaculty]); 
-
- 
+  }, [debouncedUniversity || debouncedFaculty]);
 
   return (
     <>
@@ -101,15 +101,8 @@ const SearchClassrooms = () => {
                   placeholder="Enter Faculty"
                   id="faculty"
                   name="faculty"
-                  onChange={(e)=>setFaculty(e.target.value)}
+                  onChange={(e) => setFaculty(e.target.value)}
                 />
-                {/* <Input
-                  type="text"
-                  placeholder="Enter Subject"
-                  id="subject"
-                  name="subject"
-                  onChange={(e)=>setSubject(e.target.value)}
-                /> */}
               </div>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
@@ -141,7 +134,6 @@ const SearchClassrooms = () => {
                 </motion.div>
               )}
             </div>
-            
           </div>
         </main>
       </div>

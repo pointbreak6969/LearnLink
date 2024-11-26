@@ -30,7 +30,8 @@ class ProfileService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
 
@@ -64,7 +65,8 @@ class ProfileService {
       return response.data.data;
     } catch (error) {
 
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getProfileDetails() {
@@ -74,8 +76,8 @@ class ProfileService {
       });
       return response.data?.data?.[0] || null;
     } catch (error) {
-
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
 }

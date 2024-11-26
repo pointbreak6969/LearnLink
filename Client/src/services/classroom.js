@@ -19,6 +19,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
       throw error;
     }
   }
@@ -54,7 +56,9 @@ class ClassroomService {
           error.response.data.message || "Failed to update classroom"
         );
       } else {
-        throw new Error("Error updating classroom");
+        const errorMessage =
+          error.response?.data?.message || "An error occurred";
+        throw new Error(errorMessage);
       }
     }
   }
@@ -68,7 +72,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getClassroomByQuery({ universityName, facultyName }) {
@@ -77,9 +82,9 @@ class ClassroomService {
       if (universityName) queryParams.universityName = universityName;
       if (facultyName) queryParams.facultyName = facultyName;
       if (Object.keys(queryParams).length === 0) {
-        throw new Error(
-          "At least one filter (university or faculty) is required"
-        );
+        const errorMessage =
+          error.response?.data?.message || "An error occurred";
+        throw new Error(errorMessage);
       }
 
       const response = await axios.get(
@@ -88,7 +93,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async joinClassroomByCode({ code }) {
@@ -105,7 +111,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async joinClassroomByLink({ code }) {
@@ -121,7 +128,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getUserAllClassroom() {
@@ -131,7 +139,8 @@ class ClassroomService {
       });
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getClassroomDetails({ classroomId }) {
@@ -147,7 +156,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getSuggestedClassrooms(page = 1) {
@@ -160,7 +170,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getPublicClassrooms() {
@@ -173,7 +184,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
   async getClassroomUsers(classroomId) {
@@ -186,7 +198,8 @@ class ClassroomService {
       );
       return response.data.data;
     } catch (error) {
-      throw error;
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
     }
   }
 }
