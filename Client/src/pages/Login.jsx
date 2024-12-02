@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth.js";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +33,7 @@ const {login, isLoginLoading} = useAuth();
       }
     }) 
     } catch (error) {
-      //todo: toast error
+      toast.error("Invalid email or password")
     }
    
   }

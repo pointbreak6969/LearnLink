@@ -18,17 +18,30 @@ export function useProfile() {
   const updateProfile = useMutation({
     mutationFn: profileService.updateProfile,
     onSuccess: (response) => {
-
       queryClient.setQueryData(["profile"], response);
+      queryClient.invalidateQueries(["profile"]);
     },
     onError: (error) => {
       console.error("Error updating profile:", error);
     },
   });
+  const completeProfile = useMutation({
+    mutationFn: profileService.completeProfile,
+    onSuccess: (response) => {
+      queryClient.setQueryData(["profile"], response);
+      queryClient.invalidateQueries(["profile"]);
+    },
+    onError: (error) => {
+      console.error("Error completing profile:", error);
+    }
+
+  })
   return {
     profile, 
     updateProfile: updateProfile.mutate,
     isUpdatingProfile: updateProfile.isLoading,
     isProfileLoading: isLoading,
+    completeProfile: completeProfile.mutate,
+    isCompletingProfile: completeProfile.isLoading,
   }
 }

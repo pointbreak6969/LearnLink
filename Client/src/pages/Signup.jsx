@@ -4,25 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 const Signup = () => {
   const [isagreed, Setisagreed] = useState(false);
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: {errors} } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { signup, isSignupLoading } = useAuth();
   const create = async (data) => {
-
     if (!isagreed) {
-      //toast
+      toast.error("You must agree to the terms and conditions.");
       return;
     }
-    signup(data, {
-      onSuccess: ()=>{
-        navigate("/classroom");
-      },
-      onError: (error)=>{
-        console.log(error);
-      }
-    })
+   signup(data)
   };
   return (
     <>
@@ -79,6 +76,9 @@ const Signup = () => {
                 placeholder="Enter your Name"
                 {...register("fullName", { required: true })}
               />
+              {errors.fullName && (
+                <p className="text-red-500">FullName is required</p>
+              )}
             </div>
             <div>
               <label className="block text-gray-700 text-lg">Email</label>
@@ -96,6 +96,9 @@ const Signup = () => {
                   },
                 })}
               />
+              {errors.email && (
+                <p className="text-red-500">Must be a valid Email Address</p>
+              )}
             </div>
             <div>
               <label className="block text-gray-700 text-lg">Password</label>
@@ -103,8 +106,13 @@ const Signup = () => {
                 type="password"
                 className="w-full"
                 placeholder="Enter your Password"
-                {...register("password", { required: true })}
+                {...register("password", { required: true, minLength: 8 })}
               />
+              {errors.password && (
+                <p className="text-red-500">
+                  Password must be at least 8 characters
+                </p>
+              )}
             </div>
             <div className="flex items-center">
               <input
@@ -127,13 +135,18 @@ const Signup = () => {
             <Button
               type="submit"
               className="w-full bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+              disabled={isSignupLoading}
             >
-              Sign Up
+              {isSignupLoading ? (
+                <>
+                  <span className="animate-spin inline-block mr-2">⚪</span>
+                  Signing up...
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
-         {
-          //todo: add error message
 
-         }
             <div className="flex items-center justify-between">
               <hr className="w-full border-gray-300" />
               <span className="px-2 text-gray-500">OR</span>

@@ -1,6 +1,8 @@
 import authService from "@/services/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 export function useAuth() {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
   //get current user
   const { data: user } = useQuery({
@@ -8,7 +10,6 @@ export function useAuth() {
     queryFn: async () => {
       const data = await authService.getCurrentUser();
       const userData = data?.data?.data;
-      //   console.log(userData)
       return { data: userData, authStatus: true };
     },
     onError: (error) => {
@@ -27,6 +28,8 @@ export function useAuth() {
         data: userData,
         authStatus: true,
       });
+      queryClient.invalidateQueries(["user"]);
+      navigate("/classroom")
     },
   });
   //signup mutation
@@ -35,10 +38,8 @@ export function useAuth() {
     onSuccess: (response) => {
       const userData = response?.data?.loggedInUser;
       queryClient.setQueryData(["user"], { data:userData, authStatus: true });
-    },
-    onError: (error) => {
-      console.error("Error signing up:", error
-        );
+      queryClient.invalidateQueries(["user"]);
+      navigate("/classroom")
     }
   });
   //logout mutation

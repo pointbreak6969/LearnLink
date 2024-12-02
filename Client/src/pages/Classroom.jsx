@@ -21,8 +21,8 @@ const Classroom = () => {
       try {
         setIsLoading(true);
         const response = await classroomService.getUserAllClassroom();
-        if (response) {
-          setClassrooms(response[0].results);
+        if (response.length > 0) {
+         setClassrooms(response[0].results);
         }
       } catch (error) {
         console.error("Error fetching classrooms:", error);

@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -20,17 +21,23 @@ import { useForm } from "react-hook-form";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
 
-  const {profile, updateProfile, isProfileLoading} = useProfile();
-  const {user} = useAuth();
+  const { profile, updateProfile, isProfileLoading } = useProfile();
+  const { user } = useAuth();
   const fullName = user?.data?.fullName || "N/A";
-  const { register, handleSubmit, formState: {errors} } = useForm();
-  
-  console.log(profile)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const data = {
     profilePicture: profile?.profilePicture?.url,
     location: profile?.contactInfo.location,
-
-  }
+  };
+  const onSubmit = async (data) => {
+    updateProfile(data, {
+      //toast message
+    });
+  };
   if (isProfileLoading) {
     return (
       <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
@@ -54,8 +61,10 @@ const Profile = () => {
       <div className="flex items-center justify-between mb-6 animate-fade-in">
         <div className="flex items-center gap-5">
           <div className="relative">
-
-            <AvatarComponent profilePicture={data.profilePicture} fullName={fullName}/>
+            <AvatarComponent
+              profilePicture={data.profilePicture}
+              fullName={fullName}
+            />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-[#FF9500]">{fullName}</h1>
@@ -79,7 +88,7 @@ const Profile = () => {
                 </DialogDescription>
                 <form
                   className="flex items-center space-x-2 mt-4 flex-col space-y-4"
-                  onSubmit={handleSubmit(updateProfile)}
+                  onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className="flex flex-col w-full">
                     <label htmlFor="profile" className="text-gray-700">
@@ -145,13 +154,14 @@ const Profile = () => {
                       {...register("college")}
                     />
                   </div>
-
-                  <Button
-                    type="submit"
-                    className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                  >
-                    Submit
-                  </Button>
+                  <DialogClose asChild>
+                    <Button
+                      type="submit"
+                      className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
+                    >
+                      Submit
+                    </Button>
+                  </DialogClose>
                 </form>
                 {/* Display error message if class code is missing */}
               </DialogContent>
@@ -172,7 +182,7 @@ const Profile = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <ProfileTabs profile={profile}/>
+        <ProfileTabs profile={profile} />
       </div>
     </div>
   );
