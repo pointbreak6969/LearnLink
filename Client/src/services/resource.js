@@ -63,14 +63,13 @@ class ResourceService {
     }
   }
   async getClassroomResources(classroomId) {
-
     try {
       const response = await axios.get(
         `${baseUrl}/resource/getClassroomResources`,
- 
+
         {
           withCredentials: true,
-          params: {classroomId}
+          params: { classroomId },
         }
       );
       return response.data.data;

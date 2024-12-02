@@ -21,6 +21,10 @@ class ClassroomService {
     } catch (error) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
+<<<<<<< HEAD
+=======
+      throw error;
+>>>>>>> 468ccd9c015d6c65e53aefea2a748b7cb42a2d48
     }
   }
   async updateClasroomDetails(
@@ -55,7 +59,9 @@ class ClassroomService {
           error.response.data.message || "Failed to update classroom"
         );
       } else {
-        throw new Error("Error updating classroom");
+        const errorMessage =
+          error.response?.data?.message || "An error occurred";
+        throw new Error(errorMessage);
       }
     }
   }
@@ -79,9 +85,9 @@ class ClassroomService {
       if (universityName) queryParams.universityName = universityName;
       if (facultyName) queryParams.facultyName = facultyName;
       if (Object.keys(queryParams).length === 0) {
-        throw new Error(
-          "At least one filter (university or faculty) is required"
-        );
+        const errorMessage =
+          error.response?.data?.message || "An error occurred";
+        throw new Error(errorMessage);
       }
 
       const response = await axios.get(
