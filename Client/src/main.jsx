@@ -20,6 +20,7 @@ import Canvas from "./components/canvas/Canvas.jsx";
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 // Define public routes
 const publicRoutes = [
   {
@@ -110,11 +111,11 @@ const router = createBrowserRouter([
     children: [...publicRoutes, ...authRoutes, ...protectedRoutes],
   },
 ]);
-
+const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-    </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

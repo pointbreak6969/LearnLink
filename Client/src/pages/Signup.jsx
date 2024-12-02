@@ -2,40 +2,27 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import authService from "@/services/auth";
-import { login } from "@/store/authSlice";
+import { useAuth } from "@/hooks/useAuth";
 const Signup = () => {
   const [isagreed, Setisagreed] = useState(false);
   const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: {errors} } = useForm();
+  const { signup, isSignupLoading } = useAuth();
   const create = async (data) => {
-    setError("")
+
     if (!isagreed) {
-      setError("You must accept the terms of service");
+      //toast
       return;
     }
-    try {
-      const createdUser = await authService.createUser(data);
-      const userData = {
-        _id: createdUser.data.loggedInUser._id,
-        fullName: createdUser.data.loggedInUser.fullName,
-        email: createdUser.data.loggedInUser.email,
-       
-      };
-      console.log(userData)
-      if (createdUser) {
-        dispatch(login(userData));
-      
-        navigate("/");
+    signup(data, {
+      onSuccess: ()=>{
+        navigate("/classroom");
+      },
+      onError: (error)=>{
+        console.log(error);
       }
-    } catch (error) {
-      setError(error.message);
-    }
+    })
   };
   return (
     <>
@@ -143,7 +130,10 @@ const Signup = () => {
             >
               Sign Up
             </Button>
-            {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+         {
+          //todo: add error message
+
+         }
             <div className="flex items-center justify-between">
               <hr className="w-full border-gray-300" />
               <span className="px-2 text-gray-500">OR</span>

@@ -2,11 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import authService from "../services/auth.js";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { login as authLogin } from "../store/authSlice";
+import { useAuth } from "@/hooks/useAuth.js";
 import {
   Dialog,
   DialogContent,
@@ -17,33 +15,26 @@ import {
 } from "@/components/ui/dialog";
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
-  const [error, setError] = useState("");
+  const { register, handleSubmit, formState: {errors} } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
+  //todo: add error state
+const {login, isLoginLoading} = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const login = async (data) => {
-    setError("");
+  const onSubmit = async (data)=>{
     try {
-      const session = await authService.login(data);
-      const userData = {
-        _id: session.data.loggedInUser._id,
-        fullName: session.data.loggedInUser.fullName,
-        email: session.data.loggedInUser.email,
-      };
-      if (session?.data) {
-        dispatch(authLogin(userData));
-
-        navigate("/classroom");
-      } else {
-        setError("Invalid response from server");
+      login(data, {
+      onSuccess: ()=>{
+        navigate('/classroom')
       }
+    }) 
     } catch (error) {
-      setError(error.message);
+      //todo: toast error
     }
    
-  };
-  const handleEmailSubmit=()=>{
-    navigate('/verifyotp')
   }
   return (
     <>
@@ -96,7 +87,7 @@ const Login = () => {
             <p className="text-gray-600 mb-6 text-center">
               Welcome back! Please log in to access your account.
             </p>
-            <form className="space-y-6" onSubmit={handleSubmit(login)}>
+            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label
                   htmlFor="email"
@@ -155,7 +146,7 @@ const Login = () => {
                     <DialogDescription className="italic">
                       Kindly enter valid email address
                     </DialogDescription>
-                    <form onSubmit={handleEmailSubmit}>
+                    <form >
                     <span  className="font-semibold text-gray-800 ">Email:</span>
                     <Input
                       id="email"
@@ -179,9 +170,9 @@ const Login = () => {
               >
                 Login
               </Button>
-              {error && (
+              {/* {error && (
                 <p className="text-red-600 mt-4 text-center">{error}</p>
-              )}
+              )} */}
               <div className="text-center text-gray-500">OR</div>
               <Button variant="outline" className="w-full py-3 rounded-lg">
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">

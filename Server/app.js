@@ -14,12 +14,12 @@ app.use(cookieParser());
 app.use(helmet());
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: "Too many requests from this IP, please try again after 15 minutes",
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+//   message: "Too many requests from this IP, please try again after 15 minutes",
+// });
+// app.use(limiter);
 
 // Logging
 app.use(morgan(process.env.NODE_ENV === "development" ? "dev" : "combined"));

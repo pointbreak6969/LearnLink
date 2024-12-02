@@ -10,31 +10,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { logout } from "../store/authSlice.js";
-import { useDispatch, useSelector } from "react-redux";
-import authService from "../services/auth.js";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProfile } from "@/hooks/useProfile.js";
 import { useMemo } from "react";
+import { useAuth } from "@/hooks/useAuth.js";
 function UserAvatar() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { profileDetails, status } = useProfile();
-  const userData = useSelector((state) => state.auth.userData);
-  const fullName = userData?.fullName || "N/A";
+  const { profile, isProfileLoading } = useProfile();
+  const {user, logout} = useAuth();
+  const fullName = user?.data?.fullName || "N/A";
   const profilePicture = useMemo(
-    () => profileDetails?.profilePicture?.url || "?",
-    [profileDetails]
+    () => profile?.profilePicture?.url,
+    [profile]
   );
-  const handleLogout = async () => {
-    try {
-      await authService.logout();
-      dispatch(logout());
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +32,7 @@ function UserAvatar() {
           variant="ghost"
           className="p-0 bg-transparent focus:bg-transparent active:bg-transparent hover:bg-transparent"
         >
-          {status === "loading" ? (
+          {isProfileLoading ? (
             <Skeleton className="h-10 w-10 rounded-full" />
           ) : (
             <AvatarComponent
@@ -88,7 +78,9 @@ function UserAvatar() {
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onClick={()=>{
+          logout();
+        }}>
           <LogOut />
           <span>Log out</span>
         </DropdownMenuItem>

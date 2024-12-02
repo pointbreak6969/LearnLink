@@ -1,7 +1,7 @@
 import Resources from "./Resources";
 import PointsEarned from "./PointsEarned";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   Dialog,
@@ -28,14 +28,12 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import profileService from "@/services/profile";
-import { useDispatch } from "react-redux";
-import { fetchProfileDetails } from "@/store/profileReducer";
-const ProfileTabs = () => {
-  const dispatch = useDispatch();
-  const profileDetails = useSelector(
-    (state) => state.profile.profileDetails || null
-  );
+
+
+
+const ProfileTabs = ({profile}) => {
+ 
+ 
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [savedResources, setSavedResources] = useState(3);
@@ -68,26 +66,26 @@ const ProfileTabs = () => {
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
-  const [error, setError] = useState("");
+ 
   const {register, handleSubmit} = useForm(); 
-  const completeProfile = async (data)=>{
-    setError("");
-    try {
-     const completeProfile =await profileService.completeProfile(data);      
-     if (completeProfile) {
-       dispatch(fetchProfileDetails());
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  }
+  // const completeProfile = async (data)=>{
+  //   setError("");
+  //   try {
+  //    const completeProfile =await profileService.completeProfile(data);      
+  //    if (completeProfile) {
+  //     //  dispatch(fetchProfileDetails());
+  //     }
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  // }
   const data = {
-    fullName: profileDetails?.user_details?.fullName || null,
-    phone: profileDetails?.contactInfo?.phone || null,
-    email: profileDetails?.user_details?.email || null,
-    university: profileDetails?.contactInfo?.university || null,
-    college: profileDetails?.contactInfo?.college || null,
-    location: profileDetails?.contactInfo?.location,
+    fullName: profile?.user_details?.fullName || null,
+    phone: profile?.contactInfo?.phone || null,
+    email: profile?.user_details?.email || null,
+    university: profile?.contactInfo?.university || null,
+    college: profile?.contactInfo?.college || null,
+    location: profile?.contactInfo?.location,
   };
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange}>
@@ -151,7 +149,7 @@ const ProfileTabs = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {profileDetails ? (
+            {profile ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-3 text-[#FF9500]">

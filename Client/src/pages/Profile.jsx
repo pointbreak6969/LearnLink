@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-
+import { useProfile } from "@/hooks/useProfile";
 import AvatarComponent from "@/components/AvatarComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProfileDetails } from "@/store/profileReducer";
 import ProfileTabs from "@/components/ProfileTabs";
 import { MapPin, Award, AlertTriangle, Edit } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Dialog,
   DialogContent,
@@ -19,32 +17,21 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import profileService from "@/services/profile";
-import { useProfile } from "@/hooks/useProfile";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
-  const dispatch = useDispatch();
-  const [error, setError] = useState("");
-  const { register, handleSubmit } = useForm();
-  const updateProfile = async (data) => {
-    setError("");
-    try {
-      const updatedProfile = await profileService.updateProfile(data);
-      if (updatedProfile) {
-        dispatch(fetchProfileDetails());
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-  const { profileDetails, status } = useProfile();
-  const userData = useSelector((state) => state.auth.userData);
-  const fullName = userData?.fullName || "N/A";
-  const data = {
-    profilePicture: profileDetails?.profilePicture?.url || "?",
-  };
 
-  if (status === "loading") {
+  const {profile, updateProfile, isProfileLoading} = useProfile();
+  const {user} = useAuth();
+  const fullName = user?.data?.fullName || "N/A";
+  const { register, handleSubmit, formState: {errors} } = useForm();
+  
+  console.log(profile)
+  const data = {
+    profilePicture: profile?.profilePicture?.url,
+    location: profile?.contactInfo.location,
+
+  }
+  if (isProfileLoading) {
     return (
       <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
         <Skeleton className="h-16 w-16 rounded-full mb-4" />
@@ -59,25 +46,6 @@ const Profile = () => {
           <Skeleton className="h-10 w-1/4 mb-2" />
           <Skeleton className="h-10 w-1/4 mb-2" />
         </Tabs>
-      </div>
-    );
-  }
-
-  if (status === "failed") {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen text-center p-4">
-        <Alert variant="destructive" className="mb-4 max-w-lg">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            Failed to load profile details. Please try again later or contact
-            support if the issue persists.
-          </AlertDescription>
-        </Alert>
-        <img
-          src="/api/placeholder/400/300"
-          alt="Error"
-          className="max-w-full h-auto rounded-lg shadow-lg"
-        />
       </div>
     );
   }
@@ -97,7 +65,7 @@ const Profile = () => {
           </div>
         </div>
         <div>
-          {profileDetails && (
+          {profile && (
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
@@ -186,7 +154,6 @@ const Profile = () => {
                   </Button>
                 </form>
                 {/* Display error message if class code is missing */}
-                {error && <p className="text-red-500 mt-2">{error}</p>}
               </DialogContent>
             </Dialog>
           )}
@@ -205,7 +172,7 @@ const Profile = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <ProfileTabs />
+        <ProfileTabs profile={profile}/>
       </div>
     </div>
   );

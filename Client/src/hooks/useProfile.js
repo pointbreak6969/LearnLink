@@ -1,19 +1,34 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProfileDetails } from "@/store/profileReducer";
-export const useProfile = () => {
-    const dispatch = useDispatch();
-    const profileDetails = useSelector((state) => state.profile.profileDetails);
-    const status = useSelector((state) => state.profile.status);
-    const error = useSelector((state) => state.profile.error);
-    const isAuthenticated = useSelector((state) => state.auth.status);
-    const refreshProfile = useCallback(() => {
-        dispatch(fetchProfileDetails());
-    }, [dispatch]);
-    useEffect(() => {
-        if (isAuthenticated && (status === "idle" || status === "failed")) {
-            dispatch(fetchProfileDetails());
-        }
-    }, [dispatch, isAuthenticated, status]);
-    return { profileDetails, status, error, refreshProfile };
-    }
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import profileService from "@/services/profile";
+
+export function useProfile() {
+  const queryClient = useQueryClient();
+  //get current user profile
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const data = await profileService.getProfileDetails();
+      return data;
+    },
+    onError: (error) => {
+      console.error("Error fetching profile:", error);
+      throw error
+    },
+  });
+  const updateProfile = useMutation({
+    mutationFn: profileService.updateProfile,
+    onSuccess: (response) => {
+
+      queryClient.setQueryData(["profile"], response);
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+    },
+  });
+  return {
+    profile, 
+    updateProfile: updateProfile.mutate,
+    isUpdatingProfile: updateProfile.isLoading,
+    isProfileLoading: isLoading,
+  }
+}
