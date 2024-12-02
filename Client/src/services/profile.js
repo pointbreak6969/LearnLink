@@ -74,7 +74,7 @@ class ProfileService {
       const response = await axios.get(`${baseUrl}/profile/get`, {
         withCredentials: true,
       });
-      return response.data?.data?.[0] || [];
+      return response.data?.data?.[0] || null;
     } catch (error) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);

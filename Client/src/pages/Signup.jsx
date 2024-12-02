@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 const Signup = () => {
   const [isagreed, Setisagreed] = useState(false);
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useProfile } from "@/hooks/useProfile";
 import AvatarComponent from "@/components/AvatarComponent";
 import ProfileTabs from "@/components/ProfileTabs";
-import { MapPin, Award, AlertTriangle, Edit } from "lucide-react";
+import { MapPin, Award, Edit } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
 
-  const { profile, updateProfile, isProfileLoading } = useProfile();
+  const { profile, updateProfile, isProfileLoading, completeProfile, isCompletingProfile, isUpdatingProfile } = useProfile();
   const { user } = useAuth();
   const fullName = user?.data?.fullName || "N/A";
   const {
@@ -31,7 +31,7 @@ const Profile = () => {
   } = useForm();
   const data = {
     profilePicture: profile?.profilePicture?.url,
-    location: profile?.contactInfo.location,
+    location: profile?.contactInfo?.location || "N/A",
   };
   const onSubmit = async (data) => {
     updateProfile(data, {
@@ -182,7 +182,7 @@ const Profile = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <ProfileTabs profile={profile} />
+        <ProfileTabs profile={profile} completeProfile={completeProfile} isCompletingProfile={isCompletingProfile}/>
       </div>
     </div>
   );

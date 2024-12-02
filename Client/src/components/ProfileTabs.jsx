@@ -1,10 +1,10 @@
 import Resources from "./Resources";
 import PointsEarned from "./PointsEarned";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-// import { useSelector } from "react-redux";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
@@ -28,12 +28,8 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-
-
-
-const ProfileTabs = ({profile}) => {
- 
- 
+import { toast } from "sonner";
+const ProfileTabs = ({ profile, completeProfile, isCompletingProfile }) => {
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [savedResources, setSavedResources] = useState(3);
@@ -66,19 +62,14 @@ const ProfileTabs = ({profile}) => {
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
- 
-  const {register, handleSubmit} = useForm(); 
-  // const completeProfile = async (data)=>{
-  //   setError("");
-  //   try {
-  //    const completeProfile =await profileService.completeProfile(data);      
-  //    if (completeProfile) {
-  //     //  dispatch(fetchProfileDetails());
-  //     }
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (data) => {
+    completeProfile(data);
+  };
   const data = {
     fullName: profile?.user_details?.fullName || null,
     phone: profile?.contactInfo?.phone || null,
@@ -159,7 +150,7 @@ const ProfileTabs = ({profile}) => {
                     <User className="text-[#FF9500] mr-2" />
                     <strong className="text-[#FF9500]">
                       Full Name: &nbsp;
-                    </strong>{" "}
+                    </strong>
                     {data.fullName}
                   </p>
                   <p className="flex items-center mb-2">
@@ -215,7 +206,10 @@ const ProfileTabs = ({profile}) => {
                       <DialogDescription>
                         Enter the folowing Details:
                       </DialogDescription>
-                      <form className="flex items-center space-x-2 mt-4 flex-col space-y-4" onSubmit={handleSubmit(completeProfile)}>
+                      <form
+                        className="flex items-center space-x-2 mt-4 flex-col space-y-4"
+                        onSubmit={handleSubmit(onSubmit)}
+                      >
                         <div className="flex flex-col w-full">
                           <label htmlFor="profile" className="text-gray-700">
                             Complete Profile
@@ -225,8 +219,13 @@ const ProfileTabs = ({profile}) => {
                             id="profilePicture"
                             name="profilePicture"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                            {...register("profilePicture", {required: true})}
+                            {...register("profilePicture", { required: true })}
                           />
+                          {errors.profilePicture && (
+                            <p className="text-red-500">
+                              Profile Picture is Required
+                            </p>
+                          )}
                         </div>
                         <div className="flex flex-col w-full">
                           <label htmlFor="phone" className="text-gray-700">
@@ -238,8 +237,13 @@ const ProfileTabs = ({profile}) => {
                             name="phone"
                             placeholder="Enter your phone number"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                            {...register("phone", {required: true})}
+                            {...register("phone", { required: true })}
                           />
+                          {errors.phone && (
+                            <p className="text-red-500">
+                              Phone Number is required
+                            </p>
+                          )}
                         </div>
                         <div className="flex flex-col w-full">
                           <label htmlFor="location" className="text-gray-700">
@@ -251,8 +255,11 @@ const ProfileTabs = ({profile}) => {
                             name="location"
                             placeholder="Enter your location"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                            {...register("location", {required: true})}
+                            {...register("location", { required: true })}
                           />
+                          {errors.location && (
+                            <p className="text-red-500">Location is required</p>
+                          )}
                         </div>
                         <div className="flex flex-col w-full">
                           <label htmlFor="university" className="text-gray-700">
@@ -264,8 +271,13 @@ const ProfileTabs = ({profile}) => {
                             name="university"
                             placeholder="Enter university name"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                            {...register("university", {required: true})}
+                            {...register("university", { required: true })}
                           />
+                          {errors.university && (
+                            <p className="text-red-500">
+                              University Name is required
+                            </p>
+                          )}
                         </div>
                         <div className="flex flex-col w-full">
                           <label htmlFor="college" className="text-gray-700">
@@ -277,19 +289,24 @@ const ProfileTabs = ({profile}) => {
                             name="college"
                             placeholder="Enter your college"
                             className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
-                            {...register("college", {required: true})}
+                            {...register("college", { required: true })}
                           />
+                          {errors.college && (
+                            <p className="text-red-500">
+                              College Name is required
+                            </p>
+                          )}
                         </div>
-
-                        <Button
-                          type="submit"
-                          className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                        >
-                          Submit
-                        </Button>
+                        <DialogClose asChild>
+                          <Button
+                            type="submit"
+                            className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
+                            disabled={isCompletingProfile}
+                          >
+                            Submit
+                          </Button>
+                        </DialogClose>
                       </form>
-                      {/* Display error message if class code is missing */}
-                      {error && <p className="text-red-500 mt-2">{error}</p>}
                     </DialogContent>
                   </Dialog>
                 </div>

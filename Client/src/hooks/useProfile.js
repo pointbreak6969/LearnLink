@@ -10,6 +10,7 @@ export function useProfile() {
       const data = await profileService.getProfileDetails();
       return data;
     },
+    initialData: null,
     onError: (error) => {
       console.error("Error fetching profile:", error);
       throw error

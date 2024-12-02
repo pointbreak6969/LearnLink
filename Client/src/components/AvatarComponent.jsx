@@ -3,7 +3,7 @@ const AvatarComponent = ({ profilePicture, fullName }) => {
   return (
     <Avatar className="h-10 w-10 flex-shrink-0">
       <AvatarImage src={profilePicture} />
-      <AvatarFallback>
+      <AvatarFallback className="text-black">
         {fullName
           ?.split(" ")
           .map((n) => n[0])
