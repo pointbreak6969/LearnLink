@@ -9,7 +9,7 @@ import { baseUrl } from "./lib/constants";
 import { useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
-  const { user, loading, authStatus } = useAuth();
+  const {  loading } = useAuth();
   const api = axios.create({
     baseURL: baseUrl,
     withCredentials: true,

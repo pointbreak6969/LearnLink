@@ -9,7 +9,6 @@ import UserAvatar from "./UserAvatar";
 const Navbar = () => {
   const navigate = useNavigate();
 const {authStatus} = useAuth();
-
   const handleNavigation = () => {
     if (authStatus) {
       navigate("/classroom");

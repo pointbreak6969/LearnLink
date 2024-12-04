@@ -11,11 +11,15 @@ export function useAuth() {
       const data = await authService.getCurrentUser();
       const userData = data?.data?.data;
       return { data: userData, authStatus: true };
+    
     },
+    refetchOnWindowFocus: false,
+    retry:1,
     onError: (error) => {
       console.error("Error fetching user:", error);
     },
     initialData: { data: null, authStatus: false },
+  
   });
 
   //login mutation

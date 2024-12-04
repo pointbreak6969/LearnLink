@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 const Signup = () => {
-  const [isagreed, Setisagreed] = useState(false);
+  const [isAgreed, setIsAgreed] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,11 +14,11 @@ const Signup = () => {
   } = useForm();
   const { signup, isSignupLoading } = useAuth();
   const create = async (data) => {
-    if (!isagreed) {
+    if (!isAgreed) {
       toast.error("You must agree to the terms and conditions.");
       return;
     }
-   signup(data)
+   await signup(data)
   };
   return (
     <>
@@ -88,7 +88,7 @@ const Signup = () => {
                 {...register("email", {
                   required: true,
                   validate: {
-                    matchPatern: (value) =>
+                    matchPattern: (value) =>
                       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
                         value
                       ) || "Email address must be a valid address",
@@ -117,16 +117,16 @@ const Signup = () => {
               <input
                 type="checkbox"
                 id="terms"
-                onChange={(e) => Setisagreed(e.target.checked)}
+                onChange={(e) => setIsAgreed(e.target.checked)}
                 className="mr-2"
               />
               <label className="text-gray-700 text-lg">
                 I agree with{" "}
-                <Link href="#" className="text-orange-500">
+                <Link to="#" className="text-orange-500">
                   Terms of Use
                 </Link>{" "}
                 and{" "}
-                <Link href="#" className="text-orange-500">
+                <Link to="#" className="text-orange-500">
                   Privacy Policy
                 </Link>
               </label>
