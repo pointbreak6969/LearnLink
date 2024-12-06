@@ -64,10 +64,6 @@ class ProfileService {
   
       return response.data.data;
     } catch (error) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 468ccd9c015d6c65e53aefea2a748b7cb42a2d48
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
     }

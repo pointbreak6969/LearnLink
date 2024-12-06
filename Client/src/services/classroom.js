@@ -21,10 +21,7 @@ class ClassroomService {
     } catch (error) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
-<<<<<<< HEAD
-=======
       throw error;
->>>>>>> 468ccd9c015d6c65e53aefea2a748b7cb42a2d48
     }
   }
   async updateClasroomDetails(
