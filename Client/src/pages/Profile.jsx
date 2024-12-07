@@ -7,7 +7,6 @@ import ProfileTabs from "@/components/ProfileTabs";
 import { MapPin, Award, Edit } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuthContext } from "@/hooks/useAuth";
-
 import {
   Dialog,
   DialogClose,
@@ -31,7 +30,6 @@ const Profile = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
   const data = {
     profilePicture: profile?.profilePicture?.url,
@@ -39,27 +37,9 @@ const Profile = () => {
   };
   const onSubmit = async (data) => {
     updateProfile(data, {
-      //toast message
+      
     });
   };
-  // if (isProfileLoading) {
-  //   return (
-  //     <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
-  //       <Skeleton className="h-16 w-16 rounded-full mb-4" />
-  //       <Skeleton className="h-8 w-1/2 mb-2" />
-  //       <Skeleton className="h-4 w-1/3 mb-4" />
-  //       <Progress
-  //         value={profileCompletion}
-  //         className="w-full mb-2 bg-orange-200"
-  //       />
-  //       <Skeleton className="h-6 w-full mb-4" />
-  //       <Tabs>
-  //         <Skeleton className="h-10 w-1/4 mb-2" />
-  //         <Skeleton className="h-10 w-1/4 mb-2" />
-  //       </Tabs>
-  //     </div>
-  //   );
-  // }
   return (
     <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
       <div className="flex items-center justify-between mb-6 animate-fade-in">
@@ -105,6 +85,7 @@ const Profile = () => {
                       className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
                       {...register("profilePicture")}
                     />
+                   
                   </div>
                   <div className="flex flex-col w-full">
                     <label htmlFor="phone" className="text-gray-700">
@@ -189,7 +170,6 @@ const Profile = () => {
         <ProfileTabs
           profile={profile}
           completeProfile={completeProfile}
-          isCompletingProfile={isCompletingProfile}
         />
       </div>
     </div>

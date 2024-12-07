@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -23,43 +22,51 @@ import { useNavigate } from "react-router-dom";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+
 export const universities = [
   { value: "Tribhuvan University", label: "Tribhuvan University (TU)" },
   { value: "Kathmandu University", label: "Kathmandu University (KU)" },
   { value: "Purbanchal University", label: "Purbanchal University (PU)" },
   { value: "Manipal University", label: "Manipal University (MU)" },
   { value: "Pokhara University", label: "Pokhara University (PU)" },
-  { value: "Lumbini Buddhist University", label: "Lumbini Buddhist University (LBU)" },
+  {
+    value: "Lumbini Buddhist University",
+    label: "Lumbini Buddhist University (LBU)",
+  },
   { value: "Buddha University", label: "Buddha University (BU)" },
-  { value: "Nepal Sanskrit University", label: "Nepal Sanskrit University (NSU)" },
+  {
+    value: "Nepal Sanskrit University",
+    label: "Nepal Sanskrit University (NSU)",
+  },
   {
     value: "Central Department of Education - Tribhuvan University",
     label: "Central Department of Education (CDE) - Tribhuvan University",
   },
   { value: "Shree Harsha University", label: "Shree Harsha University (SHU)" },
-  { value: "National College of the University", label: "National College of the University (NCU)" },
-  { value: "Global College of Management", label: "Global College of Management (GCM)" },
+  {
+    value: "National College of the University",
+    label: "National College of the University (NCU)",
+  },
+  {
+    value: "Global College of Management",
+    label: "Global College of Management (GCM)",
+  },
   { value: "Other", label: "Other.." },
 ];
 
-
 const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const { register, handleSubmit, control } = useForm();
-
-  const createClassroom = async (data) => {
-    setError("");
-    try {
-      const response = await classroomService.createClassroom(data);
-      if (response) {
-        console.log(response);
-        toast.success("Classroom created successfully");
-        navigate(`/classroom/${response._id}`);
-      }
-    } catch (error) {
-      setError(error.message);
-    }
+  const { register, handleSubmit, control, formState: {errors} } = useForm();
+  const createClassroom = useMutation({
+    mutationFn: classroomService.createClassroom,
+    onSuccess: (response) => {
+      toast.success("Classroom created successfully");
+      navigate(`/classroom/${response._id}`);
+    },
+  });
+  const handleCreateClassroom = async (data) => {
+    createClassroom.mutate(data);
   };
 
   return (
@@ -71,13 +78,13 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
           <DialogDescription className="italic">
             Here you can add details to create a new classroom
           </DialogDescription>
-          <form
-            onSubmit={handleSubmit(createClassroom)}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit(handleCreateClassroom)} className="space-y-4">
             {/* Classroom Name */}
             <div className="flex flex-col space-y-2">
-              <Label htmlFor="classroomname" className="font-bold text-gray-700">
+              <Label
+                htmlFor="classroomname"
+                className="font-bold text-gray-700"
+              >
                 Classroom Name:
               </Label>
               <Input
@@ -88,6 +95,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
                 className="mr-2"
                 {...register("classroomName", { required: true })}
               />
+              {errors.classroomName && (<p className="text-red-500">Please Enter Valid Classroom Name</p>)}
             </div>
 
             {/* University Selection */}
@@ -119,6 +127,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
                   </Select>
                 )}
               />
+              {errors.universityName && (<p className="text-red-500">Please Select University</p>)}
             </div>
 
             {/* Faculty Input */}
@@ -134,6 +143,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
                 className="mr-2"
                 {...register("facultyName", { required: true })}
               />
+              {errors.facultyName && (<p className="text-red-500">Please Enter Valid Faculty Name</p>)}
             </div>
 
             {/* Submit Button */}
@@ -145,7 +155,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
                 <PlusCircle className="mr-2" /> Add Classroom
               </Button>
             </div>
-            {error && <p className="text-red-500 mt-2">{error}</p>} 
+          
           </form>
         </DialogContent>
       </Dialog>
@@ -154,4 +164,3 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
 };
 
 export default CreateClassroom;
-

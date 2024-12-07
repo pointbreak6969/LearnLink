@@ -5,9 +5,9 @@ import CardCollection from "@/components/CardCollection";
 import classroomService from "@/services/classroom";
 import { Loader2 } from "lucide-react";
 import ClassroomDropDown from "@/components/ClassroomDropDown";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 const Classroom = () => {
-
+  const queryClient = useQueryClient();
   const [classrooms, setClassrooms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedClassrooms, setSuggestedClassrooms] = useState([]);
@@ -16,22 +16,23 @@ const Classroom = () => {
     useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const response = await classroomService.getUserAllClassroom();
-        if (response.length > 0) {
-         setClassrooms(response[0].results);
-        }
-      } catch (error) {
-        console.error("Error fetching classrooms:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await classroomService.getUserAllClassroom();
+  //       if (response.length > 0) {
+  //        setClassrooms(response[0].results);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching classrooms:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+  
 
 
   const fetchSuggestedClassrooms = async (page = 1) => {

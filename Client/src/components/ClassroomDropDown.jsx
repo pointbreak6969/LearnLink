@@ -15,7 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-
 import { PlusCircle, Loader2, BookA, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
@@ -24,25 +23,26 @@ import CreateClassroom from "./CreateClassroom";
 import classroomService from "@/services/classroom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-
+import { useMutation } from "@tanstack/react-query";
 const ClassroomDropDown = () => {
-    const navigate=useNavigate()
-  const { register, handleSubmit } = useForm()
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [createclassDialog, setcreateclassDialog] = useState(false);
   const [joinclassDialog, setjoinclassDialog] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleJoinClass = async (data) => {
-    setError("");
-    try {
-      const response = await classroomService.joinClassroomByCode(data);
-      if (response) {
-        toast.success("Class joined successfully");
-        navigate(`/classroom/${response.id}`);
-      }
-    } catch (error) {
-      setError(error.message);
-    }
+  const joinClass = useMutation({
+    mutationFn: classroomService.joinClassroomByCode,
+    onSuccess: (data) => {
+      toast.success("Class joined successfully");
+      navigate(`/classroom/${data.id}`);
+    },
+  });
+  const handleJoinClass = (data) => {
+    joinClass.mutate(data)
   };
   return (
     <div>
@@ -105,7 +105,7 @@ const ClassroomDropDown = () => {
               </Button>
             </form>
 
-            {error && <p className="text-red-500 mt-2">{error}</p>}
+            {errors.code && <p className="text-red-500 mt-2">{error}</p>}
           </DialogContent>
         </Dialog>
       </div>

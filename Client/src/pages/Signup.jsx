@@ -14,12 +14,12 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
   const { signup} = useContext(AuthContext);
-  const create = async (data) => {
+  const create =  (data) => {
     if (!isAgreed) {
       toast.error("You must agree to the terms and conditions.");
       return;
     }
-   await signup(data)
+    signup(data)
   };
   return (
     <>

@@ -29,7 +29,7 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-const ProfileTabs = ({ profile, completeProfile, isCompletingProfile }) => {
+const ProfileTabs = ({ profile, completeProfile }) => {
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [savedResources, setSavedResources] = useState(3);
@@ -301,7 +301,7 @@ const ProfileTabs = ({ profile, completeProfile, isCompletingProfile }) => {
                           <Button
                             type="submit"
                             className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                            disabled={isCompletingProfile}
+                            
                           >
                             Submit
                           </Button>
