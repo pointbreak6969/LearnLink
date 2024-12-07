@@ -4,7 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth.js";
+import { AuthContext } from "@/hooks/UseAuth";
+import { useContext } from "react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -15,7 +16,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 const Login = () => {
-  const navigate = useNavigate();
   const { register, handleSubmit, formState: {errors} } = useForm({
     defaultValues: {
       email: "",
@@ -23,15 +23,11 @@ const Login = () => {
     }
   });
   //todo: add error state
-const {login, isLoginLoading} = useAuth();
+const {login} = useContext(AuthContext)
   const [dialogOpen, setDialogOpen] = useState(false);
   const onSubmit = async (data)=>{
     try {
-      login(data, {
-      onSuccess: ()=>{
-        navigate('/classroom')
-      }
-    }) 
+      login(data) 
     } catch (error) {
       toast.error("Invalid email or password")
     }

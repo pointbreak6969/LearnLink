@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { useProfile } from "@/hooks/useProfile";
 import AvatarComponent from "@/components/AvatarComponent";
 import ProfileTabs from "@/components/ProfileTabs";
 import { MapPin, Award, Edit } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/hooks/useAuth";
+import { AuthContext } from "@/hooks/useAuth";
+
 import {
   Dialog,
   DialogClose,
@@ -21,8 +21,12 @@ import { useForm } from "react-hook-form";
 const Profile = () => {
   const [profileCompletion, setProfileCompletion] = useState(80);
 
-  const { profile, updateProfile, isProfileLoading, completeProfile, isCompletingProfile, isUpdatingProfile } = useProfile();
-  const { user } = useAuth();
+  const {
+    user,
+    profile,
+    updateProfile,
+    completeProfile,
+  } = useContext(AuthContext);
   const fullName = user?.data?.fullName || "N/A";
   const {
     register,
@@ -38,24 +42,24 @@ const Profile = () => {
       //toast message
     });
   };
-  if (isProfileLoading) {
-    return (
-      <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
-        <Skeleton className="h-16 w-16 rounded-full mb-4" />
-        <Skeleton className="h-8 w-1/2 mb-2" />
-        <Skeleton className="h-4 w-1/3 mb-4" />
-        <Progress
-          value={profileCompletion}
-          className="w-full mb-2 bg-orange-200"
-        />
-        <Skeleton className="h-6 w-full mb-4" />
-        <Tabs>
-          <Skeleton className="h-10 w-1/4 mb-2" />
-          <Skeleton className="h-10 w-1/4 mb-2" />
-        </Tabs>
-      </div>
-    );
-  }
+  // if (isProfileLoading) {
+  //   return (
+  //     <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
+  //       <Skeleton className="h-16 w-16 rounded-full mb-4" />
+  //       <Skeleton className="h-8 w-1/2 mb-2" />
+  //       <Skeleton className="h-4 w-1/3 mb-4" />
+  //       <Progress
+  //         value={profileCompletion}
+  //         className="w-full mb-2 bg-orange-200"
+  //       />
+  //       <Skeleton className="h-6 w-full mb-4" />
+  //       <Tabs>
+  //         <Skeleton className="h-10 w-1/4 mb-2" />
+  //         <Skeleton className="h-10 w-1/4 mb-2" />
+  //       </Tabs>
+  //     </div>
+  //   );
+  // }
   return (
     <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
       <div className="flex items-center justify-between mb-6 animate-fade-in">
@@ -182,7 +186,11 @@ const Profile = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        <ProfileTabs profile={profile} completeProfile={completeProfile} isCompletingProfile={isCompletingProfile}/>
+        <ProfileTabs
+          profile={profile}
+          completeProfile={completeProfile}
+          isCompletingProfile={isCompletingProfile}
+        />
       </div>
     </div>
   );

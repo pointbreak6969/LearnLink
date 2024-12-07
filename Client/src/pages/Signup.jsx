@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useAuth } from "@/hooks/useAuth";
+import { useContext } from "react";
+import { AuthContext } from "@/hooks/UseAuth";
 import { toast } from "sonner";
 const Signup = () => {
   const [isAgreed, setIsAgreed] = useState(false);
@@ -12,7 +13,7 @@ const Signup = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signup, isSignupLoading } = useAuth();
+  const { signup} = useContext(AuthContext);
   const create = async (data) => {
     if (!isAgreed) {
       toast.error("You must agree to the terms and conditions.");
@@ -134,16 +135,9 @@ const Signup = () => {
             <Button
               type="submit"
               className="w-full bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
-              disabled={isSignupLoading}
+           
             >
-              {isSignupLoading ? (
-                <>
-                  <span className="animate-spin inline-block mr-2">⚪</span>
-                  Signing up...
-                </>
-              ) : (
-                "Sign Up"
-              )}
+              Sign Up
             </Button>
 
             <div className="flex items-center justify-between">

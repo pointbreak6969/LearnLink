@@ -19,6 +19,8 @@ import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import AuthProvider from "./hooks/UseAuth.jsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // Define public routes
 const publicRoutes = [
   {
@@ -105,7 +107,12 @@ const protectedRoutes = [
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <AuthProvider>
+        <App />
+        <ReactQueryDevtools/>
+      </AuthProvider>
+    ),
     children: [...publicRoutes, ...authRoutes, ...protectedRoutes],
   },
 ]);

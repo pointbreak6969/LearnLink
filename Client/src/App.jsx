@@ -2,14 +2,13 @@ import "./App.css";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { useAuth } from "@/hooks/useAuth";
 import { Toaster } from "sonner";
 import axios from "axios";
 import { baseUrl } from "./lib/constants";
 import { useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
-  const {  loading } = useAuth();
+
   const api = axios.create({
     baseURL: baseUrl,
     withCredentials: true,
@@ -32,13 +31,6 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="loader"></p>
-      </div>
-    );
-  }
   return (
     <>
       <Toaster position="top-center" richColors closeButton theme="light" />

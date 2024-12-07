@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { replace, useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '@/hooks/UseAuth';
 export default function Protected({ children, authentication = false,redirectPath = '/' }) {
   const navigate = useNavigate();
-  const [loader, setLoader] = useState(true);
-  const { authStatus } = useAuth();
+ 
+  // const { authStatus } = useAuth();
+  const {authStatus} = useContext(AuthContext)
 
   useEffect(() => {
     // For protected routes (authentication = true)
@@ -20,9 +21,9 @@ export default function Protected({ children, authentication = false,redirectPat
       return;
     }
 
-    setLoader(false);
+
   }, [authStatus, navigate, authentication, redirectPath]);
   
 
-  return loader ? <h1>Loading...</h1> : <>{children}</>;
+  return <>{children}</>;
 }

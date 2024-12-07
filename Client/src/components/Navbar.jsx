@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { AppSidebar } from "./Sidebar";
-import { useAuth } from "@/hooks/useAuth";
+import { useContext } from "react";
+import { AuthContext } from "@/hooks/UseAuth";
 import UserAvatar from "./UserAvatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
-const {authStatus} = useAuth();
+const {authStatus} = useContext(AuthContext);
   const handleNavigation = () => {
     if (authStatus) {
       navigate("/classroom");
