@@ -7,10 +7,9 @@ import ResourcesTab from "./ResourcesTab";
 import PeopleTab from "./PeopleTab";
 import { Settings } from "lucide-react";
 import Setting from "./Setting";
-
+import AdminControls from "@/components/AdminControls";
 const SingleClass = () => {
   const classroomId = useParams();
-
   const [loading, isLoading] = useState(false);
   const [classroomDetails, setClassroomDetails] = useState({});
   const [error, setError] = useState("");
@@ -100,15 +99,16 @@ const SingleClass = () => {
                   People
                 </TabsTrigger>
               </div>
-
               <div className="ml-auto">
-                <TabsTrigger
-                  value="setting"
-                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
-                >
-                  <Settings className="text-gray-900" />
-                </TabsTrigger>
-              </div>
+                <AdminControls adminId={classroomDetails.admin}>
+                  <TabsTrigger
+                    value="setting"
+                    className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                  >
+                    <Settings className="text-gray-900" />
+                  </TabsTrigger>
+                </AdminControls>
+              </div>{" "}
             </TabsList>
 
             <TabsContent value="stream">
@@ -123,13 +123,15 @@ const SingleClass = () => {
               <PeopleTab joinRequests={joinRequests} />
             </TabsContent>
             <TabsContent value="setting">
-              <Setting
-                classroomId={classroomId.classCode}
-                code={classroomDetails.code}
-                name={classroomDetails.name}
-                university={classroomDetails.university}
-                faculty={classroomDetails.faculty}
-              />
+              <AdminControls adminId={classroomDetails.admin}>
+                <Setting
+                  classroomId={classroomId.classCode}
+                  code={classroomDetails.code}
+                  name={classroomDetails.name}
+                  university={classroomDetails.university}
+                  faculty={classroomDetails.faculty}
+                />
+              </AdminControls>
             </TabsContent>
           </Tabs>
         </div>
