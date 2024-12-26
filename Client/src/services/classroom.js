@@ -21,13 +21,13 @@ class ClassroomService {
     } catch (error) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
-      throw error;
     }
   }
   async updateClasroomDetails(
     classroomId,
     { newClassroomName, newFacultyName, newUniversityName }
   ) {
+    console.log(classroomId)
     try {
       const updateData = {};
 
@@ -49,6 +49,7 @@ class ClassroomService {
           withCredentials: true,
         }
       );
+      console.log(response);
       return response.data.data;
     } catch (error) {
       if (error.response) {

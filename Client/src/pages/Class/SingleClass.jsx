@@ -10,6 +10,7 @@ import Setting from "./Setting";
 
 const SingleClass = () => {
   const classroomId = useParams();
+
   const [loading, isLoading] = useState(false);
   const [classroomDetails, setClassroomDetails] = useState({});
   const [error, setError] = useState("");
@@ -49,13 +50,14 @@ const SingleClass = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
       <header className="border-b shadow-md">
         <div className="container mx-auto px-4 py-6">
           <h1 className="text-4xl font-bold text-black">
             {classroomDetails.name}
-          </h1> 
-          <p className="text-lg text-gray-800">{classroomDetails.faculty}, {classroomDetails.university}</p>
+          </h1>
+          <p className="text-lg text-gray-800">
+            {classroomDetails.faculty}, {classroomDetails.university}
+          </p>
         </div>
       </header>
 
@@ -71,62 +73,67 @@ const SingleClass = () => {
       </div>
 
       <main className="max-w-7xl mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-8">
-  <div className="flex-1">
-    <Tabs
-      value={activeTab}
-      onValueChange={setActiveTab}
-      className="w-full"
-    >
-      <TabsList className=" flex justify-between">
-        <div className="flex gap-4">
-          <TabsTrigger
-            value="stream"
-            className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+        <div className="flex-1">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
           >
-            Stream
-          </TabsTrigger>
-          <TabsTrigger
-            value="classwork"
-            className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
-          >
-            Resources
-          </TabsTrigger>
-          <TabsTrigger
-            value="people"
-            className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
-          >
-            People
-          </TabsTrigger>
+            <TabsList className=" flex justify-between">
+              <div className="flex gap-4">
+                <TabsTrigger
+                  value="stream"
+                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                >
+                  Stream
+                </TabsTrigger>
+                <TabsTrigger
+                  value="classwork"
+                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                >
+                  Resources
+                </TabsTrigger>
+                <TabsTrigger
+                  value="people"
+                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                >
+                  People
+                </TabsTrigger>
+              </div>
+
+              <div className="ml-auto">
+                <TabsTrigger
+                  value="setting"
+                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                >
+                  <Settings className="text-gray-900" />
+                </TabsTrigger>
+              </div>
+            </TabsList>
+
+            <TabsContent value="stream">
+              <StreamTab classroomId={classroomId} />
+            </TabsContent>
+
+            <TabsContent value="classwork">
+              <ResourcesTab classroomId={classroomId.classCode} />
+            </TabsContent>
+
+            <TabsContent value="people">
+              <PeopleTab joinRequests={joinRequests} />
+            </TabsContent>
+            <TabsContent value="setting">
+              <Setting
+                classroomId={classroomId.classCode}
+                code={classroomDetails.code}
+                name={classroomDetails.name}
+                university={classroomDetails.university}
+                faculty={classroomDetails.faculty}
+              />
+            </TabsContent>
+          </Tabs>
         </div>
-
-        <div className="ml-auto">
-          <TabsTrigger
-            value="setting"
-            className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
-          >
-            <Settings className="text-gray-900" />
-          </TabsTrigger>
-        </div>
-      </TabsList>
-
-      <TabsContent value="stream">
-        <StreamTab classroomId={classroomId} />
-      </TabsContent>
-
-      <TabsContent value="classwork">
-        <ResourcesTab classroomId={classroomId.classCode} />
-      </TabsContent>
-
-      <TabsContent value="people">
-        <PeopleTab joinRequests={joinRequests} />
-      </TabsContent>
-      <TabsContent value="setting">
-        <Setting  />
-      </TabsContent>
-    </Tabs>
-  </div>
-</main>
-
+      </main>
 
       {error && (
         <div className="max-w-7xl mx-auto mt-4 px-4">

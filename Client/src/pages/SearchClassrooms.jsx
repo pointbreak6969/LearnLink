@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Bookmark, GraduationCap, Search, Users } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -9,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
 import { universities } from "@/components/CreateClassroom";
 import classroomService from "@/services/classroom";
 import MyCard from "@/components/MyCard";
@@ -20,11 +18,13 @@ const SearchClassrooms = () => {
   const [faculty, setFaculty] = useState("");
   const [error, setError] = useState("");
   const [classrooms, setClassrooms] = useState([]);
-  const debouncedUniversity = useDebounce(university, 300);
-  const debouncedFaculty = useDebounce(faculty, 300);
+  
+
+  const debouncedFaculty = useDebounce(faculty, 2000);
+
   const filteredClassroom = classrooms.filter((classroom) => {
     return (
-      (!debouncedUniversity ||
+      (!university ||
         new RegExp(university, "i").test(classroom.university)) &&
       (!debouncedFaculty || new RegExp(faculty, "i").test(classroom.faculty))
     );
@@ -34,22 +34,20 @@ const SearchClassrooms = () => {
     async function fetchData() {
       try {
         setError("");
-        if (debouncedUniversity) {
+        if (university && debouncedFaculty) {
+          const response = await classroomService.getClassroomByQuery({
+            universityName: university,
+            facultyName: debouncedFaculty,
+          });
+          setClassrooms(response);
+        } else if (university) {
           const response = await classroomService.getClassroomByQuery({
             universityName: university,
           });
-          console.log(response);
           setClassrooms(response);
         } else if (debouncedFaculty) {
           const response = await classroomService.getClassroomByQuery({
-            facultyName: faculty,
-          });
-
-          setClassrooms(response);
-        } else if (debouncedUniversity && debouncedFaculty) {
-          const response = await classroomService.getClassroomByQuery({
-            universityName: university,
-            facultyName: faculty,
+            facultyName: debouncedFaculty,
           });
           setClassrooms(response);
         } else {
@@ -60,21 +58,16 @@ const SearchClassrooms = () => {
         setError(error.message);
       }
     }
-    console.log(classrooms.admin);
+    
     fetchData();
-  }, [debouncedUniversity || debouncedFaculty]);
+  }, [university, debouncedFaculty]);
 
   return (
     <>
       <div className="min-h-screen bg-orange-50">
         <main className="container mx-auto p-4">
           <div className="mt-10">
-            <motion.div
-              className="bg-white rounded-lg shadow-md p-6 mb-8"
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
               <h2 className="text-xl font-semibold mb-4 text-[#FF9500]">
                 Filter Classrooms
               </h2>
@@ -104,16 +97,11 @@ const SearchClassrooms = () => {
                   onChange={(e) => setFaculty(e.target.value)}
                 />
               </div>
-            </motion.div>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
               {filteredClassroom.length > 0 ? (
                 filteredClassroom.map((classroom) => (
-                  <motion.div
-                    key={classroom._id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
+                  <div key={classroom._id}>
                     <MyCard
                       id={classroom?._id}
                       name={classroom?.name}
@@ -121,17 +109,12 @@ const SearchClassrooms = () => {
                       university={classroom?.university}
                       faculty={classroom?.faculty}
                     />
-                  </motion.div>
+                  </div>
                 ))
               ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-center text-gray-500 col-span-full"
-                >
+                <div className="text-center text-gray-500 col-span-full">
                   No classrooms found for the selected filters.
-                </motion.div>
+                </div>
               )}
             </div>
           </div>
