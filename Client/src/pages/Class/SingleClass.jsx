@@ -100,14 +100,20 @@ const SingleClass = () => {
                 </TabsTrigger>
               </div>
               <div className="ml-auto">
-                <AdminControls adminId={classroomDetails.admin}>
+                {/* <AdminControls adminId={classroomDetails.admin}>
                   <TabsTrigger
                     value="setting"
                     className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
                   >
                     <Settings className="text-gray-900" />
                   </TabsTrigger>
-                </AdminControls>
+                </AdminControls> */}
+                 <TabsTrigger
+                    value="setting"
+                    className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                  >
+                    <Settings className="text-gray-900" />
+                  </TabsTrigger>
               </div>{" "}
             </TabsList>
 
@@ -123,7 +129,7 @@ const SingleClass = () => {
               <PeopleTab joinRequests={joinRequests} />
             </TabsContent>
             <TabsContent value="setting">
-              <AdminControls adminId={classroomDetails.admin}>
+              {/* <AdminControls adminId={classroomDetails.admin}>
                 <Setting
                   classroomId={classroomId.classCode}
                   code={classroomDetails.code}
@@ -131,7 +137,14 @@ const SingleClass = () => {
                   university={classroomDetails.university}
                   faculty={classroomDetails.faculty}
                 />
-              </AdminControls>
+              </AdminControls> */}
+               <Setting
+                  classroomId={classroomId.classCode}
+                  code={classroomDetails.code}
+                  name={classroomDetails.name}
+                  university={classroomDetails.university}
+                  faculty={classroomDetails.faculty}
+                />
             </TabsContent>
           </Tabs>
         </div>

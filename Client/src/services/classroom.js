@@ -27,7 +27,7 @@ class ClassroomService {
     classroomId,
     { newClassroomName, newFacultyName, newUniversityName }
   ) {
-    console.log(classroomId)
+    console.log("i am runnign")
     try {
       const updateData = {};
 
