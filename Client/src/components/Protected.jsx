@@ -26,3 +26,6 @@ export default function Protected({ children, authentication = false,redirectPat
 
   return loader ? <h1>Loading...</h1> : <>{children}</>;
 }
+
+
+array = [{role: "user"}]
