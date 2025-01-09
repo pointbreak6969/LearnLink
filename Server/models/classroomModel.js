@@ -38,11 +38,15 @@ const ClassroomSchema = new Schema(
     },
     requestedUsers: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "users",
-        type: Schema.Types.ObjectId,
-        ref: "join",
-      },
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "users"
+        },
+        status: {
+          type: Boolean,
+          default: false
+        }
+      }
     ],
   },
   {
@@ -50,11 +54,6 @@ const ClassroomSchema = new Schema(
   }
 );
 
-const joinSchema = new Schema({
-  join: Boolean,
-  default: false,
-});
-export const Join = mongoose.model("join", joinSchema);
 const Classroom = mongoose.model("Classroom", ClassroomSchema);
 
 export default Classroom;

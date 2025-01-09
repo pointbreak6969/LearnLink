@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
@@ -33,8 +33,9 @@ const Navbar = () => {
           </div>
           <div>
             <SidebarProvider>
-              <AppSidebar />
-              <SidebarTrigger />
+            <AppSidebar  /> 
+          
+              <SidebarTrigger  />
             </SidebarProvider>
           </div>
         </div>

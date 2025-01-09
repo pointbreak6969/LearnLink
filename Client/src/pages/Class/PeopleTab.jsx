@@ -14,6 +14,8 @@ import { useParams } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import classroomService from "@/services/classroom";
 import AvatarComponent from "@/components/AvatarComponent";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 const UserSkeleton = () => (
   <div className="flex items-center gap-3 p-1">
     <Skeleton className="h-8 w-8 rounded-full" />
@@ -21,7 +23,8 @@ const UserSkeleton = () => (
   </div>
 );
 
-const PeopleTab = ({ joinRequests = [] }) => {
+const PeopleTab = ({ owner}) => {
+  const user=useSelector((state)=>state.auth.userData._id)
   const [isDialogOpen, setDialogOpen] = useState(false);
   const { classCode } = useParams();
   const classroomId = classCode;
@@ -29,6 +32,7 @@ const PeopleTab = ({ joinRequests = [] }) => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [admin, setAdmin] = useState({});
+  const [joinRequests,setJoinRequests]=useState([])
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -45,17 +49,37 @@ const PeopleTab = ({ joinRequests = [] }) => {
       setLoading(false);
     }
   }, [classroomId]);
-
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const handleAccept = (id) => {
-    console.log(`User ${id} accepted`);
-  };
+  const getRequestedUsers=async()=>{
+    const resposne=await classroomService.getJoinRequest({id:classroomId})
+    setJoinRequests(resposne.data);
+    console.log(resposne.data);
+  }
+ useEffect(()=>{
+  getRequestedUsers()
+ },[])
 
-  const handleReject = (id) => {
-    console.log(`User ${id} rejected`);
+  const handleAccept =async (userId) => {
+      const resposne=await classroomService.userRequestToadmin({id:classroomId,status:"accept",userId})
+      if(resposne){
+        toast.success("user registed in classRoom")
+      }else{
+        toast.error("user failed to join classroom")
+      }
+      setDialogOpen(false)
+    };
+
+  const handleReject =async  (userId) => {
+    const resposne=await classroomService.userRequestToadmin({id:classroomId,status:"reject",userId})
+    if(resposne){
+      toast.success("user rejected to join classRoom")
+    }else{
+      toast.error("user is failed  to reject in classroom")
+    }
+    setDialogOpen(false)
   };
 
   if (error) {
@@ -78,9 +102,10 @@ const PeopleTab = ({ joinRequests = [] }) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-end mb-4">
+        {user===owner ?
+          <div className="flex justify-end mb-4">
           <Button
-            onClick={() => setDialogOpen(true)}
+            onClick={()=>setDialogOpen(true)}
             className="relative rounded-xl transition-all"
           >
             Join Requests
@@ -90,7 +115,7 @@ const PeopleTab = ({ joinRequests = [] }) => {
               </span>
             )}
           </Button>
-        </div>
+        </div>:<></>}
 
         <div>
           <div className="p-6 bg-white rounded-lg -mt-10">
@@ -169,21 +194,21 @@ const PeopleTab = ({ joinRequests = [] }) => {
                 ) : (
                   joinRequests.map((user) => (
                     <li
-                      key={user.id}
+                      key={user._id}
                       className="flex justify-between items-center border-b pb-2"
                     >
-                      <span className="text-sm font-medium text-gray-800">
-                        {user.name}
+                      <span className="text-sm font-medium text-gray-900">
+                        {user.fullName}
                       </span>
                       <div className="space-x-2">
                         <Button
-                          onClick={() => handleAccept(user.id)}
+                          onClick={() => handleAccept(user._id)}
                           className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-xl"
                         >
                           Accept
                         </Button>
                         <Button
-                          onClick={() => handleReject(user.id)}
+                          onClick={() => handleReject(user._id)}
                           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl"
                         >
                           Reject

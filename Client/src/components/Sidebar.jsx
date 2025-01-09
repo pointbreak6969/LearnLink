@@ -11,6 +11,8 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 // Menu items.
 const items = [
@@ -45,13 +47,15 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ sidebarOpen, setSidebarOpen}) {
+  const userProfile=useSelector((state)=>state.profile?.profileDetails?.profilePicture?.url)
+ 
   return (
-    <Sidebar side="right">
+    <Sidebar side="right"  open={sidebarOpen} onClose={() => setSidebarOpen(false)}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton> <Link to={'/login'}>Login </Link></SidebarMenuButton>
+            <SidebarMenuButton> <Link to={'/login'} ocClick={()=>setSidebarOpen(false)}>Login </Link></SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton> <Link to={'/signup'}>  Signup</Link></SidebarMenuButton>
@@ -79,7 +83,7 @@ export function AppSidebar() {
       <SidebarSeparator/>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem><Link to={'/profile'}>Profile</Link></SidebarMenuItem>
+          <SidebarMenuItem><Link to={'/profile'}a className="flex"><img src={userProfile} className="h-10 w-10 rounded-full"/><p className="mt-2 ml-2">Profile</p></Link></SidebarMenuItem>
         </SidebarMenu>
          
       </SidebarFooter>

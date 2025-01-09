@@ -228,44 +228,45 @@ const getSuggestedClassrooms = asyncHandler(async (req, res) => {
     let total;
 
     if (req.user) {
-        const userClassrooms = await Classroom.find({ users: req.user._id }).select('_id');
-        const userClassroomIds = userClassrooms.map(classroom => classroom._id);
-        suggestedClassrooms = await Classroom.find({
-            _id: { $nin: userClassroomIds }
-        })
-        .populate({
-            path: 'admin',
-            model: 'User',
-            select: 'fullName -_id'
-        })
-        .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit);
-        total = await Classroom.countDocuments({
-            _id: { $nin: userClassroomIds }
-        });
+      suggestedClassrooms = await Classroom.find({
+        $nor: [
+          { users: req.user._id },
+          { 'requestedUsers.user': req.user._id }
+        ]
+      })
+      .populate({
+        path: 'admin',
+        model: 'User',
+        select: 'fullName -_id'
+      })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+      total = await Classroom.countDocuments({
+        $nor: [
+          { users: req.user._id },
+          { 'requestedUsers.user': req.user._id }
+        ]
+      });
+
+      console.log('User ID:', req.user._id); 
+      console.log('Found classrooms:', suggestedClassrooms.length); // Debug log
     } else {
-        suggestedClassrooms = await Classroom.find()
-            .populate({
-                path: 'admin',
-                model: 'User',
-                select: 'fullName -_id'
-            })
-            .sort({ createdAt: -1 })
-            .skip((page - 1) * limit)
-            .limit(limit);
-        total = await Classroom.countDocuments();
+      suggestedClassrooms = [];
+      total = 0;
     }
 
     return res.status(200).json(
-        new ApiResponse(200, {
-            classrooms: suggestedClassrooms,
-            totalPages: Math.ceil(total / limit),
-            currentPage: page,
-            hasMore: page * limit < total,
-        }, "Classrooms fetched successfully")
+      new ApiResponse(200, {
+        classrooms: suggestedClassrooms,
+        totalPages: Math.ceil(total / limit),
+        currentPage: parseInt(page),
+        hasMore: page * limit < total,
+      }, "Classrooms fetched successfully")
     );
   } catch (error) {
+    console.error('Error in getSuggestedClassrooms:', error);
     return res.status(500).json({ message: error.message });
   }
 });
@@ -364,6 +365,102 @@ const getClassroomUsers = asyncHandler(async (req, res)=>{
   }
   return res.status(200).json(new ApiResponse(200, response, "Success"));
 })
+
+
+const requestToJoinclassRoom=asyncHandler(async(req,res)=>{
+  const {id}=req.body
+  const classroom=await Classroom.findById({_id:id})
+  if(!classroom){
+    throw new ApiError(400,"no classroom found")
+  }
+  const userExists = classroom.requestedUsers.find(user => user._id.toString()===req.user._id.toString()); 
+  if(userExists){
+    throw new ApiError(401,"You already requested to join classroom")
+  }
+  classroom.requestedUsers.push(req.user._id)
+  await classroom.save()
+  return res.status(200).json
+  (
+    new ApiResponse(200,"requested to join into classroom",classroom)
+  )
+})
+
+
+const getJoinRequests = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(400, "Classroom ID is required");
+  }
+
+  const classroom = await Classroom.aggregate([
+    {
+      $match: { _id: new mongoose.Types.ObjectId(id) }
+    },
+    {
+      $unwind: "$requestedUsers"
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "requestedUsers._id",
+        foreignField: "_id",
+        as: "userDetails"
+      }
+    },
+    {$unwind:"$userDetails"},
+    {$lookup:{
+      from:"userprofiles",
+      localField:"userDetails._id",
+      foreignField:"user",
+      as:"userProfiles"
+    }},
+    {
+      $project: {
+        _id:"$userDetails._id",
+        fullName:"$userDetails.fullName"
+      }
+    },
+    
+  ]);
+  return res.status(200).json(
+    new ApiResponse(200, classroom, "Join requests fetched successfully")
+  );
+});
+
+const userRequestToadmin=asyncHandler(async(req,res)=>{
+  const {id,status,userId}=req.body
+  const classroom=await Classroom.findById({_id:id})
+  if(!classroom){
+    throw new ApiError(400,"No classroom found")
+  }
+  console.log(classroom
+  );
+  const requestIndex = classroom.requestedUsers.findIndex(
+    request => request._id.toString() === userId
+  );
+
+  if (requestIndex === -1) {
+    throw new ApiError(400, "User request not found")
+  }
+
+  classroom.requestedUsers.splice(requestIndex, 1)
+
+  if (status === "accept") {
+    classroom.users.push(userId)
+  }
+
+  await classroom.save()
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      classroom,
+      "user joined to classroom ",
+      
+    )
+  )
+})
+
+
 export {
   createClassroom,
   deleteClassroom,
@@ -374,4 +471,7 @@ export {
   getClassroomDetails,
   getSuggestedClassrooms,
   getClassroomUsers,
+  requestToJoinclassRoom,
+  userRequestToadmin,
+  getJoinRequests
 };

@@ -8,18 +8,18 @@ import PeopleTab from "./PeopleTab";
 import { Settings } from "lucide-react";
 import Setting from "./Setting";
 import AdminControls from "@/components/AdminControls";
+import { useSelector } from "react-redux";
 const SingleClass = () => {
   const classroomId = useParams();
   const [loading, isLoading] = useState(false);
   const [classroomDetails, setClassroomDetails] = useState({});
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("stream");
-
-  const [joinRequests, setJoinRequests] = useState([
-    { id: 1, name: "Ram poudel" },
-    { id: 2, name: "Hari Sharma" },
-    { id: 3, name: "Ganga Poudel" },
-  ]);
+  const [owner,setOwner]=useState('')
+  const user=useSelector((state)=>state.auth?.userData?._id)
+ 
+ 
+  
 
   useEffect(() => {
     async function fetchClassDetails() {
@@ -31,6 +31,8 @@ const SingleClass = () => {
         });
         if (response) {
           setClassroomDetails(response);
+          setOwner(response.admin)
+
         } else {
           setError("Error while fetching Classroom Details");
         }
@@ -108,12 +110,13 @@ const SingleClass = () => {
                     <Settings className="text-gray-900" />
                   </TabsTrigger>
                 </AdminControls> */}
-                 <TabsTrigger
+                 {user===owner?
+                  <TabsTrigger
                     value="setting"
                     className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
                   >
                     <Settings className="text-gray-900" />
-                  </TabsTrigger>
+                  </TabsTrigger>:<></>}
               </div>{" "}
             </TabsList>
 
@@ -126,7 +129,7 @@ const SingleClass = () => {
             </TabsContent>
 
             <TabsContent value="people">
-              <PeopleTab joinRequests={joinRequests} />
+              <PeopleTab owner={owner}/>
             </TabsContent>
             <TabsContent value="setting">
               {/* <AdminControls adminId={classroomDetails.admin}>

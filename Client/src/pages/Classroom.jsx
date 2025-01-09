@@ -22,7 +22,7 @@ const Classroom = () => {
         setIsLoading(true);
         const response = await classroomService.getUserAllClassroom();
         if (response) {
-          setClassrooms(response[0].results);
+          setClassrooms(response[0]?.results);
         }
       } catch (error) {
         console.error("Error fetching classrooms:", error);
@@ -81,10 +81,10 @@ const Classroom = () => {
               <ClassroomDropDown/>
             </motion.div>
 
-            {classrooms.length > 0 && (
+            {classrooms?.length > 0 && (
               <div>
                 <h2 className="text-2xl font-bold mb-4">My Classrooms</h2>
-                <CardCollection array={classrooms} />
+                <CardCollection array={classrooms} isJoined={true} />
               </div>
             )}
 
@@ -92,7 +92,7 @@ const Classroom = () => {
               <h2 className="text-2xl font-bold mb-4">Suggested Classrooms</h2>
               {suggestedClassrooms.length > 0 && (
                 <>
-                  <CardCollection array={suggestedClassrooms} />
+                  <CardCollection array={suggestedClassrooms} isJoined={false}/>
                   {hasMoreSuggestedClassrooms && (
                     <div className="flex justify-center mt-6">
                       <Button

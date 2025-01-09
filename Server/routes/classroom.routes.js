@@ -10,6 +10,9 @@ import {
   getClassroomDetails,
   getSuggestedClassrooms,
   getClassroomUsers,
+  requestToJoinclassRoom,
+  userRequestToadmin,
+  getJoinRequests,
 } from "../controllers/classroom.controller.js";
 const router = Router();
 
@@ -26,4 +29,7 @@ router
 router.route("/getSuggestedClassrooms").get(verifyJwt, getSuggestedClassrooms);
 router.route("/getPublicClassrooms").get(getSuggestedClassrooms);
 router.route("/getClassroomUsers/:classroomId").get(verifyJwt, getClassroomUsers);
+router.route('/request').post(verifyJwt,requestToJoinclassRoom)
+router.route('/getJoinRequests/:id').get(getJoinRequests)
+router.route('/userRequestToadmin').post(verifyJwt,userRequestToadmin)
 export default router;

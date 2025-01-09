@@ -203,6 +203,49 @@ class ClassroomService {
       throw new Error(errorMessage);
     }
   }
+  async requestTojoin({id}){
+    try {
+      const response =await axios.post(
+        `${baseUrl}/classroom/request`,
+        {id},
+        {withCredentials:true}
+        
+      )
+      return response.data
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
+    }
+  }
+  async getJoinRequest({id}){
+    try {
+      const response = await axios.get(
+        `${baseUrl}/classroom/getJoinRequests/${id}`,
+        {
+          withCredentials: true
+        }
+      );
+      return response.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async userRequestToadmin({id,status,userId}){
+    try {
+      console.log(id,userId);
+      const response=await axios.post(
+        `${baseUrl}/classroom/userRequestToadmin`,
+        {id,status,userId},
+        {withCredentials:true}
+      )
+      return response.data
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
+    }
+  }
 }
 
 const classroomService = new ClassroomService();
