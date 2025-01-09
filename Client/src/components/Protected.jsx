@@ -28,4 +28,3 @@ export default function Protected({ children, authentication = false,redirectPat
 }
 
 
-array = [{role: "user"}]

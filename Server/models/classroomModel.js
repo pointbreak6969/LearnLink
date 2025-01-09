@@ -1,40 +1,60 @@
 import mongoose, { Schema } from "mongoose";
 
-const ClassroomSchema = new Schema({
+const ClassroomSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: [true, 'Classroom name is required']
+      type: String,
+      required: [true, "Classroom name is required"],
     },
     admin: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     university: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     faculty: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    users: [{
+    users: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'users'
-    }],
-    resources: [{
+        ref: "users",
+      },
+    ],
+    resources: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'resources'
-    }],
+        ref: "resources",
+      },
+    ],
     code: {
-        type: String,
-        required: [true, 'Code is required'],
-        unique: true,
+      type: String,
+      required: [true, "Code is required"],
+      unique: true,
     },
-}, {
-    timestamps: true
-});
+    requestedUsers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+        type: Schema.Types.ObjectId,
+        ref: "join",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
+const joinSchema = new Schema({
+  join: Boolean,
+  default: false,
+});
+export const Join = mongoose.model("join", joinSchema);
 const Classroom = mongoose.model("Classroom", ClassroomSchema);
 
 export default Classroom;

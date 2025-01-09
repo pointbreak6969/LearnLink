@@ -5,6 +5,6 @@ import authReducer from "./authSlice.js";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    profile: profileReducer,
+    profile: profileReducer,  
   },
 });
