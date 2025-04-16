@@ -11,7 +11,7 @@ import { Toaster } from "sonner";
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-
+  const adminpage=location.pathname==='/admin' || location.pathname==='/admin/classroom' || location.pathname=== '/admin/classroomrequest' || location.pathname=== '/admin/userinfo'
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -53,9 +53,9 @@ function App() {
         closeButton
         theme="light"
       />
-      <Navbar />
+     {!adminpage && <Navbar />}
       <Outlet />
-      <Footer />
+      {!adminpage && <Footer />}
     </>
   );
 }

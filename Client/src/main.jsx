@@ -20,6 +20,10 @@ import Canvas from "./components/canvas/Canvas.jsx";
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
+import AdminPage from "./pages/Admin/AdminPage.jsx";
+import ClassRoomAdmin from "./pages/Admin/classRoom.jsx";
+import PendingClassroomAdmin from "./pages/Admin/ClassroomPending.jsx";
+import UserManagement from "./pages/Admin/UserInfoAdmin.jsx";
 // Define public routes
 const publicRoutes = [
   {
@@ -99,6 +103,38 @@ const protectedRoutes = [
     element: (
       <Protected authentication={true}>
         <Reward />
+      </Protected>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <Protected authentication={true}>
+        <AdminPage/>
+      </Protected>
+    ),
+  },
+  {
+    path: "/admin/classroom",
+    element: (
+      <Protected authentication={true}>
+       <ClassRoomAdmin/> 
+      </Protected>
+    ),
+  },
+  {
+    path: "/admin/classroomrequest",
+    element: (
+      <Protected authentication={true}>
+       <PendingClassroomAdmin/> 
+      </Protected>
+    ),
+  },
+  {
+    path: "/admin/userinfo",
+    element: (
+      <Protected authentication={true}>
+       <UserManagement/>
       </Protected>
     ),
   },
