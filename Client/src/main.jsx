@@ -16,7 +16,7 @@ import Classroom from "./pages/Classroom";
 import SingleClass from "./pages/Class/SingleClass.jsx";
 import Reward from "./pages/Reward";
 import Protected from "./components/Protected";
-import Canvas from "./components/canvas/Canvas.jsx";
+
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
@@ -39,7 +39,6 @@ const publicRoutes = [
   { path: "/courses", element: <Courses /> },
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },
-  { path: "/canvas", element: <Canvas /> },
   { path: "/verifyotp", element: <VerifyOtp /> },
 ];
 
