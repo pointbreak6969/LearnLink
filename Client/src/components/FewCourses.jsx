@@ -43,7 +43,7 @@ const FewCourses=() =>{
           </div>
           
           <div className="flex justify-end mb-8">
-            <Link to={'/courses'} className="bg-gray-500 text-white font-semibold py-2 px-8 rounded-md transition-transform hover:scale-105">
+            <Link to={'/courses'} className="bg-orange-500  text-white font-semibold py-2 px-8 rounded-l transition-transform hover:scale-105">
               View All
             </Link>
           </div>

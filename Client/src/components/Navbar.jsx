@@ -19,14 +19,14 @@ const Navbar = () => {
   return (
     <div>
       {/* Top Banner */}
-      <div className="bg-orange-500 text-white text-xs py-1 px-4">
+      <div className="bg-orange-900 text-white text-xs py-1 px-4">
         <div className="container mx-auto text-center">
           Free Courses 🌟 Sale Ends Soon, Get It Now
           <span className="float-right">-&gt;</span>
         </div>
       </div>
 
-      <header className="bg-orange-500 text-white py-2">
+      <header className="bg-gradient-to-b from-orange-500 to bg-red-400 text-white py-2">
         <div className="flex justify-around items-center  md:hidden">
           <div className="text-2xl font-bold" aria-label="Logo">
             <button className="ml-8" onClick={handleNavigation}>L-earn</button>
