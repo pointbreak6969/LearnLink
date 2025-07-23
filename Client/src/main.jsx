@@ -16,7 +16,6 @@ import Classroom from "./pages/Classroom";
 import SingleClass from "./pages/Class/SingleClass.jsx";
 import Reward from "./pages/Reward";
 import Protected from "./components/Protected";
-
 import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
