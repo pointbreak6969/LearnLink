@@ -22,7 +22,10 @@ const generateAccessAndRefreshToken = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
   if (!(fullName && email && password)) {
-    throw new ApiError(400, "Please provide all required fields: full name, email, and password");
+    throw new ApiError(
+      400,
+      "Please provide all required fields: full name, email, and password"
+    );
   }
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -47,11 +50,17 @@ const registerUser = asyncHandler(async (req, res) => {
     .status(201)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(201, {createdUser:{
-      _id: createdUser._id,
-      fullName: createdUser.fullName,
-      email: createdUser.email
-    }}, "User created successfully"));
+    .json(
+      new ApiResponse(
+        201,
+        {
+          _id: createdUser._id,
+          fullName: createdUser.fullName,
+          email: createdUser.email,
+        },
+        "User created successfully"
+      )
+    );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -82,13 +91,17 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, {
-      loggedInUser: {
-        _id: loggedInUser._id,
-        fullName: loggedInUser.fullName,
-        email: loggedInUser.email
-      }
-    }, "User logged in successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        {
+          _id: loggedInUser._id,
+          fullName: loggedInUser.fullName,
+          email: loggedInUser.email,
+        },
+        "User logged in successfully"
+      )
+    );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
