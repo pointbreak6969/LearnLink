@@ -10,10 +10,14 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 const queryClient = new QueryClient();
+import {Eye, EyeOff} from "lucide-react";
 export default function page() {
     const router = useRouter();
-    const {register, formState: {errors}, handleSubmit, reset } = useForm<z.infer<typeof signupSchema>>({
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const {register, formState: {errors}, handleSubmit, reset, watch } = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
             fullName: "",
@@ -22,7 +26,17 @@ export default function page() {
             termsAgreed: false,
         }
     })
-    const signupMutation = useMutation({
+    
+    // Watch password field for real-time validation
+    const watchedPassword = watch("password", "");
+    
+    // Password validation functions
+    const hasMinLength = (pwd: string) => pwd.length >= 8;
+    const hasUppercase = (pwd: string) => /[A-Z]/.test(pwd);
+    const hasLowercase = (pwd: string) => /[a-z]/.test(pwd);
+    const hasNumber = (pwd: string) => /\d/.test(pwd);
+    const hasSpecialChar = (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+    const {mutate: signUp, isPending} = useMutation({
         mutationFn: ({fullName, email, password}: {fullName: string, email: string, password: string}) => authService.signup({fullName, email, password}),
         onSuccess: (userData) =>{
             queryClient.setQueryData(["currentUser"], userData)            
@@ -35,7 +49,7 @@ export default function page() {
         }
     })
     const onSubmit = (data: z.infer<typeof signupSchema>) => {
-        signupMutation.mutate(data);
+        signUp(data);
     }
       return (
     <>
@@ -116,14 +130,45 @@ export default function page() {
                     <p className="text-red-600 mt-2">{errors.email.message}</p>
                 )}
             </div>
-            <div>
+            <div className="relative">
               <label className="block text-gray-700 text-lg">Password</label>
-              <Input
-                type="password"
-                className="w-full"
-                placeholder="Enter your Password"
-                {...register("password", { required: true })}
-              />
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  className="w-full pr-12"
+                  placeholder="Enter your Password"
+                  {...register("password", { required: true })}
+                />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </div>
+              </div>
+
+              {/* Password Requirements */}
+              <div className="mt-3 space-y-1">
+               
+                <div className={`text-xs flex items-center ${hasMinLength(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <span className="mr-2">{hasMinLength(watchedPassword) ? '✓' : '○'}</span>
+                  At least 8 characters long
+                </div>
+                <div className={`text-xs flex items-center ${hasUppercase(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <span className="mr-2">{hasUppercase(watchedPassword) ? '✓' : '○'}</span>
+                  One uppercase letter
+                </div>
+                <div className={`text-xs flex items-center ${hasLowercase(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <span className="mr-2">{hasLowercase(watchedPassword) ? '✓' : '○'}</span>
+                  One lowercase letter
+                </div>
+                <div className={`text-xs flex items-center ${hasNumber(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <span className="mr-2">{hasNumber(watchedPassword) ? '✓' : '○'}</span>
+                  One number
+                </div>
+                <div className={`text-xs flex items-center ${hasSpecialChar(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
+                  <span className="mr-2">{hasSpecialChar(watchedPassword) ? '✓' : '○'}</span>
+                  One special character (!@#$%^&*(),.?":{}|&lt;&gt;)
+                </div>
+              </div>
+              
                 {errors.password && (
                     <p className="text-red-600 mt-2">{errors.password.message}</p>
                 )}
@@ -153,8 +198,9 @@ export default function page() {
             <Button
               type="submit"
               className="w-full bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded"
+              disabled={isPending}
             >
-              Sign Up
+              {isPending ? "Signing Up..." : "Sign Up"}
             </Button>
             {/* {error && <p className="text-red-600 mt-4 text-center">{error}</p>} */}
             <div className="flex items-center justify-between">
@@ -176,7 +222,7 @@ export default function page() {
           </form>
           <p className="text-center text-gray-600 mt-8">
             Already have an account?{" "}
-            <Link href={"/login"} className="text-orange-500">
+            <Link href={"/signin"} className="text-orange-500">
               Login
             </Link>
           </p>

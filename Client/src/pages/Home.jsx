@@ -1,7 +1,6 @@
 
 import Faq from '@/components/Faq'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { ArrowRight, BookOpen, ChevronRight, Lightbulb, Play, Star, Users, Video, Zap } from 'lucide-react'
 import React, { useState } from 'react'
 import { motion } from "framer-motion"
