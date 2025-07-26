@@ -14,7 +14,7 @@ export default function Navbar() {
     retry: 1,
   });
   
-  console.log("Current User:", currentUser.data);
+
   
   const handleNavigation = () => {
     if (currentUser.data) {

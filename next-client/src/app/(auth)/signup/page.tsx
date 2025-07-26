@@ -11,11 +11,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-const queryClient = new QueryClient();
+
 import {Eye, EyeOff} from "lucide-react";
 export default function page() {
     const router = useRouter();
-    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const {register, formState: {errors}, handleSubmit, reset, watch } = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
@@ -38,8 +37,7 @@ export default function page() {
     const hasSpecialChar = (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
     const {mutate: signUp, isPending} = useMutation({
         mutationFn: ({fullName, email, password}: {fullName: string, email: string, password: string}) => authService.signup({fullName, email, password}),
-        onSuccess: (userData) =>{
-            queryClient.setQueryData(["currentUser"], userData)            
+        onSuccess: () =>{    
             reset();
             toast.success("Signup successful");
             router.push("/")

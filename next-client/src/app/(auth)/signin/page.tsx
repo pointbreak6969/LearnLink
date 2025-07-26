@@ -1,4 +1,5 @@
 "use client";
+import React, { useState } from "react";
 import authService from "@/services/auth";
 import { toast } from "sonner";
 import { signInSchema } from "../../../../schemas/signInSchema";
@@ -10,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import * as z from "zod";
-
+import {Eye, EyeOff} from "lucide-react";
 export default function page() {
+    const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -29,6 +31,7 @@ export default function page() {
     mutationFn: (data: z.infer<typeof signInSchema>) =>
       authService.loginUser(data),
     onSuccess: () => {
+      
       toast.success("Login successful");
       reset();
       router.push("/");
@@ -120,19 +123,24 @@ export default function page() {
                   </p>
                 )}
               </div>
-              <div>
+              <div className="relative">
                 <label
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Password
                 </label>
-                <Input
-                  type="password"
-                  id="password"
-                  placeholder="Enter your password"
-                  {...register("password", { required: true })}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    className="w-full pr-12"
+                    placeholder="Enter your Password"
+                    {...register("password", { required: true })}
+                  />
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </div>
+                </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.password.message}
@@ -141,9 +149,9 @@ export default function page() {
               </div>
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center">
-                  <input 
-                    id="remember" 
-                    type="checkbox" 
+                  <input
+                    id="remember"
+                    type="checkbox"
                     className="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                   />
                   <label htmlFor="remember" className="ml-2 text-gray-600">

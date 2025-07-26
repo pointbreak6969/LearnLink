@@ -34,10 +34,10 @@ export const signupSchema = z.object({
     )
     .refine((value) => !commonPasswords.includes(value.toLowerCase()), {
       message: "Password is too common, please choose a different one",
-    })
-    .refine((value) => zxcvbn(value).score >= 2, {
-      message: "Password is too weak, please choose a stronger one",
     }),
+    // .refine((value) => zxcvbn(value).score >= 2, {
+    //   message: "Password is too common, please choose a stronger one",
+    // })
   termsAgreed: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
   }),

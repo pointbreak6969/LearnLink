@@ -22,9 +22,9 @@ const Signup = () => {
     try {
       const createdUser = await authService.createUser(data);
       const userData = {
-        _id: createdUser.data.loggedInUser._id,
-        fullName: createdUser.data.loggedInUser.fullName,
-        email: createdUser.data.loggedInUser.email,
+        _id: createdUser.data._id,
+        fullName: createdUser.data.fullName,
+        email: createdUser.data.email,
        
       };
       console.log(userData)

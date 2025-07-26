@@ -26,9 +26,9 @@ const Login = () => {
     try {
       const session = await authService.login(data);
       const userData = {
-        _id: session.data.loggedInUser._id,
-        fullName: session.data.loggedInUser.fullName,
-        email: session.data.loggedInUser.email,
+        _id: session.data._id,
+        fullName: session.data.fullName,
+        email: session.data.email,
       };
       if (session?.data) {
         dispatch(authLogin(userData));
