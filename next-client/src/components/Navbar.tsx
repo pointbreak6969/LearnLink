@@ -1,23 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useUserContext } from "@/app/context/UserContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
-import authService from "@/services/auth";
-export default function Navbar() {
-  const router = useRouter();
-  const currentUser = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () => authService.getCurrentUser(),
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: 1,
-  });
-  
 
-  
+export default function Navbar() {
+  const { currentUser, isPending } = useUserContext();
+  const router = useRouter();
+
   const handleNavigation = () => {
-    if (currentUser.data) {
+    if (currentUser) {
       router.push("/classroom");
     } else {
       router.push("/");
@@ -57,7 +50,7 @@ export default function Navbar() {
           {/* Navigation Links */}
           <nav className="flex space-x-4 text-lg">
             <ul className="flex space-x-4">
-              {!currentUser.data && (
+              {!currentUser && (
                 <Link href="/" className="cursor-pointer hover:text-orange-200">
                   Home
                 </Link>
@@ -74,29 +67,33 @@ export default function Navbar() {
               >
                 About Us
               </Link>
-              {
-                 currentUser.data ? (
-                   <>
-                     <Link
-                       href="/classroom"
-                       className="cursor-pointer hover:text-orange-200"
-                     >
-                       Classroom
-                     </Link>
-                     <Link
-                       href="/searchclassrooms"
-                       className="cursor-pointer hover:text-orange-200"
-                     >
-                       Search
-                     </Link>
-                   </>
-                 ) : null
-              }
+              {currentUser ? (
+                <>
+                  <Link
+                    href="/classroom"
+                    className="cursor-pointer hover:text-orange-200"
+                  >
+                    Classroom
+                  </Link>
+                  <Link
+                    href="/searchclassrooms"
+                    className="cursor-pointer hover:text-orange-200"
+                  >
+                    Search
+                  </Link>
+                </>
+              ) : null}
             </ul>
           </nav>
 
           <div className="space-x-2 hidden md:block">
-            {!currentUser.data ? (
+            {isPending ? (
+              // Show loading state while checking authentication
+              <div className="flex space-x-2">
+                <div className="h-9 w-20 bg-gray-200 animate-pulse rounded"></div>
+                <div className="h-9 w-16 bg-gray-200 animate-pulse rounded"></div>
+              </div>
+            ) : !currentUser ? (
               <>
                 <Button
                   variant="ghost"

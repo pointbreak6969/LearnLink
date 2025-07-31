@@ -1,19 +1,18 @@
 "use client"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import authService from "@/services/auth";
 import { useRouter } from "next/navigation";
 import { signupSchema } from "../../../../schemas/signupSchema";
 import * as z from "zod";
-import { useMutation, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-
+import { use, useState } from "react";
 import {Eye, EyeOff} from "lucide-react";
+import { useUserContext } from "@/app/context/UserContext";
 export default function page() {
+  const {signUp, isSignUpPending: isPending} = useUserContext();
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const {register, formState: {errors}, handleSubmit, reset, watch } = useForm<z.infer<typeof signupSchema>>({
@@ -35,19 +34,12 @@ export default function page() {
     const hasLowercase = (pwd: string) => /[a-z]/.test(pwd);
     const hasNumber = (pwd: string) => /\d/.test(pwd);
     const hasSpecialChar = (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
-    const {mutate: signUp, isPending} = useMutation({
-        mutationFn: ({fullName, email, password}: {fullName: string, email: string, password: string}) => authService.signup({fullName, email, password}),
-        onSuccess: () =>{    
-            reset();
-            toast.success("Signup successful");
-            router.push("/")
-        }, 
-        onError: ()=>{
-            toast.error("Signup failed");
-        }
-    })
-    const onSubmit = (data: z.infer<typeof signupSchema>) => {
-        signUp(data);
+
+    const onSubmit = async (data: z.infer<typeof signupSchema>) => {
+        await signUp(data);
+        toast.success("Signup successful");
+        reset();
+        router.push("/");
     }
       return (
     <>

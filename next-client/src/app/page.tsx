@@ -9,17 +9,17 @@ export default function page() {
   if (isPending) {
     return (
       <>
-      <div className="flex items-center justify-center h-screen">
-        <div className="loader"></div>
-      </div>
+        <div className="flex items-center justify-center h-screen">
+          <div className="loader"></div>
+        </div>
       </>
-    )
+    );
   }
 
   return (
-   <>
-   <Navbar />
-   <Home />
-   </>
+    <>
+      <Navbar />
+      <Home />
+    </>
   );
 }

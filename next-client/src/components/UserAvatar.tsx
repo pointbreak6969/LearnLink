@@ -11,27 +11,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import authService from "@/services/auth";
+import { useUserContext } from "@/app/context/UserContext";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { useMutation } from "@tanstack/react-query";
 import { Skeleton } from "./ui/skeletion";
+
 export default function UserAvatar() {
   const router = useRouter();
-  const queryClient = useQueryClient();
-  const { data: currentUser, isPending } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () => authService.getCurrentUser(),
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: 1,
-  });
-  const { mutate: logoutUser } = useMutation({
-    mutationFn: authService.logoutUser,
-    onSuccess: () => {
-      queryClient.clear();
+  const { currentUser, isPending, logout } = useUserContext();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
       router.push("/");
-    },
-  });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -44,7 +39,7 @@ export default function UserAvatar() {
             <Skeleton className="h-10 w-10 rounded-full" />
           ) : (
             <Avatar className="h-10 w-10 flex-shrink-0 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
-              <AvatarImage src={currentUser?.profilePicture} className="h-full w-full object-cover" />
+              <AvatarImage src={""} className="h-full w-full object-cover" />
               <AvatarFallback className="flex items-center justify-center h-full w-full bg-primary text-primary-foreground font-semibold">
                 {currentUser?.fullName
                   ?.split(" ")
@@ -91,7 +86,7 @@ export default function UserAvatar() {
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => logoutUser()}>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut />
           <span>Log out</span>
         </DropdownMenuItem>

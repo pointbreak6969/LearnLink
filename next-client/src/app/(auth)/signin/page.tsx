@@ -1,19 +1,21 @@
 "use client";
 import React, { useState } from "react";
-import authService from "@/services/auth";
 import { toast } from "sonner";
 import { signInSchema } from "../../../../schemas/signInSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import * as z from "zod";
-import {Eye, EyeOff} from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { useUserContext } from "@/app/context/UserContext";
+
+
 export default function page() {
-    const [showPassword, setShowPassword] = useState(false);
+  const { signIn, isSignInPending: isPending } = useUserContext();
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -27,21 +29,12 @@ export default function page() {
       password: "",
     },
   });
-  const { mutate: signIn, isPending } = useMutation({
-    mutationFn: (data: z.infer<typeof signInSchema>) =>
-      authService.loginUser(data),
-    onSuccess: () => {
-      
-      toast.success("Login successful");
-      reset();
-      router.push("/");
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-  const onSubmit = (data: z.infer<typeof signInSchema>) => {
-    signIn(data);
+
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    await signIn(data);
+    toast.success("Login successful");
+    reset();
+    router.push("/");
   };
 
   return (
@@ -137,7 +130,10 @@ export default function page() {
                     placeholder="Enter your Password"
                     {...register("password", { required: true })}
                   />
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                  <div
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </div>
                 </div>
@@ -170,7 +166,7 @@ export default function page() {
                 type="submit"
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg"
               >
-                Login
+                {isPending ? "Logging in..." : "Login"}
               </Button>
 
               <div className="text-center text-gray-500">OR</div>
