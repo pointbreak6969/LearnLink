@@ -42,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
+    maxAge: 24 * 60 * 60 * 1000 *7, // 1 day
   };
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
@@ -119,6 +120,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
+    maxAge:24 * 60 * 60 * 1000 *7, // 1 minute
   };
   return res
     .status(200)
