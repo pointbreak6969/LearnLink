@@ -6,6 +6,7 @@ import { signInSchema } from "../../../schemas/signInSchema";
 import * as z from "zod";
 import { signupSchema } from "../../../schemas/signupSchema";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 interface currentUserType {
   fullName?: string;
   email?: string;
@@ -36,7 +37,7 @@ const UserContext = createContext<UserContextType>({
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
-
+  const router = useRouter();
   const { data: currentUser, isPending } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => authService.getCurrentUser(),
@@ -51,6 +52,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       queryClient.setQueryData(["currentUser"], null);
       // Optionally, you can also invalidate all queries
       queryClient.invalidateQueries();
+      router.push("/signin")
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -70,6 +72,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     onSuccess: () => {
       // Refetch current user after login
       queryClient.invalidateQueries({queryKey: ["currentUser"]});
+      router.push("/");
     },
     onError: (error) => {
       console.error("Sign in error:", error);
@@ -91,6 +94,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     onSuccess: () => {
       // Refetch current user after signup
       queryClient.invalidateQueries({queryKey: ["currentUser"]});
+      router.push("/");
     },
     onError: (error) => {
       console.error("Sign up error:", error);

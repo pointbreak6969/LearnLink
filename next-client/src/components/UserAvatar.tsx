@@ -22,7 +22,6 @@ export default function UserAvatar() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }

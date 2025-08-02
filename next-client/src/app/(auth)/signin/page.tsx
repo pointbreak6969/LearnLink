@@ -12,7 +12,6 @@ import * as z from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useUserContext } from "@/app/context/UserContext";
 
-
 export default function page() {
   const { signIn, isSignInPending: isPending } = useUserContext();
   const [showPassword, setShowPassword] = useState(false);
@@ -31,10 +30,9 @@ export default function page() {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    await signIn(data);
+    signIn(data);
     toast.success("Login successful");
     reset();
-    router.push("/");
   };
 
   return (

@@ -36,10 +36,10 @@ export default function page() {
     const hasSpecialChar = (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
 
     const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-        await signUp(data);
+   signUp(data);
         toast.success("Signup successful");
         reset();
-        router.push("/");
+      
     }
       return (
     <>
