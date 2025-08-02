@@ -1,10 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { toast } from "sonner";
 import { signInSchema } from "../../../../schemas/signInSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,7 +13,6 @@ import { useUserContext } from "@/app/context/UserContext";
 export default function page() {
   const { signIn, isSignInPending: isPending } = useUserContext();
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -31,7 +28,7 @@ export default function page() {
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     signIn(data);
-    toast.success("Login successful");
+
     reset();
   };
 

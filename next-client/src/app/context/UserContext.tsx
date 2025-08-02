@@ -7,6 +7,7 @@ import * as z from "zod";
 import { signupSchema } from "../../../schemas/signupSchema";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 interface currentUserType {
   fullName?: string;
   email?: string;
@@ -18,21 +19,23 @@ interface currentUserType {
 interface UserContextType {
   currentUser: currentUserType | null | undefined;
   isPending: boolean;
-  logout: () => Promise<void>;
+  logout: () => void;
   signIn: (data: z.infer<typeof signInSchema>) => void;
   signUp: (data: z.infer<typeof signupSchema>) => void;
   isSignInPending: boolean;
   isSignUpPending: boolean;
+  isLogoutPending: boolean;
 }
 
 const UserContext = createContext<UserContextType>({
   currentUser: null,
   isPending: true,
-  logout: async () => {},
+  logout: () => {},
   signIn: (data: z.infer<typeof signInSchema>) => {},
   signUp: (data: z.infer<typeof signupSchema>) => {},
   isSignInPending: false,
   isSignUpPending: false,
+  isLogoutPending: false,
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -45,18 +48,21 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     retry: 1,
   });
 
-  const logout = async () => {
-    try {
-      await authService.logoutUser();
+  const {mutate: logout, isPending: isLogoutPending} = useMutation({
+    mutationFn: () => authService.logoutUser(),
+    onSuccess: () => {
       // Clear the currentUser query cache
       queryClient.setQueryData(["currentUser"], null);
       // Optionally, you can also invalidate all queries
       queryClient.invalidateQueries();
-      router.push("/signin")
-    } catch (error) {
+      router.push("/signin");
+      toast.success("Logout successful");
+    },
+    onError: (error) => {
       console.error("Logout error:", error);
-    }
-  };
+      toast.error("Logout failed");
+    },
+  });
   // const signIn = async (data: z.infer<typeof signInSchema>) => {
   //   try {
   //     await authService.loginUser(data);
@@ -73,9 +79,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       // Refetch current user after login
       queryClient.invalidateQueries({queryKey: ["currentUser"]});
       router.push("/");
+      toast.success("Login successful");
     },
     onError: (error) => {
       console.error("Sign in error:", error);
+      toast.error("Invalid credentials");
       throw error;
     },
   })
@@ -94,16 +102,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     onSuccess: () => {
       // Refetch current user after signup
       queryClient.invalidateQueries({queryKey: ["currentUser"]});
+      toast.success("Sign up successful");
       router.push("/");
     },
     onError: (error) => {
       console.error("Sign up error:", error);
+      toast.error("Sign up failed");
       throw error;
     },
   })
 
   return (
-    <UserContext.Provider value={{ currentUser, isPending, logout , signIn, signUp, isSignInPending, isSignUpPending }}>
+    <UserContext.Provider value={{ currentUser, isPending, logout, signIn, signUp, isSignInPending, isSignUpPending, isLogoutPending }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,47 +1,48 @@
-"use client"
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+"use client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../../../../schemas/signupSchema";
 import * as z from "zod";
-import { toast } from "sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { use, useState } from "react";
-import {Eye, EyeOff} from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useUserContext } from "@/app/context/UserContext";
 export default function page() {
-  const {signUp, isSignUpPending: isPending} = useUserContext();
-    const router = useRouter();
-    const [showPassword, setShowPassword] = useState(false);
-    const {register, formState: {errors}, handleSubmit, reset, watch } = useForm<z.infer<typeof signupSchema>>({
-        resolver: zodResolver(signupSchema),
-        defaultValues: {
-            fullName: "",
-            email: "",
-            password: "",
-            termsAgreed: false,
-        }
-    })
-    
-    // Watch password field for real-time validation
-    const watchedPassword = watch("password", "");
-    
-    // Password validation functions
-    const hasMinLength = (pwd: string) => pwd.length >= 8;
-    const hasUppercase = (pwd: string) => /[A-Z]/.test(pwd);
-    const hasLowercase = (pwd: string) => /[a-z]/.test(pwd);
-    const hasNumber = (pwd: string) => /\d/.test(pwd);
-    const hasSpecialChar = (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+  const { signUp, isSignUpPending: isPending } = useUserContext();
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    watch,
+  } = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      termsAgreed: false,
+    },
+  });
 
-    const onSubmit = async (data: z.infer<typeof signupSchema>) => {
-   signUp(data);
-        toast.success("Signup successful");
-        reset();
-      
-    }
-      return (
+  // Watch password field for real-time validation
+  const watchedPassword = watch("password", "");
+
+  // Password validation functions
+  const hasMinLength = (pwd: string) => pwd.length >= 8;
+  const hasUppercase = (pwd: string) => /[A-Z]/.test(pwd);
+  const hasLowercase = (pwd: string) => /[a-z]/.test(pwd);
+  const hasNumber = (pwd: string) => /\d/.test(pwd);
+  const hasSpecialChar = (pwd: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+
+  const onSubmit = async (data: z.infer<typeof signupSchema>) => {
+    signUp(data);
+    reset();
+  };
+  return (
     <>
       <div className="min-h-screen flex flex-col-reverse md:flex-row justify-center items-center bg-gray-100 p-4 space-y-8 md:space-y-0">
         {/* Student Testimonials Section */}
@@ -116,9 +117,9 @@ export default function page() {
                   },
                 })}
               />
-                {errors.email && (
-                    <p className="text-red-600 mt-2">{errors.email.message}</p>
-                )}
+              {errors.email && (
+                <p className="text-red-600 mt-2">{errors.email.message}</p>
+              )}
             </div>
             <div className="relative">
               <label className="block text-gray-700 text-lg">Password</label>
@@ -129,39 +130,81 @@ export default function page() {
                   placeholder="Enter your Password"
                   {...register("password", { required: true })}
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+                <div
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </div>
               </div>
 
               {/* Password Requirements */}
               <div className="mt-3 space-y-1">
-               
-                <div className={`text-xs flex items-center ${hasMinLength(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className="mr-2">{hasMinLength(watchedPassword) ? '✓' : '○'}</span>
+                <div
+                  className={`text-xs flex items-center ${
+                    hasMinLength(watchedPassword)
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span className="mr-2">
+                    {hasMinLength(watchedPassword) ? "✓" : "○"}
+                  </span>
                   At least 8 characters long
                 </div>
-                <div className={`text-xs flex items-center ${hasUppercase(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className="mr-2">{hasUppercase(watchedPassword) ? '✓' : '○'}</span>
+                <div
+                  className={`text-xs flex items-center ${
+                    hasUppercase(watchedPassword)
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span className="mr-2">
+                    {hasUppercase(watchedPassword) ? "✓" : "○"}
+                  </span>
                   One uppercase letter
                 </div>
-                <div className={`text-xs flex items-center ${hasLowercase(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className="mr-2">{hasLowercase(watchedPassword) ? '✓' : '○'}</span>
+                <div
+                  className={`text-xs flex items-center ${
+                    hasLowercase(watchedPassword)
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span className="mr-2">
+                    {hasLowercase(watchedPassword) ? "✓" : "○"}
+                  </span>
                   One lowercase letter
                 </div>
-                <div className={`text-xs flex items-center ${hasNumber(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className="mr-2">{hasNumber(watchedPassword) ? '✓' : '○'}</span>
+                <div
+                  className={`text-xs flex items-center ${
+                    hasNumber(watchedPassword)
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span className="mr-2">
+                    {hasNumber(watchedPassword) ? "✓" : "○"}
+                  </span>
                   One number
                 </div>
-                <div className={`text-xs flex items-center ${hasSpecialChar(watchedPassword) ? 'text-green-600' : 'text-gray-500'}`}>
-                  <span className="mr-2">{hasSpecialChar(watchedPassword) ? '✓' : '○'}</span>
+                <div
+                  className={`text-xs flex items-center ${
+                    hasSpecialChar(watchedPassword)
+                      ? "text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span className="mr-2">
+                    {hasSpecialChar(watchedPassword) ? "✓" : "○"}
+                  </span>
                   One special character (!@#$%^&*(),.?":{}|&lt;&gt;)
                 </div>
               </div>
-              
-                {errors.password && (
-                    <p className="text-red-600 mt-2">{errors.password.message}</p>
-                )}
+
+              {errors.password && (
+                <p className="text-red-600 mt-2">{errors.password.message}</p>
+              )}
             </div>
             <div className="flex items-center space-x-3">
               <Input
@@ -181,9 +224,11 @@ export default function page() {
                   Privacy Policy
                 </Link>
               </label>
-                {errors.termsAgreed && (
-                    <p className="text-red-600 mt-2">{errors.termsAgreed.message}</p>
-                )}
+              {errors.termsAgreed && (
+                <p className="text-red-600 mt-2">
+                  {errors.termsAgreed.message}
+                </p>
+              )}
             </div>
             <Button
               type="submit"
@@ -198,10 +243,7 @@ export default function page() {
               <span className="px-2 text-gray-500">OR</span>
               <hr className="w-full border-gray-300" />
             </div>
-            <Button
-              className="w-full flex items-center justify-center"
-            
-            >
+            <Button className="w-full flex items-center justify-center">
               <img
                 src="https://imagepng.org/wp-content/uploads/2019/08/google-icon.png"
                 alt="Google"
