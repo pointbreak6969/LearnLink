@@ -1,7 +1,14 @@
 import axios from "axios";
 import { baseUrl } from "@/lib/constants";
+import { Resource, CreateResourceData } from "@/types";
+
 class ResourceService {
-  async createResource({ title, text, files = [], classroomId }) {
+  async createResource({
+    title,
+    text,
+    files = [],
+    classroomId,
+  }: CreateResourceData): Promise<Resource> {
     try {
       // Validate classroom ID
       if (!classroomId) {
@@ -40,7 +47,7 @@ class ResourceService {
       });
 
       return response.data.data;
-    } catch (error) {
+    } catch (error: any) {
       // If it's an API error, throw the specific message
       if (error.response?.data?.message) {
         throw new Error(error.response.data.message);
@@ -48,7 +55,7 @@ class ResourceService {
       throw error;
     }
   }
-  async getUserUploadedResources() {
+  async getUserUploadedResources(): Promise<Resource[]> {
     try {
       const response = await axios.get(
         `${baseUrl}/resource/getUserUploadedResources`,
@@ -57,12 +64,12 @@ class ResourceService {
         }
       );
       return response.data.data;
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
     }
   }
-  async getClassroomResources(classroomId) {
+  async getClassroomResources(classroomId: string): Promise<Resource[]> {
     try {
       const response = await axios.get(
         `${baseUrl}/resource/getClassroomResources`,
@@ -73,12 +80,12 @@ class ResourceService {
         }
       );
       return response.data.data;
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
     }
   }
-  async deleteResource(resourceId) {
+  async deleteResource(resourceId: string): Promise<any> {
     try {
       const response = await axios.delete(
         `${baseUrl}/resource/delete/${resourceId}`,
@@ -87,19 +94,19 @@ class ResourceService {
         }
       );
       return response.data.data;
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
     }
   }
-  async getResourceByTitle(title) {
+  async getResourceByTitle(title: string): Promise<Resource[]> {
     try {
       const response = await axios.get(`${baseUrl}/resource/get`, {
         withCredentials: true,
         params: { title },
       });
       return response.data.data;
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
     }

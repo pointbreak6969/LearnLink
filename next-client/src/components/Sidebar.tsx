@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -47,23 +49,23 @@ const items = [
   },
 ];
 
-export function AppSidebar({ sidebarOpen, setSidebarOpen }) {
+interface AppSidebarProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+}
+export function AppSidebar({ sidebarOpen, setSidebarOpen }: AppSidebarProps) {
   const userProfile = useSelector(
     (state) => state.profile?.profileDetails?.profilePicture?.url
   );
 
   return (
-    <Sidebar
-      side="right"
-      open={sidebarOpen}
-      onClose={() => setSidebarOpen(false)}
-    >
+    <Sidebar side="right">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
               {" "}
-              <Link to={"/login"} ocClick={() => setSidebarOpen(false)}>
+              <Link href={"/login"} onClick={() => setSidebarOpen(false)}>
                 Login{" "}
               </Link>
             </SidebarMenuButton>
@@ -71,7 +73,7 @@ export function AppSidebar({ sidebarOpen, setSidebarOpen }) {
           <SidebarMenuItem>
             <SidebarMenuButton>
               {" "}
-              <Link to={"/signup"}> Signup</Link>
+              <Link href={"/signup"}> Signup</Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -84,7 +86,7 @@ export function AppSidebar({ sidebarOpen, setSidebarOpen }) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link href={item.url}>
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -98,7 +100,7 @@ export function AppSidebar({ sidebarOpen, setSidebarOpen }) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link to={"/profile"} a className="flex">
+            <Link href={"/profile"} className="flex">
               <img src={userProfile} className="h-10 w-10 rounded-full" />
               <p className="mt-2 ml-2">Profile</p>
             </Link>

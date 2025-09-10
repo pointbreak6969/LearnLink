@@ -1,195 +1,193 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Eye,
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Trash,
-} from 'lucide-react';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { Eye, Search, ChevronLeft, ChevronRight, X, Trash } from "lucide-react";
 
 const ClassroomPending = [
   {
     id: 101,
-    name: 'Advanced Thermodynamics',
-    owner: 'Rita',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-10',
-    code:'sdsdsds',
-    description: 'An advanced course covering thermodynamic systems and laws.',
-    status: 'Pending',
+    name: "Advanced Thermodynamics",
+    owner: "Rita",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-10",
+    code: "sdsdsds",
+    description: "An advanced course covering thermodynamic systems and laws.",
+    status: "Pending",
   },
   {
     id: 102,
-    name: 'Discrete Mathematics',
-    owner: 'Ashim',
-    university: 'Pokhara University',
-    subject: 'Math',
-    created: '2025-04-12',
-    code:'sdsdsds',
-    description: 'Course on logic, set theory, combinatorics, graph theory.',
-    status: 'Pending',
+    name: "Discrete Mathematics",
+    owner: "Ashim",
+    university: "Pokhara University",
+    subject: "Math",
+    created: "2025-04-12",
+    code: "sdsdsds",
+    description: "Course on logic, set theory, combinatorics, graph theory.",
+    status: "Pending",
   },
   {
     id: 103,
-    name: 'Optics',
-    owner: 'Sita',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-14',
-    code:'sdsdsds',
-    description: 'Study of light properties, lenses, and optical instruments.',
-     status: 'Pending',
+    name: "Optics",
+    owner: "Sita",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-14",
+    code: "sdsdsds",
+    description: "Study of light properties, lenses, and optical instruments.",
+    status: "Pending",
   },
   {
     id: 104,
-    name: 'Numerical Methods',
-    owner: 'Manish',
-    university: 'Pokhara University',
-    subject: 'Math',
-    created: '2025-04-15',code:'sdsdsds',
-    description: 'Techniques for solving mathematical problems numerically.',
-    status: 'Pending',
+    name: "Numerical Methods",
+    owner: "Manish",
+    university: "Pokhara University",
+    subject: "Math",
+    created: "2025-04-15",
+    code: "sdsdsds",
+    description: "Techniques for solving mathematical problems numerically.",
+    status: "Pending",
   },
   {
     id: 105,
-    name: 'Classical Mechanics',
-    owner: 'Prakash',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-16',
-    description: 'Fundamentals of motion, forces, and energy.',
-    code:'sdsdsds',
-    status: 'Pending',
+    name: "Classical Mechanics",
+    owner: "Prakash",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-16",
+    description: "Fundamentals of motion, forces, and energy.",
+    code: "sdsdsds",
+    status: "Pending",
   },
   {
     id: 101,
-    name: 'Advanced Thermodynamics',
-    owner: 'Rita',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-10',
-    code:'sdsdsds',
-    description: 'An advanced course covering thermodynamic systems and laws.',
-    status: 'Pending',
+    name: "Advanced Thermodynamics",
+    owner: "Rita",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-10",
+    code: "sdsdsds",
+    description: "An advanced course covering thermodynamic systems and laws.",
+    status: "Pending",
   },
   {
     id: 102,
-    name: 'Discrete Mathematics',
-    owner: 'Ashim',
-    university: 'Pokhara University',
-    subject: 'Math',
-    created: '2025-04-12',
-    code:'sdsdsds',
-    description: 'Course on logic, set theory, combinatorics, graph theory.',
-    status: 'Pending',
+    name: "Discrete Mathematics",
+    owner: "Ashim",
+    university: "Pokhara University",
+    subject: "Math",
+    created: "2025-04-12",
+    code: "sdsdsds",
+    description: "Course on logic, set theory, combinatorics, graph theory.",
+    status: "Pending",
   },
   {
     id: 103,
-    name: 'Optics',
-    owner: 'Sita',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-14',
-    code:'sdsdsds',
-    description: 'Study of light properties, lenses, and optical instruments.',
-     status: 'Pending',
+    name: "Optics",
+    owner: "Sita",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-14",
+    code: "sdsdsds",
+    description: "Study of light properties, lenses, and optical instruments.",
+    status: "Pending",
   },
   {
     id: 104,
-    name: 'Numerical Methods',
-    owner: 'Manish',
-    university: 'Pokhara University',
-    subject: 'Math',
-    created: '2025-04-15',code:'sdsdsds',
-    description: 'Techniques for solving mathematical problems numerically.',
-    status: 'Pending',
+    name: "Numerical Methods",
+    owner: "Manish",
+    university: "Pokhara University",
+    subject: "Math",
+    created: "2025-04-15",
+    code: "sdsdsds",
+    description: "Techniques for solving mathematical problems numerically.",
+    status: "Pending",
   },
   {
     id: 105,
-    name: 'Classical Mechanics',
-    owner: 'Prakash',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-16',
-    description: 'Fundamentals of motion, forces, and energy.',
-    code:'sdsdsds',
-    status: 'Pending',
+    name: "Classical Mechanics",
+    owner: "Prakash",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-16",
+    description: "Fundamentals of motion, forces, and energy.",
+    code: "sdsdsds",
+    status: "Pending",
   },
   {
     id: 101,
-    name: 'Advanced Thermodynamics',
-    owner: 'Rita',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-10',
-    code:'sdsdsds',
-    description: 'An advanced course covering thermodynamic systems and laws.',
-    status: 'Pending',
+    name: "Advanced Thermodynamics",
+    owner: "Rita",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-10",
+    code: "sdsdsds",
+    description: "An advanced course covering thermodynamic systems and laws.",
+    status: "Pending",
   },
   {
     id: 102,
-    name: 'Discrete Mathematics',
-    owner: 'Ashim',
-    university: 'Pokhara University',
-    subject: 'Math',
-    created: '2025-04-12',
-    code:'sdsdsds',
-    description: 'Course on logic, set theory, combinatorics, graph theory.',
-    status: 'Pending',
+    name: "Discrete Mathematics",
+    owner: "Ashim",
+    university: "Pokhara University",
+    subject: "Math",
+    created: "2025-04-12",
+    code: "sdsdsds",
+    description: "Course on logic, set theory, combinatorics, graph theory.",
+    status: "Pending",
   },
   {
     id: 103,
-    name: 'Optics',
-    owner: 'Sita',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-14',
-    code:'sdsdsds',
-    description: 'Study of light properties, lenses, and optical instruments.',
-     status: 'Pending',
+    name: "Optics",
+    owner: "Sita",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-14",
+    code: "sdsdsds",
+    description: "Study of light properties, lenses, and optical instruments.",
+    status: "Pending",
   },
   {
     id: 104,
-    name: 'Numerical Methods',
-    owner: 'Manish',
-    university: 'Pokhara University',
-    subject: 'Math',
-    created: '2025-04-15',code:'sdsdsds',
-    description: 'Techniques for solving mathematical problems numerically.',
-    status: 'Pending',
+    name: "Numerical Methods",
+    owner: "Manish",
+    university: "Pokhara University",
+    subject: "Math",
+    created: "2025-04-15",
+    code: "sdsdsds",
+    description: "Techniques for solving mathematical problems numerically.",
+    status: "Pending",
   },
   {
     id: 105,
-    name: 'Classical Mechanics',
-    owner: 'Prakash',
-    university: 'Tribhuvan University',
-    subject: 'Physics',
-    created: '2025-04-16',
-    description: 'Fundamentals of motion, forces, and energy.',
-    code:'sdsdsds',
-    status: 'Pending',
+    name: "Classical Mechanics",
+    owner: "Prakash",
+    university: "Tribhuvan University",
+    subject: "Physics",
+    created: "2025-04-16",
+    description: "Fundamentals of motion, forces, and energy.",
+    code: "sdsdsds",
+    status: "Pending",
   },
 ];
 
-const universities = ['All', 'Pokhara University', 'Tribhuvan University'];
-const subjects = ['All', 'Math', 'Physics'];
+const universities = ["All", "Pokhara University", "Tribhuvan University"];
+const subjects = ["All", "Math", "Physics"];
 const rowsPerPage = 7;
 
 const page = () => {
-  const [selectedUniversity, setSelectedUniversity] = useState('All');
-  const [selectedSubject, setSelectedSubject] = useState('All');
-  const [search, setSearch] = useState('');
+  const [selectedUniversity, setSelectedUniversity] = useState("All");
+  const [selectedSubject, setSelectedSubject] = useState("All");
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedClassroom, setSelectedClassroom] = useState(null);
 
   const filteredClassrooms = ClassroomPending.filter((room) => {
     const matchesUniversity =
-      selectedUniversity === 'All' || room.university === selectedUniversity;
+      selectedUniversity === "All" || room.university === selectedUniversity;
     const matchesSubject =
-      selectedSubject === 'All' || room.subject === selectedSubject;
+      selectedSubject === "All" || room.subject === selectedSubject;
     const matchesSearch =
       room.name.toLowerCase().includes(search.toLowerCase()) ||
       room.owner.toLowerCase().includes(search.toLowerCase());
@@ -218,7 +216,6 @@ const page = () => {
 
   return (
     <div className="p-6 bg-gradient-to-br from-orange-50 to-orange-100 min-h-screen">
-      
       <h1 className="text-3xl font-bold text-orange-600 mb-4 flex items-center gap-2">
         Pending Classroom Approvals
       </h1>
@@ -287,10 +284,12 @@ const page = () => {
                 <tr
                   key={room.id}
                   className={`transition-all duration-200 ${
-                    idx % 2 === 0 ? 'bg-orange-50' : 'bg-white'
+                    idx % 2 === 0 ? "bg-orange-50" : "bg-white"
                   } hover:bg-orange-100`}
                 >
-                  <td className="px-4 py-3">{(page - 1) * rowsPerPage + idx + 1}</td>
+                  <td className="px-4 py-3">
+                    {(page - 1) * rowsPerPage + idx + 1}
+                  </td>
                   <td className="px-4 py-3 font-medium">{room.name}</td>
                   <td className="px-4 py-3">{room.owner}</td>
                   <td className="px-4 py-3">{room.university}</td>
@@ -303,7 +302,6 @@ const page = () => {
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
-                    
                     </button>
                     <button
                       onClick={() => openModal(room)}
@@ -311,7 +309,6 @@ const page = () => {
                       title="View Details"
                     >
                       <Trash className="w-4 h-4" />
-                    
                     </button>
                   </td>
                 </tr>
@@ -336,8 +333,8 @@ const page = () => {
               key={i + 1}
               className={`px-3 py-1 rounded-md font-semibold ${
                 page === i + 1
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                  ? "bg-orange-500 text-white"
+                  : "bg-orange-100 text-orange-700 hover:bg-orange-200"
               }`}
               onClick={() => setPage(i + 1)}
             >

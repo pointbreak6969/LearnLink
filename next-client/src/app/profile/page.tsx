@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";

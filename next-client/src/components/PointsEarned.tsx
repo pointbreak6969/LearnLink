@@ -87,7 +87,7 @@ const PointsEarned = () => {
                         <Button
                           onClick={handleCashRedemption}
                           className="ml-4  text-white "
-                          varient="default"
+                          variant="default"
                         >
                           Redeem
                         </Button>
@@ -103,7 +103,7 @@ const PointsEarned = () => {
                         <Button
                           onClick={handleGiftCardRedemption}
                           className="ml-4  text-white "
-                          varient="default"
+                          variant="default"
                         >
                           Redeem
                         </Button>
@@ -120,7 +120,7 @@ const PointsEarned = () => {
                         <Button
                           onClick={handleDiscountRedemption}
                           className="ml-4  text-white "
-                          varient="default"
+                          variant="default"
                         >
                           Redeem
                         </Button>

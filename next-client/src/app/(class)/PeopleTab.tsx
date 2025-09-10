@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FaChalkboardTeacher, FaUserGraduate } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import classroomService from "@/services/classroom";
 import AvatarComponent from "@/components/AvatarComponent";
@@ -23,16 +25,16 @@ const UserSkeleton = () => (
   </div>
 );
 
-const PeopleTab = ({ owner}) => {
-  const user=useSelector((state)=>state.auth.userData._id)
+const PeopleTab = ({ owner }: { owner: any }) => {
+  const user = useSelector((state: any) => state.auth.userData._id);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const { classCode } = useParams();
-  const classroomId = classCode;
+  const params = useParams();
+  const classroomId = params.id as string;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [admin, setAdmin] = useState({});
-  const [joinRequests,setJoinRequests]=useState([])
+  const [joinRequests, setJoinRequests] = useState([]);
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -42,7 +44,7 @@ const PeopleTab = ({ owner}) => {
         setUsers(response[0].results);
         setAdmin(response[0].admin);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching users:", error);
       setError(error.message || "Failed to fetch users");
     } finally {
@@ -53,33 +55,41 @@ const PeopleTab = ({ owner}) => {
     fetchUsers();
   }, [fetchUsers]);
 
-  const getRequestedUsers=async()=>{
-    const resposne=await classroomService.getJoinRequest({id:classroomId})
+  const getRequestedUsers = async () => {
+    const resposne = await classroomService.getJoinRequest({ id: classroomId });
     setJoinRequests(resposne.data);
     console.log(resposne.data);
-  }
- useEffect(()=>{
-  getRequestedUsers()
- },[])
+  };
+  useEffect(() => {
+    getRequestedUsers();
+  }, []);
 
-  const handleAccept =async (userId) => {
-      const resposne=await classroomService.userRequestToadmin({id:classroomId,status:"accept",userId})
-      if(resposne){
-        toast.success("user registed in classRoom")
-      }else{
-        toast.error("user failed to join classroom")
-      }
-      setDialogOpen(false)
-    };
-
-  const handleReject =async  (userId) => {
-    const resposne=await classroomService.userRequestToadmin({id:classroomId,status:"reject",userId})
-    if(resposne){
-      toast.success("user rejected to join classRoom")
-    }else{
-      toast.error("user is failed  to reject in classroom")
+  const handleAccept = async (userId: any) => {
+    const resposne = await classroomService.userRequestToadmin({
+      id: classroomId,
+      status: "accept",
+      userId,
+    });
+    if (resposne) {
+      toast.success("user registed in classRoom");
+    } else {
+      toast.error("user failed to join classroom");
     }
-    setDialogOpen(false)
+    setDialogOpen(false);
+  };
+
+  const handleReject = async (userId: any) => {
+    const resposne = await classroomService.userRequestToadmin({
+      id: classroomId,
+      status: "reject",
+      userId,
+    });
+    if (resposne) {
+      toast.success("user rejected to join classRoom");
+    } else {
+      toast.error("user is failed  to reject in classroom");
+    }
+    setDialogOpen(false);
   };
 
   if (error) {
@@ -102,20 +112,23 @@ const PeopleTab = ({ owner}) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {user===owner ?
+        {user === owner ? (
           <div className="flex justify-end mb-4">
-          <Button
-            onClick={()=>setDialogOpen(true)}
-            className="relative rounded-xl transition-all"
-          >
-            Join Requests
-            {joinRequests.length > 0 && (
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                {joinRequests.length}
-              </span>
-            )}
-          </Button>
-        </div>:<></>}
+            <Button
+              onClick={() => setDialogOpen(true)}
+              className="relative rounded-xl transition-all"
+            >
+              Join Requests
+              {joinRequests.length > 0 && (
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                  {joinRequests.length}
+                </span>
+              )}
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
 
         <div>
           <div className="p-6 bg-white rounded-lg -mt-10">
@@ -166,7 +179,8 @@ const PeopleTab = ({ owner}) => {
                       <AvatarComponent
                         profilePicture={
                           user.profileDetails?.profilePicture?.url || "?"
-                        } fullName={user.fullName}
+                        }
+                        fullName={user.fullName}
                       />
                     </div>
                     <span className="text-sm font-medium text-gray-900">

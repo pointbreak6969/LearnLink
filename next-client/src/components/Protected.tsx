@@ -1,31 +1,40 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { replace, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import { RootState } from "@/types";
+
+interface ProtectedProps {
+  children: React.ReactNode;
+  authentication?: boolean;
+  redirectPath?: string;
+}
 
 export default function Protected({
   children,
   authentication = false,
   redirectPath = "/",
-}) {
-  const navigate = useNavigate();
+}: ProtectedProps) {
+  const router = useRouter();
   const [loader, setLoader] = useState(true);
-  const authStatus = useSelector((state) => state.auth.status);
+  const authStatus = useSelector((state: RootState) => state.auth.status);
 
   useEffect(() => {
     // For protected routes (authentication = true)
     if (authentication && !authStatus) {
-      navigate("/login", { replace: true });
+      router.replace("/login");
       return;
     }
 
-    // For public only routes (authentication = false)
+    // For public routes (authentication = false) where user is authenticated
     if (!authentication && authStatus) {
-      navigate(redirectPath, { replace: true });
+      router.replace(redirectPath);
       return;
     }
 
     setLoader(false);
-  }, [authStatus, navigate, authentication, redirectPath]);
+  }, [authStatus, authentication, router, redirectPath]);
 
   return loader ? <h1>Loading...</h1> : <>{children}</>;
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -18,8 +20,8 @@ import { Button } from "./ui/button";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import classroomService from "@/services/classroom";
-import { useNavigate } from "react-router-dom";
-import { Label } from "./ui/label";
+import { useRouter } from "next/navigation";
+import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import { toast } from "sonner";
 export const universities = [
@@ -53,21 +55,35 @@ export const universities = [
   { value: "Other", label: "Other.." },
 ];
 
-const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const { register, handleSubmit, control } = useForm();
+interface CreateClassroomProps {
+  createclassDialog: boolean;
+  setcreateclassDialog: (open: boolean) => void;
+}
 
-  const createClassroom = async (data) => {
+const CreateClassroom = ({
+  createclassDialog,
+  setcreateclassDialog,
+}: CreateClassroomProps) => {
+  const router = useRouter();
+  const [error, setError] = useState<string>("");
+  interface ClassroomFormData {
+    classroomName: string;
+    universityName: string;
+    facultyName: string;
+  }
+
+  const { register, handleSubmit, control } = useForm<ClassroomFormData>();
+
+  const createClassroom = async (data: ClassroomFormData) => {
     setError("");
     try {
       const response = await classroomService.createClassroom(data);
       if (response) {
         console.log(response);
         toast.success("Classroom created successfully");
-        navigate(`/classroom/${response._id}`);
+        router.push(`/classroom/${response._id}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message);
     }
   };
@@ -92,7 +108,6 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
               </Label>
               <Input
                 type="text"
-                name="classroomname"
                 id="classroomname"
                 placeholder="Enter classroom name"
                 className="mr-2"
@@ -138,7 +153,6 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
               </Label>
               <Input
                 type="text"
-                name="faculty"
                 id="faculty"
                 placeholder="Enter your Faculty (e.g. B.E Computer, B.E Civil)"
                 className="mr-2"

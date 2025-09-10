@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Select,
@@ -12,12 +14,13 @@ import { universities } from "@/components/CreateClassroom";
 import classroomService from "@/services/classroom";
 import MyCard from "@/components/MyCard";
 import useDebounce from "@/hooks/useDebounce";
+import { Classroom } from "@/types";
 
 const page = () => {
   const [university, setUniversity] = useState("");
   const [faculty, setFaculty] = useState("");
   const [error, setError] = useState("");
-  const [classrooms, setClassrooms] = useState([]);
+  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
 
   const debouncedFaculty = useDebounce(faculty, 2000);
 
@@ -50,10 +53,10 @@ const page = () => {
           setClassrooms(response);
         } else {
           const response = await classroomService.getSuggestedClassrooms();
-          setClassrooms(response.classrooms);
+          setClassrooms(response);
         }
-      } catch (error) {
-        setError(error.message);
+      } catch (error: any) {
+        setError(error.message || "An error occurred");
       }
     }
 
@@ -103,9 +106,14 @@ const page = () => {
                     <MyCard
                       id={classroom?._id}
                       name={classroom?.name}
-                      admin={classroom?.admin.fullName}
+                      admin={
+                        typeof classroom.admin === "string"
+                          ? classroom.admin
+                          : classroom.admin?.fullName || "Unknown"
+                      }
                       university={classroom?.university}
                       faculty={classroom?.faculty}
+                      isJoined={false}
                     />
                   </div>
                 ))

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,26 +23,34 @@ import { useForm } from "react-hook-form";
 import CreateClassroom from "./CreateClassroom";
 
 import classroomService from "@/services/classroom";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+type JoinClassForm = {
+  code: string;
+};
+
 const ClassroomDropDown = () => {
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<JoinClassForm>();
   const [createclassDialog, setcreateclassDialog] = useState(false);
   const [joinclassDialog, setjoinclassDialog] = useState(false);
   const [error, setError] = useState("");
 
-  const handleJoinClass = async (data) => {
+  const handleJoinClass = async (data: { code: string }) => {
     setError("");
     try {
       const response = await classroomService.joinClassroomByCode(data);
       if (response) {
         toast.success("Class joined successfully");
-        navigate(`/classroom/${response.id}`);
+        router.push(`/classroom/${response.id}`);
       }
     } catch (error) {
-      setError(error.message);
+      if (error && typeof error === "object" && "message" in error) {
+        setError((error as { message: string }).message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
   return (
@@ -91,7 +101,6 @@ const ClassroomDropDown = () => {
               <Input
                 type="text"
                 id="classCode"
-                name="classCode"
                 placeholder="Enter class code"
                 className="flex-grow border-2 border-gray-300 focus:border-gray-500 transition-all duration-200"
                 {...register("code", { required: true })}

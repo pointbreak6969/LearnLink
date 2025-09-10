@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import classroomService from "@/services/classroom";
 import StreamTab from "../../StreamTab";
 import ResourcesTab from "../../ResourcesTab";
@@ -10,13 +12,14 @@ import Setting from "../../Setting";
 import AdminControls from "@/components/AdminControls";
 import { useSelector } from "react-redux";
 const page = () => {
-  const classroomId = useParams();
+  const params = useParams();
+  const classroomId = params.id as string;
   const [loading, isLoading] = useState(false);
   const [classroomDetails, setClassroomDetails] = useState({});
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("stream");
   const [owner, setOwner] = useState("");
-  const user = useSelector((state) => state.auth?.userData?._id);
+  const user = useSelector((state: any) => state.auth?.userData?._id);
 
   useEffect(() => {
     async function fetchClassDetails() {
@@ -24,7 +27,7 @@ const page = () => {
         isLoading(true);
         setError("");
         const response = await classroomService.getClassroomDetails({
-          classroomId: classroomId?.classCode,
+          classroomId: classroomId,
         });
         if (response) {
           setClassroomDetails(response);
@@ -32,14 +35,14 @@ const page = () => {
         } else {
           setError("Error while fetching Classroom Details");
         }
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message);
       } finally {
         isLoading(false);
       }
     }
     fetchClassDetails();
-  }, [classroomId?.classCode]);
+  }, [classroomId]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -124,7 +127,7 @@ const page = () => {
             </TabsContent>
 
             <TabsContent value="classwork">
-              <ResourcesTab classroomId={classroomId.classCode} />
+              <ResourcesTab classroomId={classroomId} />
             </TabsContent>
 
             <TabsContent value="people">
@@ -141,11 +144,11 @@ const page = () => {
                 />
               </AdminControls> */}
               <Setting
-                classroomId={classroomId.classCode}
-                code={classroomDetails.code}
-                name={classroomDetails.name}
-                university={classroomDetails.university}
-                faculty={classroomDetails.faculty}
+                classroomId={classroomId}
+                code={(classroomDetails as any).code}
+                name={(classroomDetails as any).name}
+                university={(classroomDetails as any).university}
+                faculty={(classroomDetails as any).faculty}
               />
             </TabsContent>
           </Tabs>

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardHeader,
@@ -5,7 +7,7 @@ import {
   CardDescription,
   CardContent,
 } from "./ui/card";
-import { Link, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { BookOpen } from "lucide-react";
 import classroomService from "@/services/classroom";
@@ -27,14 +29,14 @@ const MyCard: React.FC<MyCardProps> = ({
   faculty,
   isJoined,
 }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const joinToclassroom = async () => {
     const data = await classroomService.requestTojoin({ id });
   };
 
   const handleClassroomAction = () => {
     if (isJoined) {
-      navigate(`/classroom/${id}`);
+      router.push(`/classroom/${id}`);
     } else {
       joinToclassroom();
     }

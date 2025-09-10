@@ -7,9 +7,14 @@ import { Save } from "lucide-react";
 import resourceService from "@/services/resource";
 import { FaRegFilePdf } from "react-icons/fa";
 import useDebounce from "../../../hooks/useDebounce";
+import { Resource } from "@/types";
 
-const ResourcesTab = ({ classroomId }) => {
-  const [resources, SetResources] = useState([]);
+interface ResourcesTabProps {
+  classroomId: string;
+}
+
+const ResourcesTab = ({ classroomId }: ResourcesTabProps) => {
+  const [resources, SetResources] = useState<Resource[]>([]);
   const [title, SetTitle] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -86,7 +91,7 @@ const ResourcesTab = ({ classroomId }) => {
                     variant="link"
                     size="sm"
                     className="text-[#FF9500] hover:underline"
-                    aria-label={`View ${resource.name}`}
+                    aria-label={`View ${resource.title || "resource"}`}
                   >
                     View
                   </Button>

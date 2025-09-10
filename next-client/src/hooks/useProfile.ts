@@ -13,21 +13,19 @@ interface UseProfileReturn {
 
 export const useProfile = (): UseProfileReturn => {
   const dispatch = useDispatch<AppDispatch>();
-  const profileDetails = useSelector(
-    (state: RootState) => state.profile.profileDetails
-  );
+  const profileDetails = useSelector((state: RootState) => state.profile.profileDetails);
   const status = useSelector((state: RootState) => state.profile.status);
   const error = useSelector((state: RootState) => state.profile.error);
-
+  
   const refreshProfile = useCallback(() => {
     dispatch(fetchProfileDetails());
   }, [dispatch]);
-
+  
   useEffect(() => {
     if (status === "idle" || status === "failed") {
       dispatch(fetchProfileDetails());
     }
   }, [dispatch, status]);
-
+  
   return { profileDetails, status, error, refreshProfile };
 };

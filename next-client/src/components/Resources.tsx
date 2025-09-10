@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const FewCourses = () => {
   const courses = [
@@ -53,7 +53,7 @@ const FewCourses = () => {
 
           <div className="flex justify-end mb-8">
             <Link
-              to={"/courses"}
+              href={"/courses"}
               className="bg-orange-500  text-white font-semibold py-2 px-8 rounded-l transition-transform hover:scale-105"
             >
               View All

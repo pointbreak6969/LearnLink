@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import MyCard from "./MyCard";
 import "../App.css";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
-const CardCollection = ({ array,isJoined }) => {
+const CardCollection = ({ array, isJoined }) => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-  const [contentFits, setContentFits] = useState(false); 
+  const [contentFits, setContentFits] = useState(false);
   // Function to check scroll position
   const scrollRef = useRef(null);
 
@@ -57,7 +57,7 @@ const CardCollection = ({ array,isJoined }) => {
         current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [array]); 
+  }, [array]);
 
   return (
     <>
@@ -69,8 +69,8 @@ const CardCollection = ({ array,isJoined }) => {
                 id={item?._id}
                 name={item.name}
                 admin={item?.admin?.fullName}
-                faculty = {item?.faculty}
-                university = {item?.university}
+                faculty={item?.faculty}
+                university={item?.university}
                 price={item?.price}
                 isJoined={isJoined}
               />
