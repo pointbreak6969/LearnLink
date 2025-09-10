@@ -1,6 +1,5 @@
 "use client";
 import Home from "@/components/Home";
-import Navbar from "@/components/Navbar";
 import { useUserContext } from "./context/UserContext";
 import "./css/loader.css";
 export default function page() {
@@ -18,7 +17,6 @@ export default function page() {
 
   return (
     <>
-      <Navbar />
       <Home />
     </>
   );
