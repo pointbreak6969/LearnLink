@@ -50,5 +50,8 @@ app.use("*", (req, res) => {
     message: `Route ${req.originalUrl} not found`,
   });
 });
+app.get("/", (req, res)=>{
+  res.send("Welcome to LearnLink API. Official documentation is at https://github.com/pointbreak6969/LearnLink/tree/main/Server/readme.md")
+})
 app.use(errorHandler);
 export { app };
