@@ -40,6 +40,9 @@ import resourceRouter from "./routes/resources.routes.js";
 import classroomRouter from "./routes/classroom.routes.js";
 
 //routes declaration
+app.get("/", (req, res)=>{
+  res.send("Welcome to LearnLink API. Official documentation is at https://github.com/pointbreak6969/LearnLink/tree/main/Server/readme.md")
+})
 app.use("/api/v1/user", userRotuer);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/resource", resourceRouter);
@@ -50,8 +53,5 @@ app.use("*", (req, res) => {
     message: `Route ${req.originalUrl} not found`,
   });
 });
-app.get("/", (req, res)=>{
-  res.send("Welcome to LearnLink API. Official documentation is at https://github.com/pointbreak6969/LearnLink/tree/main/Server/readme.md")
-})
 app.use(errorHandler);
 export { app };
