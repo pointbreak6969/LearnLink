@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 
-import { PlusCircle, Loader2, BookA, Plus } from "lucide-react";
+import { PlusCircle, BookA, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import CreateClassroom from "./CreateClassroom";

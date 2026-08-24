@@ -134,7 +134,7 @@ const About = () => {
                 description:
                   "We continuously evolve our platform, incorporating the latest ed-tech innovations to enhance the learning experience.",
               },
-            ].map((item, index) => (
+            ].map((item) => (
               <Card key={item.title} className="transition-all duration-300 hover:border-brand-300 hover:shadow-glow">
                 <CardContent className="flex items-start p-6">
                   <div className="mr-4 inline-flex items-center justify-center h-11 w-11 rounded-xl bg-brand-50 flex-shrink-0">
@@ -151,7 +151,7 @@ const About = () => {
 
           <div className="bg-gradient-to-br from-brand-500 to-brand-600 text-center p-10 md:p-14 my-16 rounded-3xl shadow-glow">
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4 text-balance">
-              Together, let's shape the future of education
+              Together, let&apos;s shape the future of education
             </h2>
             <p className="text-lg text-white/85 mb-8 max-w-2xl mx-auto">
               Join us in our mission to create a global community of learners
@@ -182,7 +182,7 @@ const About = () => {
                   />
                 </div>
                 <p className="mb-4 text-lg text-ink-700 italic">
-                  "Building LearnLink has been an exciting journey, creating a space where developers and learners can come together to share knowledge and grow"
+                  &quot;Building LearnLink has been an exciting journey, creating a space where developers and learners can come together to share knowledge and grow&quot;
                 </p>
                 <p className="italic font-semibold text-ink-900">— Ashim Gautam</p>
               </div>
@@ -195,7 +195,7 @@ const About = () => {
                   />
                 </div>
                 <p className="mb-4 text-lg text-ink-700 italic">
-                  "Working on LearnLink has been a fantastic opportunity to contribute to an evolving platform that's all about fostering collaboration and continuous learning"
+                  &quot;Working on LearnLink has been a fantastic opportunity to contribute to an evolving platform that&apos;s all about fostering collaboration and continuous learning&quot;
                 </p>
                 <p className="italic font-semibold text-ink-900">— Biraj Baral</p>
               </div>

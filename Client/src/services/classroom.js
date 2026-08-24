@@ -81,9 +81,7 @@ class ClassroomService {
       if (universityName) queryParams.universityName = universityName;
       if (facultyName) queryParams.facultyName = facultyName;
       if (Object.keys(queryParams).length === 0) {
-        const errorMessage =
-          error.response?.data?.message || "An error occurred";
-        throw new Error(errorMessage);
+        throw new Error("universityName or facultyName is required");
       }
 
       const response = await axios.get(
@@ -230,16 +228,85 @@ class ClassroomService {
     }
   }
 
-  async userRequestToadmin({id,status,userId}){
+  async userRequestToadmin({ id, status, userId }) {
     try {
-      const response=await axios.post(
+      const response = await axios.post(
         `${baseUrl}/classroom/userRequestToadmin`,
-        {id,status,userId},
-        {withCredentials:true}
-      )
-      return response.data
+        { id, status, userId },
+        { withCredentials: true }
+      );
+      return response.data;
     } catch (error) {
       const errorMessage = error.response?.data?.message || "An error occurred";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async deleteClassroom(classroomId) {
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/classroom/deleteClassroom/${classroomId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to delete classroom";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async addCoAdmin({ classroomId, userId }) {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/classroom/${classroomId}/co-admins`,
+        { userId },
+        { withCredentials: true }
+      );
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to add co-admin";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async removeCoAdmin({ classroomId, userId }) {
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/classroom/${classroomId}/co-admins/${userId}`,
+        { withCredentials: true }
+      );
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to remove co-admin";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async removeMember({ classroomId, userId }) {
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/classroom/${classroomId}/members/${userId}`,
+        { withCredentials: true }
+      );
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to remove member";
+      throw new Error(errorMessage);
+    }
+  }
+
+  async leaveClassroom(classroomId) {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/classroom/${classroomId}/leave`,
+        {},
+        { withCredentials: true }
+      );
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Failed to leave classroom";
       throw new Error(errorMessage);
     }
   }
@@ -247,3 +314,4 @@ class ClassroomService {
 
 const classroomService = new ClassroomService();
 export default classroomService;
+

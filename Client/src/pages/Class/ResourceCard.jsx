@@ -1,4 +1,3 @@
-import React from 'react';
 import { MoreVertical, Share, Pencil, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,

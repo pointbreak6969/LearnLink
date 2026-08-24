@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
@@ -10,6 +9,7 @@ import { Sparkles } from "lucide-react";
 const Navbar = () => {
   const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth.status);
+  const userData = useSelector((state) => state.auth.userData);
   const handleNavigation = () => {
     if (authStatus) {
       navigate("/classroom");
@@ -89,6 +89,14 @@ const Navbar = () => {
                   >
                     Search
                   </Link>
+                  {userData?.role === "superadmin" && (
+                    <Link
+                      to="/admin"
+                      className="cursor-pointer transition-colors text-brand-600 font-semibold hover:text-brand-700 flex items-center gap-1"
+                    >
+                      Admin
+                    </Link>
+                  )}
                 </>
               )}
             </ul>

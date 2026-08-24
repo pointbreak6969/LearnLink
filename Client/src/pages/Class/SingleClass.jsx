@@ -1,142 +1,197 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import classroomService from "@/services/classroom";
 import StreamTab from "./StreamTab";
 import ResourcesTab from "./ResourcesTab";
 import PeopleTab from "./PeopleTab";
-import { Settings } from "lucide-react";
+import { Settings, Shield, GraduationCap, ArrowLeft, Loader2 } from "lucide-react";
 import Setting from "./Setting";
-import AdminControls from "@/components/AdminControls";
 import { useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
+
 const SingleClass = () => {
-  const classroomId = useParams();
-  const [loading, isLoading] = useState(false);
+  const { classCode } = useParams();
+  const [loading, setLoading] = useState(false);
   const [classroomDetails, setClassroomDetails] = useState({});
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("stream");
-  const [owner,setOwner]=useState('')
-  const user=useSelector((state)=>state.auth?.userData?._id)
- 
- 
-  
+
+  const loggedUser = useSelector((state) => state.auth?.userData);
+  const userId = loggedUser?._id;
+  const userRole = loggedUser?.role;
+
+  const fetchClassDetails = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const response = await classroomService.getClassroomDetails({
+        classroomId: classCode,
+      });
+      if (response) {
+        setClassroomDetails(response);
+      } else {
+        setError("Error while fetching Classroom Details");
+      }
+    } catch (err) {
+      setError(err.message || "Failed to load classroom");
+    } finally {
+      setLoading(false);
+    }
+  }, [classCode]);
 
   useEffect(() => {
-    async function fetchClassDetails() {
-      try {
-        isLoading(true);
-        setError("");
-        const response = await classroomService.getClassroomDetails({
-          classroomId: classroomId?.classCode,
-        });
-        if (response) {
-          setClassroomDetails(response);
-          setOwner(response.admin)
-
-        } else {
-          setError("Error while fetching Classroom Details");
-        }
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        isLoading(false);
-      }
-    }
     fetchClassDetails();
-  }, [classroomId?.classCode]);
+  }, [fetchClassDetails]);
 
-  if (loading) {
-    return <p>Loading...</p>;
+  // Compute permissions
+  const creatorId =
+    classroomDetails?.admin?._id?.toString() ||
+    classroomDetails?.admin?.toString() ||
+    "";
+  const coAdminIds = (classroomDetails?.admins || []).map((a) =>
+    (a._id || a).toString()
+  );
+
+  const isCreator = Boolean(userId && creatorId === userId.toString());
+  const isCoAdmin = Boolean(userId && coAdminIds.includes(userId.toString()));
+  const isSuperAdmin = userRole === "superadmin";
+
+  const canManageClassroom = isCreator || isCoAdmin || isSuperAdmin;
+  const canDeleteClassroom = isCreator || isSuperAdmin;
+
+  if (loading && !classroomDetails?.name) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-brand-50/40">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-brand-50/40">
-      <header className="bg-white border-b border-ink-100">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="font-display text-3xl md:text-4xl font-semibold text-ink-900">
-            {classroomDetails.name}
-          </h1>
-          <p className="text-base text-ink-500 mt-1">
-            {classroomDetails.faculty}, {classroomDetails.university}
-          </p>
+    <div className="min-h-screen bg-brand-50/40 pb-16">
+      {/* Header Banner */}
+      <header className="bg-white border-b border-ink-100 shadow-xs">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Button asChild variant="ghost" size="sm" className="h-7 px-2 text-ink-500 hover:text-ink-800 -ml-2">
+                  <Link to="/classroom">
+                    <ArrowLeft className="w-4 h-4 mr-1" /> Classrooms
+                  </Link>
+                </Button>
+                {isCreator && (
+                  <span className="text-xs bg-brand-100 text-brand-800 font-bold px-2 py-0.5 rounded-full border border-brand-300">
+                    Creator
+                  </span>
+                )}
+                {isCoAdmin && !isCreator && (
+                  <span className="text-xs bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded-full border border-purple-300 flex items-center gap-1">
+                    <Shield className="w-3 h-3" /> Co-Admin
+                  </span>
+                )}
+                {isSuperAdmin && (
+                  <span className="text-xs bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-full border border-amber-300">
+                    Super Admin
+                  </span>
+                )}
+              </div>
+              <h1 className="font-display text-2xl md:text-3xl font-bold text-ink-900 flex items-center gap-2">
+                <GraduationCap className="w-7 h-7 text-brand-600" />
+                {classroomDetails.name}
+              </h1>
+              <p className="text-sm text-ink-500 mt-0.5">
+                {classroomDetails.faculty} • {classroomDetails.university} • Code:{" "}
+                <span className="font-mono bg-brand-50 text-brand-800 px-1.5 py-0.5 rounded border border-brand-200 font-semibold">
+                  {classroomDetails.code}
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-8">
-        <div className="flex-1">
-          <Tabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <TabsList className="flex justify-between bg-white border border-ink-100 rounded-xl p-1.5 shadow-card h-auto">
-              <div className="flex gap-1">
+      {/* Main Tabs Navigation */}
+      <main className="max-w-7xl mx-auto mt-6 px-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+          <TabsList className="flex justify-between bg-white border border-ink-100 rounded-xl p-1.5 shadow-xs h-auto">
+            <div className="flex gap-1">
+              <TabsTrigger
+                value="stream"
+                className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50 transition"
+              >
+                Stream
+              </TabsTrigger>
+              <TabsTrigger
+                value="classwork"
+                className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50 transition"
+              >
+                Resources
+              </TabsTrigger>
+              <TabsTrigger
+                value="people"
+                className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50 transition"
+              >
+                People
+              </TabsTrigger>
+            </div>
+            {canManageClassroom && (
+              <div className="ml-auto">
                 <TabsTrigger
-                  value="stream"
-                  className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
+                  value="setting"
+                  className="text-sm font-medium py-2 px-3 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50 transition flex items-center gap-1.5"
+                  title="Classroom Settings"
                 >
-                  Stream
-                </TabsTrigger>
-                <TabsTrigger
-                  value="classwork"
-                  className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
-                >
-                  Resources
-                </TabsTrigger>
-                <TabsTrigger
-                  value="people"
-                  className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
-                >
-                  People
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline">Settings</span>
                 </TabsTrigger>
               </div>
-              <div className="ml-auto">
-                 {user===owner?
-                  <TabsTrigger
-                    value="setting"
-                    className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
-                  >
-                    <Settings className="h-4 w-4" />
-                  </TabsTrigger>:<></>}
-              </div>{" "}
-            </TabsList>
+            )}
+          </TabsList>
 
-            <TabsContent value="stream">
-              <StreamTab classroomId={classroomId} />
-            </TabsContent>
+          <TabsContent value="stream">
+            <StreamTab classroomId={{ classCode }} />
+          </TabsContent>
 
-            <TabsContent value="classwork">
-              <ResourcesTab classroomId={classroomId.classCode} />
-            </TabsContent>
+          <TabsContent value="classwork">
+            <ResourcesTab classroomId={classCode} />
+          </TabsContent>
 
-            <TabsContent value="people">
-              <PeopleTab owner={owner}/>
-            </TabsContent>
+          <TabsContent value="people">
+            <PeopleTab
+              classroomId={classCode}
+              isCreator={isCreator}
+              isCoAdmin={isCoAdmin}
+              isSuperAdmin={isSuperAdmin}
+              canManageClassroom={canManageClassroom}
+              onClassroomUpdated={fetchClassDetails}
+            />
+          </TabsContent>
+
+          {canManageClassroom && (
             <TabsContent value="setting">
-              {/* <AdminControls adminId={classroomDetails.admin}>
-                <Setting
-                  classroomId={classroomId.classCode}
-                  code={classroomDetails.code}
-                  name={classroomDetails.name}
-                  university={classroomDetails.university}
-                  faculty={classroomDetails.faculty}
-                />
-              </AdminControls> */}
-               <Setting
-                  classroomId={classroomId.classCode}
-                  code={classroomDetails.code}
-                  name={classroomDetails.name}
-                  university={classroomDetails.university}
-                  faculty={classroomDetails.faculty}
-                />
+              <Setting
+                classroomId={classCode}
+                code={classroomDetails.code}
+                name={classroomDetails.name}
+                university={classroomDetails.university}
+                faculty={classroomDetails.faculty}
+                isCreator={isCreator}
+                isSuperAdmin={isSuperAdmin}
+                canDeleteClassroom={canDeleteClassroom}
+                onClassroomUpdated={fetchClassDetails}
+              />
             </TabsContent>
-          </Tabs>
-        </div>
+          )}
+        </Tabs>
       </main>
 
       {error && (
         <div className="max-w-7xl mx-auto mt-4 px-4">
-          <p className="text-red-500">{error}</p>
+          <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
+            {error}
+          </div>
         </div>
       )}
     </div>

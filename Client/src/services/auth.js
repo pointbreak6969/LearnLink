@@ -44,7 +44,6 @@ export class AuthService {
       const errorMessage = error.response?.data?.message || "An error occurred";
       throw new Error(errorMessage);
     }
-    return null;
   }
   async logout(){
     try {

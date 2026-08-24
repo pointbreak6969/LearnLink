@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import authService from "@/services/auth";
@@ -49,9 +48,9 @@ const Signup = () => {
           </p>
           <div className="bg-white p-8 rounded-2xl shadow-card border border-ink-100">
             <p className="text-ink-700 mb-4 text-lg">
-              "The web design course provided a solid foundation for me. The
+              &quot;The web design course provided a solid foundation for me. The
               instructors were knowledgeable and supportive, and the interactive
-              learning environment was engaging. I highly recommend it!"
+              learning environment was engaging. I highly recommend it!&quot;
             </p>
             <div className="flex items-center">
               <div className="w-14 h-14 rounded-full bg-brand-200 text-brand-700 font-semibold text-lg flex items-center justify-center">

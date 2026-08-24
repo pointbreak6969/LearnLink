@@ -1,6 +1,6 @@
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const VerifyOtp = () => {
@@ -17,7 +17,7 @@ const VerifyOtp = () => {
       >
         <h2 className="font-display text-3xl font-semibold text-center text-ink-900 mb-2">Verify your OTP</h2>
         <p className="text-center text-ink-500 mb-8">
-          We've sent a verification code to your email. Please enter it below.
+          We&apos;ve sent a verification code to your email. Please enter it below.
         </p>
 
         <form>
@@ -63,7 +63,7 @@ const VerifyOtp = () => {
           transition={{ duration: 0.5, delay: 0.7 }}
         >
           <p className="text-sm text-ink-500">
-            Didn't receive the code?{' '}
+            Didn&apos;t receive the code?{' '}
             <button className="text-brand-600 font-medium hover:underline">
               Resend
             </button>

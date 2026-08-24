@@ -55,13 +55,13 @@ const Login = () => {
               What students say
             </h2>
             <p className="text-ink-500 text-base mb-6 leading-relaxed text-center lg:text-left">
-              Real feedback from learners who found their groove with LearnLink's collaborative classrooms.
+              Real feedback from learners who found their groove with LearnLink&apos;s collaborative classrooms.
             </p>
             <div className="bg-white shadow-card p-6 rounded-2xl border border-ink-100">
               <p className="text-ink-700 text-base mb-4 text-center lg:text-left">
-                "The web design course provided a solid foundation for me. The
+                &quot;The web design course provided a solid foundation for me. The
                 instructors were knowledgeable and supportive, and the
-                interactive learning environment was engaging."
+                interactive learning environment was engaging.&quot;
               </p>
               <div className="flex items-center justify-center lg:justify-start">
                 <div className="w-10 h-10 bg-brand-200 text-brand-700 font-semibold rounded-full mr-3 flex items-center justify-center">
@@ -181,7 +181,7 @@ const Login = () => {
                 Login with Google
               </Button>
               <p className="text-center text-sm text-ink-500 mt-4">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   to={"/signup"}
                   className="text-brand-600 font-medium hover:underline"

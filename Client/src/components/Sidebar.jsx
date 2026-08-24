@@ -12,7 +12,6 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 
 // Menu items.
 const items = [
@@ -48,10 +47,12 @@ const items = [
 ];
 
 export function AppSidebar({ sidebarOpen, setSidebarOpen}) {
-  const userProfile=useSelector((state)=>state.profile?.profileDetails?.profilePicture?.url)
+  const userProfile = useSelector((state) => state.profile?.profileDetails?.profilePicture?.url);
+  const userData = useSelector((state) => state.auth?.userData);
+  const isSuperAdmin = userData?.role === "superadmin";
 
   return (
-    <Sidebar side="right"  open={sidebarOpen} onClose={() => setSidebarOpen(false)}>
+    <Sidebar side="right" open={sidebarOpen} onClose={() => setSidebarOpen(false)}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -70,12 +71,21 @@ export function AppSidebar({ sidebarOpen, setSidebarOpen}) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link to={item.url} onClick={() => setSidebarOpen(false)}>
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              {isSuperAdmin && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link to="/admin" onClick={() => setSidebarOpen(false)} className="text-brand-600 font-semibold">
+                      <span>Admin Panel</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

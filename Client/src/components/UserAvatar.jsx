@@ -1,4 +1,4 @@
-import { LifeBuoy, LogOut, Settings, User, CreditCard } from "lucide-react";
+import { LifeBuoy, LogOut, Settings, User, CreditCard, Shield } from "lucide-react";
 import AvatarComponent from "./AvatarComponent.jsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,7 @@ function UserAvatar() {
   const { profileDetails, status } = useProfile();
   const userData = useSelector((state) => state.auth.userData);
   const fullName = userData?.fullName || "N/A";
+  const isSuperAdmin = userData?.role === "superadmin";
   const profilePicture = useMemo(
     () => profileDetails?.profilePicture?.url || "?",
     [profileDetails]
@@ -53,9 +54,27 @@ function UserAvatar() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel className="flex items-center justify-between">
+          <span>My Account</span>
+          {isSuperAdmin && (
+            <span className="text-[10px] bg-brand-100 text-brand-700 px-1.5 py-0.5 rounded font-semibold">
+              Admin
+            </span>
+          )}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {isSuperAdmin && (
+            <DropdownMenuItem
+              onClick={() => {
+                navigate("/admin");
+              }}
+              className="text-brand-700 font-medium focus:bg-brand-50"
+            >
+              <Shield className="text-brand-600 w-4 h-4" />
+              <span>Admin Panel</span>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={() => {
               navigate("/profile");

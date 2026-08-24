@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import profileService from "@/services/profile";
 import { useProfile } from "@/hooks/useProfile";
 const Profile = () => {
-  const [profileCompletion, setProfileCompletion] = useState(80);
+  const [profileCompletion] = useState(80);
   const dispatch = useDispatch();
   const [error, setError] = useState("");
   const { register, handleSubmit } = useForm();

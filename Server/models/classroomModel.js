@@ -11,6 +11,12 @@ const ClassroomSchema = new Schema(
       ref: "User",
       required: true,
     },
+    admins: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     university: {
       type: String,
       required: true,
@@ -22,13 +28,13 @@ const ClassroomSchema = new Schema(
     users: [
       {
         type: Schema.Types.ObjectId,
-        ref: "users",
+        ref: "User",
       },
     ],
     resources: [
       {
         type: Schema.Types.ObjectId,
-        ref: "resources",
+        ref: "Resource",
       },
     ],
     code: {
@@ -40,11 +46,15 @@ const ClassroomSchema = new Schema(
       {
         user: {
           type: Schema.Types.ObjectId,
-          ref: "users"
+          ref: "User"
         },
         status: {
           type: Boolean,
           default: false
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now
         }
       }
     ],

@@ -38,7 +38,7 @@ const ProfileTabs = () => {
   );
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [savedResources, setSavedResources] = useState(3);
+  const [savedResources] = useState(3);
   const [activeTab, setActiveTab] = useState("overview");
   const tabsListRef = useRef(null);
   const scrollRight = () => {

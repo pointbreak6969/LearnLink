@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { replace, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-export default function Protected({ children, authentication = false,redirectPath = '/' }) {
+export default function Protected({
+  children,
+  authentication = false,
+  requireSuperAdmin = false,
+  redirectPath = "/",
+}) {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
-  const authStatus = useSelector(state => state.auth.status);
+  const authStatus = useSelector((state) => state.auth.status);
+  const userData = useSelector((state) => state.auth.userData);
 
   useEffect(() => {
     // For protected routes (authentication = true)
     if (authentication && !authStatus) {
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
       return;
     }
 
@@ -20,11 +27,24 @@ export default function Protected({ children, authentication = false,redirectPat
       return;
     }
 
-    setLoader(false);
-  }, [authStatus, navigate, authentication, redirectPath]);
-  
+    // For superadmin required routes
+    if (authentication && requireSuperAdmin && userData && userData.role !== "superadmin") {
+      toast.error("Access denied: Super Admin privileges required");
+      navigate("/classroom", { replace: true });
+      return;
+    }
 
-  return loader ? <h1>Loading...</h1> : <>{children}</>;
+    setLoader(false);
+  }, [authStatus, userData, navigate, authentication, requireSuperAdmin, redirectPath]);
+
+  return loader ? (
+    <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
+    </div>
+  ) : (
+    <>{children}</>
+  );
 }
+
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,7 +17,7 @@ import { escapeRegExp } from "@/lib/utils";
 const SearchClassrooms = () => {
   const [university, setUniversity] = useState("");
   const [faculty, setFaculty] = useState("");
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
   const [classrooms, setClassrooms] = useState([]);
   
 

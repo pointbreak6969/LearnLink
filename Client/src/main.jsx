@@ -107,7 +107,7 @@ const protectedRoutes = [
   {
     path: "/admin",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} requireSuperAdmin={true}>
         <AdminPage/>
       </Protected>
     ),
@@ -115,7 +115,7 @@ const protectedRoutes = [
   {
     path: "/admin/classroom",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} requireSuperAdmin={true}>
        <ClassRoomAdmin/> 
       </Protected>
     ),
@@ -123,7 +123,7 @@ const protectedRoutes = [
   {
     path: "/admin/classroomrequest",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} requireSuperAdmin={true}>
        <PendingClassroomAdmin/> 
       </Protected>
     ),
@@ -131,7 +131,7 @@ const protectedRoutes = [
   {
     path: "/admin/userinfo",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} requireSuperAdmin={true}>
        <UserManagement/>
       </Protected>
     ),

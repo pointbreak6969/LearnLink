@@ -5,15 +5,20 @@ import {
   CardDescription,
   CardContent,
 } from "./ui/card";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { BookOpen } from "lucide-react";
-import classroomService from "@/services/classroom";
+import { toast } from "sonner";
 
-const MyCard = ({ id, name, admin, university, faculty,isJoined }) => {
+const MyCard = ({ id, name, admin, university, faculty, isJoined }) => {
   const navigate = useNavigate();
   const joinToclassroom = async () => {
-    const data = await classroomService.requestTojoin({ id });
+    try {
+      await classroomService.requestTojoin({ id });
+      toast.success("Request to join classroom sent successfully");
+    } catch (err) {
+      toast.error(err.message || "Failed to request to join classroom");
+    }
   };
 
   const handleClassroomAction = () => {

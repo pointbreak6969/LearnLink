@@ -41,10 +41,15 @@ const registerUser = asyncHandler(async (req, res) => {
   if (existingUser) {
     throw new ApiError(409, "User already exists");
   }
+  const isSuperAdmin =
+    process.env.SUPERADMIN_EMAIL &&
+    email.toLowerCase().trim() === process.env.SUPERADMIN_EMAIL.toLowerCase().trim();
+
   const user = await User.create({
     fullName,
     email: email.toLowerCase().trim(),
     password,
+    role: isSuperAdmin ? "superadmin" : "user",
   });
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken -otp -otpExpiry"
@@ -56,7 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
-    maxAge: 24 * 60 * 60 * 1000 *7, // 1 day
+    maxAge: 24 * 60 * 60 * 1000 * 7, // 7 days
   };
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
@@ -72,6 +77,7 @@ const registerUser = asyncHandler(async (req, res) => {
           _id: createdUser._id,
           fullName: createdUser.fullName,
           email: createdUser.email,
+          role: createdUser.role,
         },
         "User created successfully"
       )
@@ -117,6 +123,7 @@ const loginUser = asyncHandler(async (req, res) => {
           _id: loggedInUser._id,
           fullName: loggedInUser.fullName,
           email: loggedInUser.email,
+          role: loggedInUser.role,
         },
         "User logged in successfully"
       )

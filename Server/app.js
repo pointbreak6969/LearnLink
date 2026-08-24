@@ -39,6 +39,7 @@ import userRotuer from "./routes/user.routes.js";
 import profileRouter from "./routes/profile.routes.js";
 import resourceRouter from "./routes/resources.routes.js";
 import classroomRouter from "./routes/classroom.routes.js";
+import adminRouter from "./routes/admin.routes.js";
 
 //routes declaration
 app.get("/", (req, res)=>{
@@ -48,6 +49,8 @@ app.use("/api/v1/user", userRotuer);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/resource", resourceRouter);
 app.use("/api/v1/classroom", classroomRouter);
+app.use("/api/v1/admin", adminRouter);
+
 app.use("*", (req, res) => {
   res.status(404).json({
     success: false,

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -50,7 +50,7 @@ const StreamTab = ({ classroomId }) => {
 
     try {
       const files = data.files.map((fileObj) => fileObj.file);
-      const response = await resourceService.createResource({
+      await resourceService.createResource({
         title: data.title,
         text: data.text,
         files,
@@ -91,7 +91,7 @@ const StreamTab = ({ classroomId }) => {
       }
     };
     fetchResources();
-  }, []);
+  }, [classCode]);
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
   return (

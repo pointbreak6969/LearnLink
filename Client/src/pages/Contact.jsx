@@ -78,11 +78,11 @@ const Contact = () => {
               transition={{ duration: 0.5 }}
               className="bg-gradient-to-br from-brand-500 to-brand-600 p-6 rounded-2xl text-white shadow-glow"
             >
-              <h2 className="font-display text-2xl font-semibold mb-4">Welcome to LearnLink's Contact Page</h2>
+              <h2 className="font-display text-2xl font-semibold mb-4">Welcome to LearnLink&apos;s Contact Page</h2>
               <p className="text-white/85">
-                We're here to assist you with any questions or feedback regarding our educational notes and resources
-                sharing platform. Whether you're a student looking for study materials or an educator wanting to share your
-                knowledge, we're excited to hear from you.
+                We&apos;re here to assist you with any questions or feedback regarding our educational notes and resources
+                sharing platform. Whether you&apos;re a student looking for study materials or an educator wanting to share your
+                knowledge, we&apos;re excited to hear from you.
               </p>
             </motion.div>
             <div className="space-y-3">

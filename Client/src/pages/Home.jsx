@@ -1,15 +1,13 @@
 
 import Faq from '@/components/Faq'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, BookOpen, ChevronRight, Lightbulb, Play, Star, Users, Video, Zap } from 'lucide-react'
-import React, { useState } from 'react'
+import { BookOpen, ChevronRight, Lightbulb, Star, Users, Video, Zap } from 'lucide-react'
 import { motion } from "framer-motion"
 import FewCourses from '@/components/FewCourses'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Card, CardContent } from "@/components/ui/card"
 import video_hero from '../../public/hero.mp4'
 const Home = () => {
-  const navigate = useNavigate()
   
   const features = [
     {
@@ -231,7 +229,7 @@ const Home = () => {
                       <Star key={i} className="w-5 h-5 fill-brand-400 text-brand-400" />
                     ))}
                   </div>
-                  <p className="text-ink-600 italic text-lg">"{testimonial.quote}"</p>
+                  <p className="text-ink-600 italic text-lg">&quot;{testimonial.quote}&quot;</p>
                   <div>
                     <p className="font-semibold text-lg text-ink-900">{testimonial.name}</p>
                     <p className="text-ink-500">{testimonial.role}</p>

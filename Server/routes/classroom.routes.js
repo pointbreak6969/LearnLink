@@ -13,7 +13,12 @@ import {
   requestToJoinclassRoom,
   userRequestToadmin,
   getJoinRequests,
+  addCoAdmin,
+  removeCoAdmin,
+  removeMember,
+  leaveClassroom,
 } from "../controllers/classroom.controller.js";
+
 const router = Router();
 
 router.route("/createClassroom").post(verifyJwt, createClassroom);
@@ -29,7 +34,14 @@ router
 router.route("/getSuggestedClassrooms").get(verifyJwt, getSuggestedClassrooms);
 router.route("/getPublicClassrooms").get(getSuggestedClassrooms);
 router.route("/getClassroomUsers/:classroomId").get(verifyJwt, getClassroomUsers);
-router.route('/request').post(verifyJwt,requestToJoinclassRoom)
-router.route('/getJoinRequests/:id').get(verifyJwt, getJoinRequests)
-router.route('/userRequestToadmin').post(verifyJwt,userRequestToadmin)
+router.route("/request").post(verifyJwt, requestToJoinclassRoom);
+router.route("/getJoinRequests/:id").get(verifyJwt, getJoinRequests);
+router.route("/userRequestToadmin").post(verifyJwt, userRequestToadmin);
+
+// Co-admin and member management routes
+router.route("/:id/co-admins").post(verifyJwt, addCoAdmin);
+router.route("/:id/co-admins/:userId").delete(verifyJwt, removeCoAdmin);
+router.route("/:id/members/:userId").delete(verifyJwt, removeMember);
+router.route("/:id/leave").post(verifyJwt, leaveClassroom);
+
 export default router;

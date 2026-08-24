@@ -26,6 +26,11 @@ const UserSchema = new Schema(
     otpExpiry: {
       type: Date,
     },
+    role: {
+      type: String,
+      enum: ["user", "superadmin"],
+      default: "user",
+    },
   },
   {
     timestamps: true,
@@ -58,6 +63,7 @@ UserSchema.methods.generateAccessToken = function () {
       _id: this._id,
       email: this.email,
       fullName: this.fullName,
+      role: this.role || "user",
     },
     process.env.ACCESS_TOKEN_SECRET,
     {

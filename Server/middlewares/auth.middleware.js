@@ -20,4 +20,14 @@ const verifyJwt = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { verifyJwt };
+const requireSuperAdmin = asyncHandler(async (req, res, next) => {
+  if (!req.user) {
+    throw new ApiError(401, "Authentication required");
+  }
+  if (req.user.role !== "superadmin") {
+    throw new ApiError(403, "Access denied: Super Admin privileges required");
+  }
+  next();
+});
+
+export { verifyJwt, requireSuperAdmin };

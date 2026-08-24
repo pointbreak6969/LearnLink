@@ -1,5 +1,4 @@
 import FewCourses from '@/components/FewCourses'
-import React from 'react'
 
 const Courses = () => {
   return (
