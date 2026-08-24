@@ -98,7 +98,7 @@ const ProfileTabs = () => {
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="h-5 w-5 text-gray-600" />
+            <ChevronLeft className="h-5 w-5 text-ink-600" />
           </button>
         )}
 
@@ -108,35 +108,35 @@ const ProfileTabs = () => {
             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-1 shadow-md"
             aria-label="Scroll right"
           >
-            <ChevronRight className="h-5 w-5 text-gray-600" />
+            <ChevronRight className="h-5 w-5 text-ink-600" />
           </button>
         )}
 
         <div className="overflow-hidden">
           <TabsList
             ref={tabsListRef}
-            className="bg-orange-100 p-1 rounded-lg flex justify-start overflow-x-auto scrollbar-hide"
+            className="bg-brand-50 p-1 rounded-xl flex justify-start overflow-x-auto scrollbar-hide"
             onScroll={checkScroll}
           >
             <TabsTrigger
               value="overview"
-              className="px-4 py-2 whitespace-nowrap"
+              className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-brand-600 data-[state=active]:shadow-sm"
             >
               <User className="w-4 h-4 mr-2 inline" /> Profile Overview
             </TabsTrigger>
-            <TabsTrigger value="saved" className="px-4 py-2 whitespace-nowrap">
+            <TabsTrigger value="saved" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-brand-600 data-[state=active]:shadow-sm">
               <Save className="w-4 h-4 mr-2 inline" /> Saved Resources
-              <span className="ml-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+              <span className="ml-1.5 text-xs bg-brand-500 text-white px-1.5 py-0.5 rounded-full">
                 {savedResources}
               </span>
             </TabsTrigger>
             <TabsTrigger
               value="uploaded"
-              className="px-4 py-2 whitespace-nowrap"
+              className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-brand-600 data-[state=active]:shadow-sm"
             >
               <Upload className="w-4 h-4 mr-2 inline" /> Uploaded Resources
             </TabsTrigger>
-            <TabsTrigger value="points" className="px-4 py-2 whitespace-nowrap">
+            <TabsTrigger value="points" className="px-4 py-2 whitespace-nowrap data-[state=active]:bg-white data-[state=active]:text-brand-600 data-[state=active]:shadow-sm">
               <Star className="w-4 h-4 mr-2 inline" /> Points Earned
             </TabsTrigger>
           </TabsList>
@@ -146,69 +146,69 @@ const ProfileTabs = () => {
       <TabsContent value="overview">
         <Card className="animate-fade-in-up">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-[#FF9500]">
+            <CardTitle className="text-2xl font-semibold text-ink-900">
               Overview
             </CardTitle>
           </CardHeader>
           <CardContent>
             {profileDetails ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-[#FF9500]">
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold mb-3 text-brand-600">
                     Personal Information
                   </h3>
-                  <p className="flex items-center mb-2">
-                    <User className="text-[#FF9500] mr-2" />
-                    <strong className="text-[#FF9500]">
-                      Full Name: &nbsp;
+                  <p className="flex items-center">
+                    <User className="text-brand-500 mr-2 h-4 w-4" />
+                    <strong className="text-ink-700 font-medium">
+                      Full Name:&nbsp;
                     </strong>{" "}
-                    {data.fullName}
+                    <span className="text-ink-800">{data.fullName}</span>
                   </p>
-                  <p className="flex items-center mb-2">
-                    <Mail className="text-[#FF9500] mr-2" />
-                    <strong className="text-[#FF9500]">Email: &nbsp; </strong>
-                    {data.email}
+                  <p className="flex items-center">
+                    <Mail className="text-brand-500 mr-2 h-4 w-4" />
+                    <strong className="text-ink-700 font-medium">Email:&nbsp;</strong>
+                    <span className="text-ink-800">{data.email}</span>
                   </p>
-                  <p className="flex items-center mb-2">
-                    <Phone className="text-[#FF9500] mr-2" />
-                    <strong className="text-[#FF9500]">
-                      Contact Number: &nbsp;
+                  <p className="flex items-center">
+                    <Phone className="text-brand-500 mr-2 h-4 w-4" />
+                    <strong className="text-ink-700 font-medium">
+                      Contact Number:&nbsp;
                     </strong>{" "}
-                    {data.phone}
+                    <span className="text-ink-800">{data.phone}</span>
                   </p>
-                  <p className="flex items-center mb-2">
-                    <MapPin className="text-[#FF9500] mr-2" />
-                    <strong className="text-[#FF9500]">
-                      Location: &nbsp;
+                  <p className="flex items-center">
+                    <MapPin className="text-brand-500 mr-2 h-4 w-4" />
+                    <strong className="text-ink-700 font-medium">
+                      Location:&nbsp;
                     </strong>{" "}
-                    {data.location}
+                    <span className="text-ink-800">{data.location}</span>
                   </p>
-                  <p className="flex items-center mb-2">
-                    <GraduationCap className="text-[#FF9500] mr-2" />
-                    <strong className="text-[#FF9500]">
-                      University: &nbsp;
+                  <p className="flex items-center">
+                    <GraduationCap className="text-brand-500 mr-2 h-4 w-4" />
+                    <strong className="text-ink-700 font-medium">
+                      University:&nbsp;
                     </strong>{" "}
-                    {data.university}
+                    <span className="text-ink-800">{data.university}</span>
                   </p>
-                  <p className="flex items-center mb-2">
-                    <Building className="text-[#FF9500] mr-2" />
-                    <strong className="text-[#FF9500]">
-                      College: &nbsp;
+                  <p className="flex items-center">
+                    <Building className="text-brand-500 mr-2 h-4 w-4" />
+                    <strong className="text-ink-700 font-medium">
+                      College:&nbsp;
                     </strong>{" "}
-                    {data.college}
+                    <span className="text-ink-800">{data.college}</span>
                   </p>
                 </div>
               </div>
             ) : (
               <div>
-                <p className="text-gray-600">
+                <p className="text-ink-600">
                   Welcome to your profile! Explore your resources and manage
                   classrooms here.
                 </p>
                 <div className="mt-5 ">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
+                      <Button>
                         <Edit className="w-4 h-4 mr-2" /> Complete Profile
                       </Button>
                     </DialogTrigger>
@@ -219,19 +219,19 @@ const ProfileTabs = () => {
                       </DialogDescription>
                       <form className="flex items-center space-x-2 mt-4 flex-col space-y-4" onSubmit={handleSubmit(completeProfile)}>
                         <div className="flex flex-col w-full">
-                          <label htmlFor="profile" className="text-gray-700">
+                          <label htmlFor="profile" className="text-ink-700">
                             Complete Profile
                           </label>
                           <Input
                             type="file"
                             id="profilePicture"
                             name="profilePicture"
-                            className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                             {...register("profilePicture", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
-                          <label htmlFor="phone" className="text-gray-700">
+                          <label htmlFor="phone" className="text-ink-700">
                             Phone Number
                           </label>
                           <Input
@@ -239,12 +239,12 @@ const ProfileTabs = () => {
                             id="phone"
                             name="phone"
                             placeholder="Enter your phone number"
-                            className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                             {...register("phone", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
-                          <label htmlFor="location" className="text-gray-700">
+                          <label htmlFor="location" className="text-ink-700">
                             Location
                           </label>
                           <Input
@@ -252,12 +252,12 @@ const ProfileTabs = () => {
                             id="location"
                             name="location"
                             placeholder="Enter your location"
-                            className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                             {...register("location", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
-                          <label htmlFor="university" className="text-gray-700">
+                          <label htmlFor="university" className="text-ink-700">
                             University Name
                           </label>
                           <Input
@@ -265,12 +265,12 @@ const ProfileTabs = () => {
                             id="university"
                             name="university"
                             placeholder="Enter university name"
-                            className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                             {...register("university", {required: true})}
                           />
                         </div>
                         <div className="flex flex-col w-full">
-                          <label htmlFor="college" className="text-gray-700">
+                          <label htmlFor="college" className="text-ink-700">
                             College Name
                           </label>
                           <Input
@@ -278,15 +278,12 @@ const ProfileTabs = () => {
                             id="college"
                             name="college"
                             placeholder="Enter your college"
-                            className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                            className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                             {...register("college", {required: true})}
                           />
                         </div>
 
-                        <Button
-                          type="submit"
-                          className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                        >
+                        <Button type="submit" className="w-full">
                           Submit
                         </Button>
                       </form>

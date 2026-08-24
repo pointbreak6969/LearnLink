@@ -24,28 +24,24 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white py-16">
-      <div className="container mx-auto px-4 grid gap-8 md:grid-cols-4">
+    <footer className="bg-ink-900 text-white py-16">
+      <div className="container mx-auto px-4 grid gap-10 md:grid-cols-4">
         <div className="space-y-4">
-          <img
-            src="/placeholder.svg?height=40&width=40&text=LL"
-            alt="LearnLink Logo"
-            width={40}
-            height={40}
-            className="rounded-lg"
-          />
-          <p className="text-sm text-gray-400">
-            Connecting learners worldwide through interactive education and collaboration.
+          <div className="font-display text-2xl font-semibold">
+            Learn<span className="text-brand-400">Link</span>
+          </div>
+          <p className="text-sm text-ink-300 leading-relaxed max-w-xs">
+            Connecting learners worldwide through interactive classrooms and shared resources.
           </p>
         </div>
-        
+
         {Object.keys(links).map((category) => (
           <div key={category} className="space-y-4">
-            <h3 className="text-lg font-semibold">{category}</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-ink-200">{category}</h3>
+            <ul className="space-y-2.5">
               {links[category].map((link) => (
                 <li key={link.name}>
-                  <a href={link.to} className="text-sm text-gray-400 hover:text-white transition-colors">
+                  <a href={link.to} className="text-sm text-ink-400 hover:text-brand-300 transition-colors">
                     {link.name}
                   </a>
                 </li>
@@ -55,8 +51,8 @@ const Footer = () => {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-400">
-        © 2024 LearnLink. All rights reserved.
+      <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-sm text-ink-400">
+        © 2026 LearnLink. All rights reserved.
       </div>
     </footer>
   );

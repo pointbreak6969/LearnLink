@@ -98,7 +98,7 @@ const StreamTab = ({ classroomId }) => {
     <div>
       {/* Announcement Input */}
       {isExpanded ? (
-        <Card className="mb-6 shadow-lg rounded-lg">
+        <Card className="mb-6">
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col space-y-4">
@@ -157,13 +157,13 @@ const StreamTab = ({ classroomId }) => {
                       />
                       <Label
                         htmlFor="files"
-                        className="flex items-center space-x-2 px-4 py-2 border rounded-lg cursor-pointer hover:bg-gray-50"
+                        className="flex items-center space-x-2 px-4 py-2 border border-ink-200 rounded-lg cursor-pointer hover:bg-brand-50 hover:border-brand-300 transition-colors"
                       >
                         <Upload className="h-4 w-4" />
                         <span>Upload Resources</span>
                       </Label>
                       {fields.length > 0 && (
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-ink-500">
                           {fields.length} file{fields.length !== 1 ? "s" : ""}{" "}
                           selected
                         </span>
@@ -175,7 +175,7 @@ const StreamTab = ({ classroomId }) => {
                       {fields.map((field, index) => (
                         <div
                           key={field.id}
-                          className="flex items-center justify-between p-2 border rounded-lg"
+                          className="flex items-center justify-between p-2 border border-ink-100 rounded-lg"
                         >
                           <span className="text-sm truncate">
                             {field.file.name} (
@@ -211,7 +211,6 @@ const StreamTab = ({ classroomId }) => {
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-[#FF9500] hover:bg-[#FF9500]/90 text-white rounded-lg"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Uploading..." : "Share Resources"}
@@ -222,12 +221,13 @@ const StreamTab = ({ classroomId }) => {
           </CardContent>
         </Card>
       ) : (
-        <Card className="mb-6 shadow-lg rounded-lg">
+        <Card className="mb-6">
           <CardContent className="pt-6">
             <Textarea
               placeholder="Share resources with your class"
-              className="border border-gray-300 rounded-lg"
+              className="border-ink-200 cursor-pointer"
               onClick={() => setIsExpanded(true)}
+              readOnly
             />
           </CardContent>
         </Card>
@@ -249,15 +249,15 @@ const StreamTab = ({ classroomId }) => {
             />
           ))
         ) : isExpanded ? null : (
-          <Card className="bg-white/50 backdrop-blur-sm border-dashed">
+          <Card className="bg-white/60 backdrop-blur-sm border-dashed border-ink-200">
             <CardContent className="flex flex-col items-center justify-center py-12 text-center space-y-4">
-              <div className="rounded-full bg-primary/10 p-4">
-                <PlusCircle className="h-12 w-12 text-primary" />
+              <div className="rounded-full bg-brand-100 p-4">
+                <PlusCircle className="h-12 w-12 text-brand-600" />
               </div>
-              <CardTitle className="text-2xl font-semibold text-gray-900">
+              <CardTitle className="text-2xl font-semibold text-ink-900">
                 No resources shared yet
               </CardTitle>
-              <p className="text-gray-500 max-w-sm">
+              <p className="text-ink-500 max-w-sm">
                 Be the first one to share valuable resources with the community.
                 Your contribution could help others learn and grow.
               </p>

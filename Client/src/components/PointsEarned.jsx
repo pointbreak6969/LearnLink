@@ -32,27 +32,27 @@ const PointsEarned = () => {
       <TabsContent value="points">
         <Card className="animate-fade-in-up">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold text-[#FF9500]">
+            <CardTitle className="text-xl font-semibold text-ink-900">
               Points Earned
             </CardTitle>
           </CardHeader>
           <CardContent>
             <Progress
               value={60}
-              className="w-full mb-4 bg-orange-200 [&>div]:bg-[#FF9500]"
+              className="w-full mb-4 bg-brand-100 [&>div]:bg-brand-500"
             />
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-[#FF9500] flex items-center">
-                  <Star className="mr-2" /> You Have Earned
+                <h3 className="text-2xl font-bold text-brand-600 flex items-center">
+                  <Star className="mr-2 h-6 w-6" /> You Have Earned
                 </h3>
-                <p className="text-xl font-semibold text-[#FF9500]">
+                <p className="text-xl font-semibold text-ink-800">
                   {points} Points
                 </p>
               </div>
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
+                  <Button>
                     Redeem Points
                   </Button>
                 </DialogTrigger>
@@ -60,47 +60,47 @@ const PointsEarned = () => {
                   <DialogHeader>
                     <DialogTitle>Redeem Your Points</DialogTitle>
                     <DialogDescription>
-                      You have earned {points} points, which is equivalent to <strong className='text-gray-900'>Rs. {moneyEquivalent}.</strong>
+                      You have earned {points} points, which is equivalent to <strong className='text-ink-900'>Rs. {moneyEquivalent}.</strong>
                     </DialogDescription>
                   </DialogHeader>
                   <div className="mt-4">
-                    <h3 className="text-lg font-semibold text-orange-600 mb-2">Available Redemption Options:</h3>
+                    <h3 className="text-lg font-semibold text-brand-600 mb-2">Available Redemption Options:</h3>
                     <ul className="list-disc list-inside space-y-2">
                       <li className="flex items-start justify-between">
                         <div className="flex items-start">
-                          <Upload className="mr-2 text-orange-500" />
+                          <Upload className="mr-2 text-brand-500" />
                           <div>
                             <strong>Cash via eswea or bank transfer:</strong> Redeem your points for direct cash transfers to your bank account or eswea account.
                           </div>
                         </div>
-                        <Button onClick={handleCashRedemption} className="ml-4  text-white " varient="default"> 
+                        <Button onClick={handleCashRedemption} size="sm" className="ml-4">
                           Redeem
                         </Button>
                       </li>
                       <li className="flex items-start justify-between">
                         <div className="flex items-start">
-                          <Users className="mr-2 text-orange-500" />
+                          <Users className="mr-2 text-brand-500" />
                           <div>
                             <strong>Gift cards:</strong> Use your points to get gift cards for popular stores and online platforms.
                           </div>
                         </div>
-                        <Button onClick={handleGiftCardRedemption} className="ml-4  text-white " varient="default">
+                        <Button onClick={handleGiftCardRedemption} size="sm" className="ml-4">
                           Redeem
                         </Button>
                       </li>
                       <li className="flex items-start justify-between">
                         <div className="flex items-start">
-                          <Gift className="mr-2 text-orange-500" />
+                          <Gift className="mr-2 text-brand-500" />
                           <div>
                             <strong>Discounts on paid courses:</strong> Redeem your points for discounts on various courses offered on our platform.
                           </div>
                         </div>
-                        <Button onClick={handleDiscountRedemption} className="ml-4  text-white " varient="default">
+                        <Button onClick={handleDiscountRedemption} size="sm" className="ml-4">
                           Redeem
                         </Button>
                       </li>
                     </ul>
-                    <h4 className="text-md font-semibold mt-4 text-orange-600">Process to Redeem Points:</h4>
+                    <h4 className="text-md font-semibold mt-4 text-brand-600">Process to Redeem Points:</h4>
                     <ul className="list-decimal list-inside space-y-1 mt-2">
                       <li>Select Your Redemption Option</li>
                       <li>Enter the amount of points to redeem.</li>
@@ -111,7 +111,7 @@ const PointsEarned = () => {
                       <li>Enjoy your reward!</li>
                     </ul>
                   </div>
-                  <p className='text-sm text-gray-600 text-center italic'>P.s: Reedemption may take time to process,So be patient.</p>
+                  <p className='text-sm text-ink-600 text-center italic'>P.s: Reedemption may take time to process,So be patient.</p>
                 </DialogContent>
               </Dialog>
             </div>

@@ -13,13 +13,13 @@ const Reward = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-orange-50 py-12">
+      <div className="min-h-screen bg-brand-50 py-12">
         <div className="container mx-auto px-4">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -50 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl font-bold text-center mb-8 text-orange-600"
+            className="text-4xl font-bold text-center mb-8 text-brand-600"
           >
             LearnLink Rewards
           </motion.h1>
@@ -28,16 +28,16 @@ const Reward = () => {
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -30 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-center mb-12 text-gray-700"
+            className="text-xl text-center mb-12 text-ink-700"
           >
             Earn points by contributing and convert them into real money!
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {[
-              { icon: <Upload className="w-12 h-12 text-orange-500" />, title: "Upload Notes", points: "50 points per upload" },
-              { icon: <Users className="w-12 h-12 text-orange-500" />, title: "Refer Friends", points: "100 points per referral" },
-              { icon: <Star className="w-12 h-12 text-orange-500" />, title: "Get Upvotes", points: "5 points per upvote" },
+              { icon: <Upload className="w-12 h-12 text-brand-500" />, title: "Upload Notes", points: "50 points per upload" },
+              { icon: <Users className="w-12 h-12 text-brand-500" />, title: "Refer Friends", points: "100 points per referral" },
+              { icon: <Star className="w-12 h-12 text-brand-500" />, title: "Get Upvotes", points: "5 points per upvote" },
             ].map((method, index) => (
               <motion.div
                 key={index}
@@ -49,8 +49,8 @@ const Reward = () => {
                 <Card className="h-full">
                   <CardContent className="flex flex-col items-center p-6">
                     <div className="mb-4">{method.icon}</div>
-                    <h3 className="text-xl font-semibold mb-2 text-orange-600">{method.title}</h3>
-                    <p className="text-gray-600 text-center">{method.points}</p>
+                    <h3 className="text-xl font-semibold mb-2 text-brand-600">{method.title}</h3>
+                    <p className="text-ink-600 text-center">{method.points}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -65,7 +65,7 @@ const Reward = () => {
             >
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-4 text-orange-600 flex items-center">
+                  <h3 className="text-xl font-semibold mb-4 text-brand-600 flex items-center">
                     <Gift className="w-6 h-6 mr-2" /> Redeem Your Points
                   </h3>
                   <p className="mb-4">Convert your points into:</p>
@@ -74,7 +74,7 @@ const Reward = () => {
                     <li>• Gift cards</li>
                     <li>• Discounts on paid courses</li>
                   </ul>
-                  <h4 className="text-lg font-semibold mt-4 text-orange-600">Process to Redeem Points:</h4>
+                  <h4 className="text-lg font-semibold mt-4 text-brand-600">Process to Redeem Points:</h4>
                   <ol className="list-decimal list-inside space-y-2 mt-2">
                     <li>Log in to your account.</li>
                     <li>Go to the Profile and select Points Earned .</li>
@@ -90,12 +90,16 @@ const Reward = () => {
               transition={{ duration: 0.8, delay: 1.2 }}
             >
               <Card>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-4 text-orange-600 flex items-center">
-                    <Gift />
-                     Go and Redeem Points to get Money
+                <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+                  <div className="mb-4 inline-flex items-center justify-center h-16 w-16 rounded-full bg-brand-100">
+                    <Gift className="h-8 w-8 text-brand-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-brand-600">
+                    Redeem points for real money
                   </h3>
-                  <img src="https://img.freepik.com/free-vector/flat-man-with-golden-coins-receive-cashback-e-wallet_88138-835.jpg?t=st=1730167752~exp=1730171352~hmac=7688196cdab25b86a88059709f3a39b9d8bd2a9c03a9a33ab5fdd374c16de0a2&w=1060" alt="Redeem Process" className="w-full h-auto" />
+                  <p className="text-ink-500 text-sm">
+                    Cash out your earned points straight to your wallet or bank account.
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -107,7 +111,7 @@ const Reward = () => {
             transition={{ duration: 0.8, delay: 1.4 }}
             className="text-center"
           >
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full text-lg">
+            <Button size="lg" className="rounded-full px-8">
               Start Earning Now
             </Button>
           </motion.div>

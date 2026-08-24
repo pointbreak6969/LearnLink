@@ -53,7 +53,6 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
     try {
       const response = await classroomService.createClassroom(data);
       if (response) {
-        console.log(response);
         toast.success("Classroom created successfully");
         navigate(`/classroom/${response._id}`);
       }
@@ -77,7 +76,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
           >
             {/* Classroom Name */}
             <div className="flex flex-col space-y-2">
-              <Label htmlFor="classroomname" className="font-bold text-gray-700">
+              <Label htmlFor="classroomname" className="font-bold text-ink-700">
                 Classroom Name:
               </Label>
               <Input
@@ -92,7 +91,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
 
             {/* University Selection */}
             <div className="flex flex-col space-y-2">
-              <Label className="font-bold text-gray-700">
+              <Label className="font-bold text-ink-700">
                 Choose Your University:
               </Label>
               <Controller
@@ -123,7 +122,7 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
 
             {/* Faculty Input */}
             <div className="flex flex-col space-y-2">
-              <Label htmlFor="faculty" className="font-bold text-gray-700">
+              <Label htmlFor="faculty" className="font-bold text-ink-700">
                 Faculty:
               </Label>
               <Input
@@ -138,11 +137,8 @@ const CreateClassroom = ({ createclassDialog, setcreateclassDialog }) => {
 
             {/* Submit Button */}
             <div className="flex justify-center mt-4">
-              <Button
-                className="text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105"
-                type="submit"
-              >
-                <PlusCircle className="mr-2" /> Add Classroom
+              <Button type="submit">
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Classroom
               </Button>
             </div>
             {error && <p className="text-red-500 mt-2">{error}</p>} 

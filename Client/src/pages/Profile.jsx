@@ -46,13 +46,13 @@ const Profile = () => {
 
   if (status === "loading") {
     return (
-      <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
+      <div className="p-6 bg-gradient-to-b from-brand-100 to-white shadow-lg rounded-lg">
         <Skeleton className="h-16 w-16 rounded-full mb-4" />
         <Skeleton className="h-8 w-1/2 mb-2" />
         <Skeleton className="h-4 w-1/3 mb-4" />
         <Progress
           value={profileCompletion}
-          className="w-full mb-2 bg-orange-200"
+          className="w-full mb-2 bg-brand-200"
         />
         <Skeleton className="h-6 w-full mb-4" />
         <Tabs>
@@ -82,7 +82,7 @@ const Profile = () => {
     );
   }
   return (
-    <div className="p-6 bg-gradient-to-b from-orange-100 to-white shadow-lg rounded-lg">
+    <div className="p-6 md:p-8 bg-gradient-to-b from-brand-50/70 to-white shadow-card rounded-2xl border border-ink-100">
       <div className="flex items-center justify-between mb-6 animate-fade-in">
         <div className="flex items-center gap-5">
           <div className="relative">
@@ -90,8 +90,8 @@ const Profile = () => {
             <AvatarComponent profilePicture={data.profilePicture} fullName={fullName}/>
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-[#FF9500]">{fullName}</h1>
-            <p className="text-gray-600 flex items-center">
+            <h1 className="font-display text-3xl font-semibold text-ink-900">{fullName}</h1>
+            <p className="text-ink-500 flex items-center">
               <MapPin className="w-4 h-4 mr-1" /> {data.location}
             </p>
           </div>
@@ -100,7 +100,7 @@ const Profile = () => {
           {profileDetails && (
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-[#FF9500] text-white hover:bg-[#E68600] transition-all duration-300 hover:scale-105">
+                <Button>
                   <Edit className="w-4 h-4 mr-2" /> Edit Profile
                 </Button>
               </DialogTrigger>
@@ -114,19 +114,19 @@ const Profile = () => {
                   onSubmit={handleSubmit(updateProfile)}
                 >
                   <div className="flex flex-col w-full">
-                    <label htmlFor="profile" className="text-gray-700">
+                    <label htmlFor="profile" className="text-ink-700">
                       Upload Profile
                     </label>
                     <Input
                       type="file"
                       id="profilePicture"
                       name="profilePicture"
-                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                       {...register("profilePicture")}
                     />
                   </div>
                   <div className="flex flex-col w-full">
-                    <label htmlFor="phone" className="text-gray-700">
+                    <label htmlFor="phone" className="text-ink-700">
                       Phone Number
                     </label>
                     <Input
@@ -134,12 +134,12 @@ const Profile = () => {
                       id="phone"
                       name="phone"
                       placeholder="Enter your phone number"
-                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                       {...register("phone")}
                     />
                   </div>
                   <div className="flex flex-col w-full">
-                    <label htmlFor="location" className="text-gray-700">
+                    <label htmlFor="location" className="text-ink-700">
                       Location
                     </label>
                     <Input
@@ -147,12 +147,12 @@ const Profile = () => {
                       id="location"
                       name="location"
                       placeholder="Enter your location"
-                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                       {...register("location")}
                     />
                   </div>
                   <div className="flex flex-col w-full">
-                    <label htmlFor="university" className="text-gray-700">
+                    <label htmlFor="university" className="text-ink-700">
                       University Name
                     </label>
                     <Input
@@ -160,12 +160,12 @@ const Profile = () => {
                       id="university"
                       name="university"
                       placeholder="Enter university name"
-                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                       {...register("university")}
                     />
                   </div>
                   <div className="flex flex-col w-full">
-                    <label htmlFor="college" className="text-gray-700">
+                    <label htmlFor="college" className="text-ink-700">
                       College Name
                     </label>
                     <Input
@@ -173,15 +173,12 @@ const Profile = () => {
                       id="college"
                       name="college"
                       placeholder="Enter your college"
-                      className="flex-grow focus:ring-2 focus:ring-orange-500 transition-all duration-200"
+                      className="flex-grow focus:ring-2 focus:ring-brand-500 transition-all duration-200"
                       {...register("college")}
                     />
                   </div>
 
-                  <Button
-                    type="submit"
-                    className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-                  >
+                  <Button type="submit" className="w-full">
                     Submit
                   </Button>
                 </form>
@@ -194,14 +191,14 @@ const Profile = () => {
       </div>
 
       <div className="mb-8 animate-fade-in">
-        <h2 className="text-sm text-gray-500 mb-2 flex items-center">
+        <h2 className="text-sm text-ink-500 mb-2 flex items-center">
           <Award className="w-4 h-4 mr-1" /> Profile Completion
         </h2>
         <Progress
           value={profileCompletion}
-          className="w-full mb-2 bg-orange-200 [&>div]:bg-[#FF9500] transition-all"
+          className="w-full mb-2 bg-brand-100 [&>div]:bg-brand-500 transition-all"
         />
-        <p className="text-sm text-gray-600">{profileCompletion}% Complete</p>
+        <p className="text-sm text-ink-600">{profileCompletion}% Complete</p>
       </div>
 
       <div className="max-w-7xl mx-auto relative">

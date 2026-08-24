@@ -1,3 +1,4 @@
+import fs from "fs";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import {
@@ -7,16 +8,35 @@ import {
 } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import Resource from "../models/resourceModel.js";
+import Classroom from "../models/classroomModel.js";
 import mongoose from "mongoose";
 const AddResources = asyncHandler(async (req, res) => {
   const { text, title } = req.body;
   const resourceFiles = req.files?.resource || [];
   const classroomId = req.body?.classroomId;
-  console.log("Request body:", req.body);
-  console.log("Title received:", req.body.title);
+  const cleanupUploadedFiles = () => {
+    // Multer already wrote these to disk before this handler ran - clean up on validation failure.
+    resourceFiles.forEach((file) => fs.unlink(file.path, () => {}));
+  };
+
   // Validate classroom ID
-  if (!classroomId) {
-    throw new ApiError(400, "Classroom ID is required");
+  if (!classroomId || !mongoose.Types.ObjectId.isValid(classroomId)) {
+    cleanupUploadedFiles();
+    throw new ApiError(400, "A valid classroom ID is required");
+  }
+
+  const classroom = await Classroom.findById(classroomId).select("admin users");
+  if (!classroom) {
+    cleanupUploadedFiles();
+    throw new ApiError(404, "Classroom not found");
+  }
+  const requesterId = req.user._id.toString();
+  const isMember =
+    classroom.admin.toString() === requesterId ||
+    classroom.users.some((u) => u.toString() === requesterId);
+  if (!isMember) {
+    cleanupUploadedFiles();
+    throw new ApiError(403, "You are not a member of this classroom");
   }
 
   // Check if at least one field is provided
@@ -219,8 +239,19 @@ const getUserUploadedResource = asyncHandler(async (req, res) => {
 });
 const getClassroomResources = asyncHandler(async (req, res) => {
   const { classroomId } = req.query;
-  if (!classroomId) {
-    throw new ApiError(400, "Classroom ID is required");
+  if (!classroomId || !mongoose.Types.ObjectId.isValid(classroomId)) {
+    throw new ApiError(400, "A valid classroom ID is required");
+  }
+  const classroom = await Classroom.findById(classroomId).select("admin users");
+  if (!classroom) {
+    throw new ApiError(404, "Classroom not found");
+  }
+  const requesterId = req.user._id.toString();
+  const isMember =
+    classroom.admin.toString() === requesterId ||
+    classroom.users.some((u) => u.toString() === requesterId);
+  if (!isMember) {
+    throw new ApiError(403, "You are not a member of this classroom");
   }
   const resources = await Resource.aggregate(
     [

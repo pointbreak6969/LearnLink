@@ -17,43 +17,44 @@ const Contact = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="bg-gradient-to-b from-brand-50/60 to-white min-h-screen">
+      <div className="container mx-auto px-4 py-16 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="grid md:grid-cols-2 gap-8 items-start"
         >
-          <div>
-            <h1 className="text-4xl font-bold mb-6 text-[#FF9500]">Contact Us</h1>
+          <div className="bg-white p-8 rounded-2xl shadow-card border border-ink-100">
+            <h1 className="font-display text-3xl font-semibold mb-6 text-ink-900">Contact Us</h1>
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label htmlFor="fullname" className="text-sm font-medium">
+                    <label htmlFor="fullname" className="text-sm font-medium text-ink-700">
                       First Name
                     </label>
                     <Input id="fullname" placeholder="Enter Full Name" required />
                   </div>
-                  
+
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email</label>
+                  <label htmlFor="email" className="text-sm font-medium text-ink-700">Email</label>
                   <Input id="email" placeholder="Enter your Email" type="email" required />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium">Phone</label>
+                  <label htmlFor="phone" className="text-sm font-medium text-ink-700">Phone</label>
                   <Input id="phone" placeholder="Enter Phone Number" type="tel" />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="subject" className="text-sm font-medium">Subject</label>
+                  <label htmlFor="subject" className="text-sm font-medium text-ink-700">Subject</label>
                   <Input id="subject" placeholder="Enter your Subject" required />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">Message</label>
+                  <label htmlFor="message" className="text-sm font-medium text-ink-700">Message</label>
                   <Textarea id="message" placeholder="Enter your Message here..." required />
                 </div>
-                <Button className="w-full bg-[#FF9500] hover:bg-[#E68600] text-white">
+                <Button size="lg" className="w-full">
                   <Send className="mr-2 h-4 w-4" /> Send Your Message
                 </Button>
               </form>
@@ -62,10 +63,10 @@ const Contact = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl relative"
                 role="alert"
               >
-                <strong className="font-bold">Thank you!</strong>
+                <strong className="font-semibold">Thank you!</strong>
                 <span className="block sm:inline"> Your message has been sent successfully.</span>
               </motion.div>
             )}
@@ -75,36 +76,36 @@ const Contact = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="bg-gradient-to-br from-[#FF9500] to-[#2c5d41] p-6 rounded-lg text-white shadow-lg"
+              className="bg-gradient-to-br from-brand-500 to-brand-600 p-6 rounded-2xl text-white shadow-glow"
             >
-              <h2 className="text-2xl font-semibold mb-4">Welcome to LearnLink's Contact Page</h2>
-              <p>
+              <h2 className="font-display text-2xl font-semibold mb-4">Welcome to LearnLink's Contact Page</h2>
+              <p className="text-white/85">
                 We're here to assist you with any questions or feedback regarding our educational notes and resources
                 sharing platform. Whether you're a student looking for study materials or an educator wanting to share your
                 knowledge, we're excited to hear from you.
               </p>
             </motion.div>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-3 bg-white p-3 rounded-lg shadow"
+                whileHover={{ scale: 1.02 }}
+                className="flex items-center space-x-3 bg-white p-3 rounded-xl shadow-card border border-ink-100"
               >
-                <MapPin className="text-[#FF9500]" />
-                <span>Pokhara,Nepal</span>
+                <MapPin className="text-brand-500 h-5 w-5" />
+                <span className="text-ink-700">Pokhara, Nepal</span>
               </motion.div>
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-3 bg-white p-3 rounded-lg shadow"
+                whileHover={{ scale: 1.02 }}
+                className="flex items-center space-x-3 bg-white p-3 rounded-xl shadow-card border border-ink-100"
               >
-                <Phone className="text-[#FF9500]" />
-                <span>+061-57846</span>
+                <Phone className="text-brand-500 h-5 w-5" />
+                <span className="text-ink-700">+061-57846</span>
               </motion.div>
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-3 bg-white p-3 rounded-lg shadow"
+                whileHover={{ scale: 1.02 }}
+                className="flex items-center space-x-3 bg-white p-3 rounded-xl shadow-card border border-ink-100"
               >
                 <svg
-                  className="text-[#FF9500]"
+                  className="text-brand-500 h-5 w-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -118,29 +119,23 @@ const Contact = () => {
                   <rect height="16" rx="2" width="20" x="2" y="4" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
-                <span>support@learnlink.com</span>
+                <span className="text-ink-700">support@learnlink.com</span>
               </motion.div>
             </div>
             <div className="flex space-x-4 justify-center">
-              <motion.a whileHover={{ scale: 1.2 }} href="#" className="text-[#FF9500] hover:text-[#E68600]">
-                <Facebook size={24} />
+              <motion.a whileHover={{ scale: 1.15 }} href="#" className="text-ink-400 hover:text-brand-600">
+                <Facebook size={22} />
               </motion.a>
-              <motion.a whileHover={{ scale: 1.2 }} href="#" className="text-[#FF9500] hover:text-[#E68600]">
-                <Twitter size={24} />
+              <motion.a whileHover={{ scale: 1.15 }} href="#" className="text-ink-400 hover:text-brand-600">
+                <Twitter size={22} />
               </motion.a>
-              <motion.a whileHover={{ scale: 1.2 }} href="#" className="text-[#FF9500] hover:text-[#E68600]">
-                <Linkedin size={24} />
+              <motion.a whileHover={{ scale: 1.15 }} href="#" className="text-ink-400 hover:text-brand-600">
+                <Linkedin size={22} />
               </motion.a>
-            </div>
-            <div className="mt-8">
-              <img
-                src="https://img.freepik.com/free-photo/education-learning-puzzle-pieces-graphic_53876-120600.jpg?t=st=1729569111~exp=1729572711~hmac=a7dcf8d008e4bf2aa575eb2ed3cb0fd3a18e07800b10647b2e1650678a727386&w=1060"
-                alt="LearnLink Community"
-                className="w-full h-auto object-cover rounded-lg shadow-lg"
-              />
             </div>
           </div>
         </motion.div>
+      </div>
       </div>
     </>
   );

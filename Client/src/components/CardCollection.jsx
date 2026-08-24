@@ -62,9 +62,9 @@ const CardCollection = ({ array, isJoined }) => {
   return (
     <>
       <div className="max-w-7xl mx-auto p-4 relative">
-        <div ref={scrollRef} className="flex scrollbar-hide overflow-x-scroll">
+        <div ref={scrollRef} className="flex gap-4 scrollbar-hide overflow-x-scroll scroll-smooth py-1">
           {array.map((item) => (
-            <div key={item._id} className="p-3">
+            <div key={item._id} className="w-64 flex-shrink-0">
               <MyCard
                 id={item?._id}
                 name={item.name}
@@ -80,22 +80,24 @@ const CardCollection = ({ array, isJoined }) => {
 
         {/* Scroll Left Button */}
         {!contentFits && showLeftArrow && (
-          <div
-            className="absolute z-10 rounded-full bg-slate-700 text-2xl p-2 left-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+          <button
+            className="absolute z-10 rounded-full bg-white text-ink-700 shadow-card border border-ink-100 p-2 left-0 top-1/2 -translate-y-1/2 hover:bg-brand-50 hover:text-brand-600 transition-colors"
             onClick={scrollLeft}
+            aria-label="Scroll left"
           >
-            <FaChevronLeft className="text-white" />
-          </div>
+            <FaChevronLeft />
+          </button>
         )}
 
         {/* Scroll Right Button */}
         {!contentFits && showRightArrow && (
-          <div
-            className="absolute z-10 rounded-full bg-slate-700 text-2xl p-2 right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+          <button
+            className="absolute z-10 rounded-full bg-white text-ink-700 shadow-card border border-ink-100 p-2 right-0 top-1/2 -translate-y-1/2 hover:bg-brand-50 hover:text-brand-600 transition-colors"
             onClick={scrollRight}
+            aria-label="Scroll right"
           >
-            <FaChevronRight className="text-white" />
-          </div>
+            <FaChevronRight />
+          </button>
         )}
       </div>
     </>

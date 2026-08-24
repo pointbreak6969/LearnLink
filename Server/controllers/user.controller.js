@@ -27,11 +27,25 @@ const registerUser = asyncHandler(async (req, res) => {
       "Please provide all required fields: full name, email, and password"
     );
   }
-  const existingUser = await User.findOne({ email });
+  if (
+    typeof fullName !== "string" ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    throw new ApiError(400, "Invalid field type");
+  }
+  if (password.length < 8) {
+    throw new ApiError(400, "Password must be at least 8 characters long");
+  }
+  const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
   if (existingUser) {
     throw new ApiError(409, "User already exists");
   }
-  const user = await User.create({ fullName, email, password });
+  const user = await User.create({
+    fullName,
+    email: email.toLowerCase().trim(),
+    password,
+  });
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken -otp -otpExpiry"
   );
@@ -41,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: "lax",
     maxAge: 24 * 60 * 60 * 1000 *7, // 1 day
   };
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
@@ -66,10 +80,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  if (!email && !password) {
+  if (!email || !password) {
     throw new ApiError(400, "Email and password are required");
   }
-  const user = await User.findOne({ email });
+  if (typeof email !== "string" || typeof password !== "string") {
+    throw new ApiError(400, "Invalid credentials");
+  }
+  const user = await User.findOne({ email: email.toLowerCase().trim() });
   if (!user) {
     throw new ApiError(404, "User not found");
   }
@@ -219,12 +236,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       sameSite: "lax",
     };
 
-    const { accessToken, newrefreshToken } =
+    const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshToken(user._id);
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", newrefreshToken, options)
+      .cookie("refreshToken", newRefreshToken, options)
+      .json(new ApiResponse(200, {}, "Access token refreshed successfully"));
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid refresh token");
   }

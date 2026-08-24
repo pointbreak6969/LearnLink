@@ -27,7 +27,6 @@ class ClassroomService {
     classroomId,
     { newClassroomName, newFacultyName, newUniversityName }
   ) {
-    console.log("i am runnign")
     try {
       const updateData = {};
 
@@ -49,7 +48,6 @@ class ClassroomService {
           withCredentials: true,
         }
       );
-      console.log(response);
       return response.data.data;
     } catch (error) {
       if (error.response) {
@@ -234,7 +232,6 @@ class ClassroomService {
 
   async userRequestToadmin({id,status,userId}){
     try {
-      console.log(id,userId);
       const response=await axios.post(
         `${baseUrl}/classroom/userRequestToadmin`,
         {id,status,userId},

@@ -49,24 +49,26 @@ const ClassroomDropDown = () => {
       <div>
         <div className="text-right mb-4">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Plus className="h-10 w-10" />
+            <DropdownMenuTrigger className="inline-flex items-center justify-center h-11 w-11 rounded-full bg-brand-500 text-white shadow-sm hover:bg-brand-600 hover:shadow-glow transition-all">
+              <Plus className="h-5 w-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Button
                   onClick={() => setjoinclassDialog(true)}
-                  className="w-full"
+                  variant="ghost"
+                  className="w-full justify-start"
                 >
-                  <BookA />
+                  <BookA className="h-4 w-4" />
                   Join classroom
                 </Button>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button
                   onClick={() => setcreateclassDialog(true)}
-                  className="w-full"
+                  variant="ghost"
+                  className="w-full justify-start"
                 >
                   <PlusCircle className="h-4 w-4" />
                   Create Classroom
@@ -94,13 +96,10 @@ const ClassroomDropDown = () => {
                 id="classCode"
                 name="classCode"
                 placeholder="Enter class code"
-                className="flex-grow border-2 border-gray-300 focus:border-gray-500 transition-all duration-200"
+                className="flex-grow"
                 {...register("code", { required: true })}
               />
-              <Button
-                type="submit"
-                className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
-              >
+              <Button type="submit">
                 Join Class
               </Button>
             </form>

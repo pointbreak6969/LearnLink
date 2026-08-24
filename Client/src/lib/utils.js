@@ -5,6 +5,10 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+export function escapeRegExp(str = "") {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export const exportToPdf = () => {
   const canvas = document.querySelector("canvas");
 

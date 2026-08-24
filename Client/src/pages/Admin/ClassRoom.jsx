@@ -59,19 +59,19 @@ const ClassRoomAdmin = () => {
   }, [selectedUniversity, selectedSubject, search]);
 
   return (
-    <div className="p-6 bg-gradient-to-br from-orange-50 to-orange-100 min-h-screen">
+    <div className="p-6 bg-gradient-to-br from-brand-50 to-brand-100 min-h-screen">
   
-      <h1 className="text-3xl font-bold text-orange-600 mb-2 flex items-center gap-2">
+      <h1 className="font-display text-3xl font-semibold text-brand-600 mb-2 flex items-center gap-2">
         Classroom Admin
       </h1>
 
    
       <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">Filter</h2>
+          <h2 className="text-lg font-semibold text-ink-700 mb-2">Filter</h2>
           <div className="flex flex-wrap gap-4">
             <select
-              className="px-4 py-2 rounded-xl border border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-700"
+              className="px-4 py-2 rounded-xl border border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500 text-ink-700"
               value={selectedUniversity}
               onChange={(e) => setSelectedUniversity(e.target.value)}
             >
@@ -80,7 +80,7 @@ const ClassRoomAdmin = () => {
               ))}
             </select>
             <select
-              className="px-4 py-2 rounded-xl border border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-700"
+              className="px-4 py-2 rounded-xl border border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500 text-ink-700"
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
             >
@@ -95,19 +95,19 @@ const ClassRoomAdmin = () => {
             <input
               type="text"
               placeholder="Search by name or owner..."
-              className="pl-10 pr-4 py-2 rounded-xl border border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-700"
+              className="pl-10 pr-4 py-2 rounded-xl border border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500 text-ink-700"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Search className="absolute left-2 top-2.5 text-orange-400 w-5 h-5" />
+            <Search className="absolute left-2 top-2.5 text-brand-400 w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-orange-200 shadow-lg bg-white">
-        <table className="min-w-full divide-y divide-orange-100">
-          <thead className="bg-orange-100 text-orange-700 sticky top-0 z-10">
+      <div className="overflow-x-auto rounded-xl border border-brand-200 shadow-lg bg-white">
+        <table className="min-w-full divide-y divide-brand-100">
+          <thead className="bg-brand-100 text-brand-700 sticky top-0 z-10">
             <tr>
               <th className="px-4 py-3 text-left font-semibold">SN</th>
               <th className="px-4 py-3 text-left font-semibold">Name</th>
@@ -118,10 +118,10 @@ const ClassRoomAdmin = () => {
               <th className="px-4 py-3 text-left font-semibold">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-orange-50">
+          <tbody className="divide-y divide-brand-50">
             {paginatedClassrooms.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center py-8 text-gray-400">
+                <td colSpan={7} className="text-center py-8 text-ink-400">
                   No classrooms found.
                 </td>
               </tr>
@@ -130,8 +130,8 @@ const ClassRoomAdmin = () => {
                 <tr
                   key={room.id}
                   className={`transition-all duration-200 ${
-                    idx % 2 === 0 ? 'bg-orange-50' : 'bg-white'
-                  } hover:bg-orange-100`}
+                    idx % 2 === 0 ? 'bg-brand-50' : 'bg-white'
+                  } hover:bg-brand-100`}
                 >
                   <td className="px-4 py-3">{(page - 1) * rowsPerPage + idx + 1}</td>
                   <td className="px-4 py-3 font-medium">{room.name}</td>
@@ -141,14 +141,14 @@ const ClassRoomAdmin = () => {
                   <td className="px-4 py-3">{room.created}</td>
                   <td className="px-4 py-3 flex gap-2">
                     <button
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 rounded-md flex items-center gap-1 transition"
+                      className="bg-brand-500 hover:bg-brand-600 text-white px-2 py-1 rounded-md flex items-center gap-1 transition"
                       title="View"
                     >
                       <Eye className="w-4 h-4" />
                       View
                     </button>
                     <button
-                      className="bg-orange-100 hover:bg-orange-200 text-orange-700 px-2 py-1 rounded-md flex items-center gap-1 transition"
+                      className="bg-brand-100 hover:bg-brand-200 text-brand-700 px-2 py-1 rounded-md flex items-center gap-1 transition"
                       title="Edit"
                     >
                       <Edit className="w-4 h-4" />
@@ -170,7 +170,7 @@ const ClassRoomAdmin = () => {
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-6">
           <button
-            className="p-2 rounded-full bg-orange-100 hover:bg-orange-200 text-orange-600 disabled:opacity-50"
+            className="p-2 rounded-full bg-brand-100 hover:bg-brand-200 text-brand-600 disabled:opacity-50"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
             aria-label="Previous page"
@@ -182,8 +182,8 @@ const ClassRoomAdmin = () => {
               key={i + 1}
               className={`px-3 py-1 rounded-md font-semibold ${
                 page === i + 1
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                  ? 'bg-brand-500 text-white'
+                  : 'bg-brand-100 text-brand-700 hover:bg-brand-200'
               }`}
               onClick={() => setPage(i + 1)}
             >
@@ -191,7 +191,7 @@ const ClassRoomAdmin = () => {
             </button>
           ))}
           <button
-            className="p-2 rounded-full bg-orange-100 hover:bg-orange-200 text-orange-600 disabled:opacity-50"
+            className="p-2 rounded-full bg-brand-100 hover:bg-brand-200 text-brand-600 disabled:opacity-50"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             aria-label="Next page"

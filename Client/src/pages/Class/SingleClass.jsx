@@ -50,28 +50,17 @@ const SingleClass = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="border-b shadow-md">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-4xl font-bold text-black">
+    <div className="min-h-screen bg-brand-50/40">
+      <header className="bg-white border-b border-ink-100">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="font-display text-3xl md:text-4xl font-semibold text-ink-900">
             {classroomDetails.name}
           </h1>
-          <p className="text-lg text-gray-800">
+          <p className="text-base text-ink-500 mt-1">
             {classroomDetails.faculty}, {classroomDetails.university}
           </p>
         </div>
       </header>
-
-      <div className="bg-gradient-to-b from-orange-50 to-orange-100 text-white py-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl text-black font-semibold">
-            Welcome to Your Class!
-          </h2>
-          <p className="mt-2 text-lg text-gray-900">
-            Stay updated with announcements and resources.
-          </p>
-        </div>
-      </div>
 
       <main className="max-w-7xl mx-auto mt-8 px-4 flex flex-col lg:flex-row gap-8">
         <div className="flex-1">
@@ -80,42 +69,34 @@ const SingleClass = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className=" flex justify-between">
-              <div className="flex gap-4">
+            <TabsList className="flex justify-between bg-white border border-ink-100 rounded-xl p-1.5 shadow-card h-auto">
+              <div className="flex gap-1">
                 <TabsTrigger
                   value="stream"
-                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                  className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
                 >
                   Stream
                 </TabsTrigger>
                 <TabsTrigger
                   value="classwork"
-                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                  className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
                 >
                   Resources
                 </TabsTrigger>
                 <TabsTrigger
                   value="people"
-                  className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                  className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
                 >
                   People
                 </TabsTrigger>
               </div>
               <div className="ml-auto">
-                {/* <AdminControls adminId={classroomDetails.admin}>
-                  <TabsTrigger
-                    value="setting"
-                    className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
-                  >
-                    <Settings className="text-gray-900" />
-                  </TabsTrigger>
-                </AdminControls> */}
                  {user===owner?
                   <TabsTrigger
                     value="setting"
-                    className="text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-200"
+                    className="text-sm font-medium py-2 px-4 rounded-lg data-[state=active]:bg-brand-500 data-[state=active]:text-white hover:bg-brand-50"
                   >
-                    <Settings className="text-gray-900" />
+                    <Settings className="h-4 w-4" />
                   </TabsTrigger>:<></>}
               </div>{" "}
             </TabsList>

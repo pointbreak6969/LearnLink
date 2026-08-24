@@ -49,16 +49,16 @@ const items = [
 
 export function AppSidebar({ sidebarOpen, setSidebarOpen}) {
   const userProfile=useSelector((state)=>state.profile?.profileDetails?.profilePicture?.url)
- 
+
   return (
     <Sidebar side="right"  open={sidebarOpen} onClose={() => setSidebarOpen(false)}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton> <Link to={'/login'} ocClick={()=>setSidebarOpen(false)}>Login </Link></SidebarMenuButton>
+            <SidebarMenuButton asChild><Link to={'/login'} onClick={()=>setSidebarOpen(false)}>Login</Link></SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton> <Link to={'/signup'}>  Signup</Link></SidebarMenuButton>
+            <SidebarMenuButton asChild><Link to={'/signup'}>Signup</Link></SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -83,9 +83,13 @@ export function AppSidebar({ sidebarOpen, setSidebarOpen}) {
       <SidebarSeparator/>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem><Link to={'/profile'}a className="flex"><img src={userProfile} className="h-10 w-10 rounded-full"/><p className="mt-2 ml-2">Profile</p></Link></SidebarMenuItem>
+          <SidebarMenuItem>
+            <Link to={'/profile'} className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-brand-50">
+              <img src={userProfile} className="h-9 w-9 rounded-full object-cover bg-ink-100"/>
+              <p className="font-medium text-ink-800">Profile</p>
+            </Link>
+          </SidebarMenuItem>
         </SidebarMenu>
-         
       </SidebarFooter>
     </Sidebar>
   );

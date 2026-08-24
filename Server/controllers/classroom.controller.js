@@ -38,12 +38,15 @@ const createClassroom = asyncHandler(async (req, res) => {
 });
 const deleteClassroom = asyncHandler(async (req, res) => {
   const { classroomId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(classroomId)) {
+    throw new ApiError(400, "Invalid Classroom ID");
+  }
   const classroom = await Classroom.findById(classroomId);
   if (!classroom) {
     throw new ApiError(400, "Classroom not found");
   }
-  if (classroom.author.toString() !== req.user._id.toString()) {
-    throw new ApiError(400, "Unauthorized request");
+  if (classroom.admin.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Unauthorized: Only the classroom admin can delete this classroom");
   }
   await Classroom.findByIdAndDelete(classroomId);
   return res
@@ -144,6 +147,8 @@ const getAllClassrooms = asyncHandler(async (req, res) => {
   }
   return res.status(200).json(new ApiResponse(200, allClasses, "Success"));
 });
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
   const { universityName, facultyName } = req.query;
   if (!universityName && !facultyName) {
@@ -152,12 +157,24 @@ const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
       "At least one filter (university or faculty) is required"
     );
   }
+  if (
+    (universityName && typeof universityName !== "string") ||
+    (facultyName && typeof facultyName !== "string")
+  ) {
+    throw new ApiError(400, "Invalid filter value");
+  }
+  if (
+    (universityName && universityName.length > 100) ||
+    (facultyName && facultyName.length > 100)
+  ) {
+    throw new ApiError(400, "Filter value too long");
+  }
   const matchConditions = [];
 
   if (universityName) {
     matchConditions.push({
       $match: {
-        university: new RegExp(universityName, "i"),
+        university: new RegExp(escapeRegex(universityName), "i"),
       },
     });
   }
@@ -165,7 +182,7 @@ const getClassroomByUniversityAndFaculty = asyncHandler(async (req, res) => {
   if (facultyName) {
     matchConditions.push({
       $match: {
-        faculty: new RegExp(facultyName, "i"),
+        faculty: new RegExp(escapeRegex(facultyName), "i"),
       },
     });
   }
@@ -200,6 +217,9 @@ const getClassroomDetails = asyncHandler(async (req, res) => {
 });
 const joinClassroom = asyncHandler(async (req, res) => {
   const { code } = { ...req.body, ...req.params };
+  if (!code || typeof code !== "string") {
+    throw new ApiError(400, "A valid classroom code is required");
+  }
 
   const userId = req.user._id;
   const classroom = await Classroom.findOne({ code });
@@ -250,8 +270,6 @@ const getSuggestedClassrooms = asyncHandler(async (req, res) => {
         ]
       });
 
-      console.log('User ID:', req.user._id); 
-      console.log('Found classrooms:', suggestedClassrooms.length); // Debug log
     } else {
       suggestedClassrooms = [];
       total = 0;
@@ -272,8 +290,19 @@ const getSuggestedClassrooms = asyncHandler(async (req, res) => {
 });
 const getClassroomUsers = asyncHandler(async (req, res)=>{
   const {classroomId} = req.params;
-  if(!classroomId){
-    throw new ApiError(400, "Classroom Id is required");
+  if(!classroomId || !mongoose.Types.ObjectId.isValid(classroomId)){
+    throw new ApiError(400, "Valid classroom Id is required");
+  }
+  const membershipCheck = await Classroom.findById(classroomId).select("admin users");
+  if (!membershipCheck) {
+    throw new ApiError(404, "Classroom not found");
+  }
+  const requesterId = req.user._id.toString();
+  const isMember =
+    membershipCheck.admin.toString() === requesterId ||
+    membershipCheck.users.some((u) => u.toString() === requesterId);
+  if (!isMember) {
+    throw new ApiError(403, "You are not a member of this classroom");
   }
   const response = await Classroom.aggregate([
     {
@@ -369,30 +398,46 @@ const getClassroomUsers = asyncHandler(async (req, res)=>{
 
 const requestToJoinclassRoom=asyncHandler(async(req,res)=>{
   const {id}=req.body
-  const classroom=await Classroom.findById({_id:id})
+  if(!id || !mongoose.Types.ObjectId.isValid(id)){
+    throw new ApiError(400,"Valid classroom id is required")
+  }
+  const classroom=await Classroom.findById(id)
   if(!classroom){
     throw new ApiError(400,"no classroom found")
   }
-  const userExists = classroom.requestedUsers.find(user => user._id.toString()===req.user._id.toString()); 
+  const requesterId = req.user._id.toString();
+  const alreadyMember = classroom.users.some((u) => u.toString() === requesterId);
+  if (alreadyMember) {
+    throw new ApiError(400, "You are already in this classroom");
+  }
+  const userExists = classroom.requestedUsers.find(request => request.user.toString()===requesterId);
   if(userExists){
     throw new ApiError(401,"You already requested to join classroom")
   }
-  classroom.requestedUsers.push(req.user._id)
+  classroom.requestedUsers.push({ user: req.user._id })
   await classroom.save()
   return res.status(200).json
   (
-    new ApiResponse(200,"requested to join into classroom",classroom)
+    new ApiResponse(200,classroom,"requested to join into classroom")
   )
 })
 
 
 const getJoinRequests = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  if (!id) {
-    throw new ApiError(400, "Classroom ID is required");
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Valid classroom ID is required");
   }
 
-  const classroom = await Classroom.aggregate([
+  const classroom = await Classroom.findById(id).select("admin");
+  if (!classroom) {
+    throw new ApiError(404, "Classroom not found");
+  }
+  if (classroom.admin.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Only the classroom admin can view join requests");
+  }
+
+  const joinRequests = await Classroom.aggregate([
     {
       $match: { _id: new mongoose.Types.ObjectId(id) }
     },
@@ -402,41 +447,45 @@ const getJoinRequests = asyncHandler(async (req, res) => {
     {
       $lookup: {
         from: "users",
-        localField: "requestedUsers._id",
+        localField: "requestedUsers.user",
         foreignField: "_id",
         as: "userDetails"
       }
     },
     {$unwind:"$userDetails"},
-    {$lookup:{
-      from:"userprofiles",
-      localField:"userDetails._id",
-      foreignField:"user",
-      as:"userProfiles"
-    }},
     {
       $project: {
         _id:"$userDetails._id",
         fullName:"$userDetails.fullName"
       }
     },
-    
+
   ]);
   return res.status(200).json(
-    new ApiResponse(200, classroom, "Join requests fetched successfully")
+    new ApiResponse(200, joinRequests, "Join requests fetched successfully")
   );
 });
 
 const userRequestToadmin=asyncHandler(async(req,res)=>{
   const {id,status,userId}=req.body
-  const classroom=await Classroom.findById({_id:id})
+  if(!id || !mongoose.Types.ObjectId.isValid(id)){
+    throw new ApiError(400,"Valid classroom id is required")
+  }
+  if(!userId || !mongoose.Types.ObjectId.isValid(userId)){
+    throw new ApiError(400,"Valid user id is required")
+  }
+  if(status !== "accept" && status !== "reject"){
+    throw new ApiError(400,"Status must be 'accept' or 'reject'")
+  }
+  const classroom=await Classroom.findById(id)
   if(!classroom){
     throw new ApiError(400,"No classroom found")
   }
-  console.log(classroom
-  );
+  if(classroom.admin.toString() !== req.user._id.toString()){
+    throw new ApiError(403,"Only the classroom admin can manage join requests")
+  }
   const requestIndex = classroom.requestedUsers.findIndex(
-    request => request._id.toString() === userId
+    request => request.user.toString() === userId
   );
 
   if (requestIndex === -1) {
@@ -454,8 +503,7 @@ const userRequestToadmin=asyncHandler(async(req,res)=>{
     new ApiResponse(
       200,
       classroom,
-      "user joined to classroom ",
-      
+      status === "accept" ? "User joined the classroom" : "Request rejected",
     )
   )
 })

@@ -17,7 +17,7 @@ import { motion } from "framer-motion";
 const About = () => {
   return (
     <>
-      <div className="bg-gradient-to-r from-blue-50 to-white min-h-screen">
+      <div className="bg-gradient-to-b from-brand-50/60 to-white min-h-screen">
         <div className="container mx-auto px-4 py-16">
           {/* Section Header with Animation */}
           <motion.div
@@ -26,10 +26,10 @@ const About = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <h1 className="text-5xl font-extrabold mb-4 text-gray-800">
+            <h1 className="font-display text-5xl font-semibold mb-4 text-ink-900 text-balance">
               About LearnLink
             </h1>
-            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg text-ink-600 max-w-3xl mx-auto">
               Welcome to LearnLink, where we are passionate about empowering
               individuals to master the world of education and knowledge
               sharing. Our platform is designed to help learners and educators
@@ -43,7 +43,7 @@ const About = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <h2 className="text-4xl font-semibold text-center text-gray-800 mb-8">
+            <h2 className="font-display text-4xl font-semibold text-center text-ink-900 mb-10">
               Our Achievements
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -79,14 +79,16 @@ const About = () => {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
                 >
-                  <Card className="flex flex-col h-full">
+                  <Card className="flex flex-col h-full transition-all duration-300 hover:border-brand-300 hover:shadow-glow">
                     <CardContent className="flex items-start p-6 flex-grow">
-                      <item.icon className="w-10 h-10 text-orange-500 mr-4" />
+                      <div className="mr-4 inline-flex items-center justify-center h-11 w-11 rounded-xl bg-brand-50 flex-shrink-0">
+                        <item.icon className="w-6 h-6 text-brand-600" />
+                      </div>
                       <div>
-                        <h3 className="text-xl font-semibold mb-2">
+                        <h3 className="text-lg font-semibold mb-1 text-ink-900">
                           {item.title}
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-ink-600">
                           {item.description}
                         </p>
                       </div>
@@ -97,10 +99,10 @@ const About = () => {
             </div>
           </motion.section>
 
-          <h2 className="text-4xl font-semibold text-center text-gray-800 mb-8">
+          <h2 className="font-display text-4xl font-semibold text-center text-ink-900 mb-6">
             Our Goals
           </h2>
-          <p className="text-lg text-gray-700 text-center mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-ink-600 text-center mb-12 max-w-2xl mx-auto">
             At LearnLink, our goal is to revolutionize education by creating a
             vibrant community where knowledge flows freely. We believe that
             education should be accessible and engaging for everyone. Through
@@ -133,70 +135,72 @@ const About = () => {
                   "We continuously evolve our platform, incorporating the latest ed-tech innovations to enhance the learning experience.",
               },
             ].map((item, index) => (
-              <Card>
+              <Card key={item.title} className="transition-all duration-300 hover:border-brand-300 hover:shadow-glow">
                 <CardContent className="flex items-start p-6">
-                  <item.icon className="w-10 h-10 text-orange-500 mr-4" />
+                  <div className="mr-4 inline-flex items-center justify-center h-11 w-11 rounded-xl bg-brand-50 flex-shrink-0">
+                    <item.icon className="w-6 h-6 text-brand-600" />
+                  </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                    <p className="text-sm text-gray-600">{item.description}</p>
+                    <h3 className="text-lg font-semibold mb-1 text-ink-900">{item.title}</h3>
+                    <p className="text-sm text-ink-600">{item.description}</p>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="bg-orange-500 text-center p-5 m-5">
-            <h2 className="text-4xl font-bold text-white mb-4">
+          <div className="bg-gradient-to-br from-brand-500 to-brand-600 text-center p-10 md:p-14 my-16 rounded-3xl shadow-glow">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4 text-balance">
               Together, let's shape the future of education
             </h2>
-            <p className="text-lg text-white mb-6 max-w-2xl mx-auto">
+            <p className="text-lg text-white/85 mb-8 max-w-2xl mx-auto">
               Join us in our mission to create a global community of learners
               and educators, and unlock your potential in the world of knowledge
               sharing.
             </p>
             <Button
               size="lg"
-              className="bg-white text-orange-500 hover:bg-gray-100"
+              className="bg-white text-brand-600 hover:bg-brand-50"
             >
               Join Now
             </Button>
           </div>
           <section className="px-4">
-  <div className="mx-auto max-w-3xl text-center">
-    <h3 className="mb-6 text-3xl font-bold">Meet Collaborator</h3>
-    <p className="mb-6 pb-2 text-neutral-500 dark:text-neutral-300 md:mb-12 italic">
-      Meet our diverse community of collaborators, working together to inspire and elevate your educational journey
-    </p>
-  </div>
+            <div className="mx-auto max-w-3xl text-center">
+              <h3 className="font-display mb-4 text-3xl font-semibold text-ink-900">Meet the Collaborators</h3>
+              <p className="mb-12 text-ink-500 italic">
+                Meet our diverse community of collaborators, working together to inspire and elevate your educational journey
+              </p>
+            </div>
 
-  <div className="grid gap-12 text-center md:grid-cols-2">
-    <div className="mb-6 md:mb-0">
-      <div className="mb-6 flex justify-center">
-        <img
-          src={ashim}
-          className="w-32 h-32 rounded-full object-cover shadow-lg dark:shadow-black/30"
-        />
-      </div>
-      <p className="my-4 text-xl text-neutral-700 dark:text-neutral-300 italic">
-        "Building LearnLink has been an exciting journey, creating a space where developers and learners can come together to share knowledge and grow"
-      </p>
-      <p className="italic font-bold">- Ashim Gautam</p>
-    </div>
+            <div className="grid gap-12 text-center md:grid-cols-2">
+              <div>
+                <div className="mb-6 flex justify-center">
+                  <img
+                    src={ashim}
+                    className="w-28 h-28 rounded-full object-cover shadow-card ring-4 ring-brand-100"
+                  />
+                </div>
+                <p className="mb-4 text-lg text-ink-700 italic">
+                  "Building LearnLink has been an exciting journey, creating a space where developers and learners can come together to share knowledge and grow"
+                </p>
+                <p className="italic font-semibold text-ink-900">— Ashim Gautam</p>
+              </div>
 
-    <div className="mb-0">
-      <div className="mb-6 flex justify-center">
-        <img
-          src={biraj}
-          className="w-32 h-32 rounded-full object-cover shadow-lg dark:shadow-black/30"
-        />
-      </div>
-      <p className="my-4 text-xl text-neutral-700 dark:text-neutral-300 italic">
-        "Working on LearnLink has been a fantastic opportunity to contribute to an evolving platform that's all about fostering collaboration and continuous learning"
-      </p>
-      <p className="italic font-bold">- Biraj Baral</p>
-    </div>
-  </div>
-</section>
+              <div>
+                <div className="mb-6 flex justify-center">
+                  <img
+                    src={biraj}
+                    className="w-28 h-28 rounded-full object-cover shadow-card ring-4 ring-brand-100"
+                  />
+                </div>
+                <p className="mb-4 text-lg text-ink-700 italic">
+                  "Working on LearnLink has been a fantastic opportunity to contribute to an evolving platform that's all about fostering collaboration and continuous learning"
+                </p>
+                <p className="italic font-semibold text-ink-900">— Biraj Baral</p>
+              </div>
+            </div>
+          </section>
 
         </div>
       </div>

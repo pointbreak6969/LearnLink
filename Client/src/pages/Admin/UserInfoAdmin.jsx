@@ -241,17 +241,17 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-orange-50 to-orange-100 min-h-screen">
+    <div className="p-6 bg-gradient-to-br from-brand-50 to-brand-100 min-h-screen">
     
-      <h1 className="text-3xl font-bold text-orange-600 mb-4 flex items-center gap-2">
+      <h1 className="text-3xl font-bold text-brand-600 mb-4 flex items-center gap-2">
         User Management
       </h1>
       <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">Filter</h2>
+          <h2 className="text-lg font-semibold text-ink-700 mb-2">Filter</h2>
           <div className="flex flex-wrap gap-4">
             <select
-              className="px-4 py-2 rounded-xl border border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-700"
+              className="px-4 py-2 rounded-xl border border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500 text-ink-700"
               value={selectedUniversity}
               onChange={(e) => setSelectedUniversity(e.target.value)}
             >
@@ -266,17 +266,17 @@ const UserManagement = () => {
             <input
               type="text"
               placeholder="Search by name or email..."
-              className="pl-10 pr-4 py-2 rounded-xl border border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-700"
+              className="pl-10 pr-4 py-2 rounded-xl border border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500 text-ink-700"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Search className="absolute left-2 top-2.5 text-orange-400 w-5 h-5" />
+            <Search className="absolute left-2 top-2.5 text-brand-400 w-5 h-5" />
           </div>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-orange-200 shadow-lg bg-white">
-        <table className="min-w-full divide-y divide-orange-100">
-          <thead className="bg-orange-100 text-orange-700 sticky top-0 z-10">
+      <div className="overflow-x-auto rounded-xl border border-brand-200 shadow-lg bg-white">
+        <table className="min-w-full divide-y divide-brand-100">
+          <thead className="bg-brand-100 text-brand-700 sticky top-0 z-10">
             <tr>
               <th className="px-4 py-3 text-left font-semibold">SN</th>
               <th className="px-4 py-3 text-left font-semibold">Full Name</th>
@@ -287,10 +287,10 @@ const UserManagement = () => {
               <th className="px-4 py-3 text-left font-semibold">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-orange-50">
+          <tbody className="divide-y divide-brand-50">
             {filteredUsers.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center py-8 text-gray-400">
+                <td colSpan={7} className="text-center py-8 text-ink-400">
                   No users found.
                 </td>
               </tr>
@@ -299,8 +299,8 @@ const UserManagement = () => {
                 <tr
                   key={user.id}
                   className={`transition-all duration-200 ${
-                    idx % 2 === 0 ? 'bg-orange-50' : 'bg-white'
-                  } hover:bg-orange-100`}
+                    idx % 2 === 0 ? 'bg-brand-50' : 'bg-white'
+                  } hover:bg-brand-100`}
                 >
                   <td className="px-4 py-3">{(page - 1) * rowsPerPage + idx + 1}</td>
                   <td className="px-4 py-3 font-medium">{user.fullName}</td>
@@ -311,7 +311,7 @@ const UserManagement = () => {
                   <td className="px-4 py-3 flex gap-2">
                     <button
                       onClick={() => openModal(user)}
-                      className="bg-transparent text-gray-900 px-2 py-1 rounded-md flex items-center gap-1 transition"
+                      className="bg-transparent text-ink-900 px-2 py-1 rounded-md flex items-center gap-1 transition"
                       title="View Details"
                     >
                       <Eye className="w-4 h-4" />
@@ -333,7 +333,7 @@ const UserManagement = () => {
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-6">
           <button
-            className="p-2 rounded-full bg-orange-100 hover:bg-orange-200 text-orange-600 disabled:opacity-50"
+            className="p-2 rounded-full bg-brand-100 hover:bg-brand-200 text-brand-600 disabled:opacity-50"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
             aria-label="Previous page"
@@ -345,8 +345,8 @@ const UserManagement = () => {
               key={i + 1}
               className={`px-3 py-1 rounded-md font-semibold ${
                 page === i + 1
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                  ? 'bg-brand-500 text-white'
+                  : 'bg-brand-100 text-brand-700 hover:bg-brand-200'
               }`}
               onClick={() => setPage(i + 1)}
             >
@@ -354,7 +354,7 @@ const UserManagement = () => {
             </button>
           ))}
           <button
-            className="p-2 rounded-full bg-orange-100 hover:bg-orange-200 text-orange-600 disabled:opacity-50"
+            className="p-2 rounded-full bg-brand-100 hover:bg-brand-200 text-brand-600 disabled:opacity-50"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             aria-label="Next page"
@@ -380,41 +380,41 @@ const UserManagement = () => {
           >
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-orange-600 hover:text-orange-800"
+              className="absolute top-4 right-4 text-brand-600 hover:text-brand-800"
               aria-label="Close modal"
             >
               <X className="w-6 h-6" />
             </button>
             <h2
               id="modal-title"
-              className="text-2xl font-bold text-orange-600 mb-4 flex items-center gap-2"
+              className="text-2xl font-bold text-brand-600 mb-4 flex items-center gap-2"
             >
               <User className="w-6 h-6" />
               {selectedUser.fullName}
             </h2>
-            <div id="modal-description" className="space-y-3 text-gray-700">
+            <div id="modal-description" className="space-y-3 text-ink-700">
               <p className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-gray-500" />
+                <Mail className="w-4 h-4 text-ink-500" />
                 <strong>Email:</strong> {selectedUser.email}
               </p>
               <p className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-gray-500" />
+                <Phone className="w-4 h-4 text-ink-500" />
                 <strong>Phone:</strong> {selectedUser.contactInfo.phone}
               </p>
               <p className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-gray-500" />
+                <MapPin className="w-4 h-4 text-ink-500" />
                 <strong>Location:</strong> {selectedUser.contactInfo.location}
               </p>
               <p className="flex items-center gap-2">
-                <University className="w-4 h-4 text-gray-500" />
+                <University className="w-4 h-4 text-ink-500" />
                 <strong>University:</strong> {selectedUser.contactInfo.university}
               </p>
               <p className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-gray-500" />
+                <Award className="w-4 h-4 text-ink-500" />
                 <strong>Points Earned:</strong> {selectedUser.pointsEarned}
               </p>
               <p className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-gray-500" />
+                <Calendar className="w-4 h-4 text-ink-500" />
                 <strong>Created:</strong> {selectedUser.created}
               </p>
             </div>

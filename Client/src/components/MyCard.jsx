@@ -25,19 +25,21 @@ const MyCard = ({ id, name, admin, university, faculty,isJoined }) => {
   };
 
   return (
-    <Card className="bg-white shadow-lg border border-slate-200 rounded-3xl flex flex-col justify-between max-h-64 h-full">
-      <CardHeader>
-        <CardTitle className="text-lg font-bold truncate-multiline">
+    <Card className="w-full flex flex-col justify-between h-full transition-all duration-300 hover:border-brand-300 hover:shadow-glow hover:-translate-y-1">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-semibold truncate-multiline">
           {name}
         </CardTitle>
-        <CardDescription>By: {admin}</CardDescription>
+        <CardDescription>By {admin}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between flex-grow">
-        <p className="text-sm mb-2">{faculty}</p>
-        <p className="text-sm mb-2">{university}</p>
+      <CardContent className="flex flex-col justify-between flex-grow pt-0">
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          <span className="text-xs font-medium bg-brand-50 text-brand-700 px-2.5 py-1 rounded-full">{faculty}</span>
+          <span className="text-xs font-medium bg-ink-100 text-ink-600 px-2.5 py-1 rounded-full">{university}</span>
+        </div>
 
         <Button
-          className="w-full bg-orange-500 hover:bg-slate-900/90 transition-all duration-300 text-white mt-auto"
+          className="w-full mt-auto"
           onClick={handleClassroomAction}
         >
           <BookOpen className="mr-2 h-4 w-4" />

@@ -1,3 +1,4 @@
+import fs from "fs";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import UserProfile from "../models/user_profileModel.js";
@@ -10,9 +11,11 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 const completeProfile = asyncHandler(async (req, res) => {
   const { phone, location, university, college } = req.body;
   if (!(phone && location && university && college)) {
+    // Multer already wrote the file to disk before this handler ran - clean it up on validation failure.
+    if (req.file?.path) fs.unlink(req.file.path, () => {});
     throw new ApiError(400, "All fields are required");
   }
-  const Profilelocation = req.file.path;
+  const Profilelocation = req.file?.path;
 
   if (!Profilelocation) {
     throw new ApiError(401, "Failed to upload Profile");
@@ -76,9 +79,14 @@ const updateProfile = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User not found");
   }
 
-  // Update profile details if provided in the request body
+  // Update profile details if provided in the request body (whitelist to prevent mass assignment)
+  const ALLOWED_CONTACT_FIELDS = ["phone", "location", "university", "college"];
   if (req.body && Object.keys(req.body).length > 0) {
-    Object.assign(user.contactInfo, req.body);
+    for (const field of ALLOWED_CONTACT_FIELDS) {
+      if (req.body[field] !== undefined) {
+        user.contactInfo[field] = req.body[field];
+      }
+    }
   }
 
   // Update profile picture if a new one is uploaded

@@ -56,7 +56,6 @@ const PeopleTab = ({ owner}) => {
   const getRequestedUsers=async()=>{
     const resposne=await classroomService.getJoinRequest({id:classroomId})
     setJoinRequests(resposne.data);
-    console.log(resposne.data);
   }
  useEffect(()=>{
   getRequestedUsers()
@@ -95,9 +94,9 @@ const PeopleTab = ({ owner}) => {
   }
 
   return (
-    <Card className="animate-fade-in shadow-lg rounded-lg">
+    <Card>
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-semibold text-gray-800">
+        <CardTitle className="text-xl font-semibold text-ink-800">
           People
         </CardTitle>
       </CardHeader>
@@ -106,23 +105,24 @@ const PeopleTab = ({ owner}) => {
           <div className="flex justify-end mb-4">
           <Button
             onClick={()=>setDialogOpen(true)}
-            className="relative rounded-xl transition-all"
+            variant="outline"
+            className="relative"
           >
             Join Requests
             {joinRequests.length > 0 && (
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+              <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
                 {joinRequests.length}
               </span>
             )}
           </Button>
         </div>:<></>}
 
-        <div>
-          <div className="p-6 bg-white rounded-lg -mt-10">
-            <p className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <FaChalkboardTeacher className="text-blue-500" /> Admin
+        <div className="space-y-6">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-ink-400 flex items-center gap-2 mb-3">
+              <FaChalkboardTeacher className="text-brand-500" /> Admin
             </p>
-            <ul className="space-y-3 mt-4 text-gray-700 font-medium">
+            <ul className="space-y-3 text-ink-700 font-medium">
               {loading ? (
                 <UserSkeleton />
               ) : admin && admin.fullName ? (
@@ -135,7 +135,7 @@ const PeopleTab = ({ owner}) => {
                       fullName={admin.fullName}
                     />
                   </div>
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-sm font-medium text-ink-900">
                     {admin.fullName}
                   </span>
                 </li>
@@ -145,11 +145,11 @@ const PeopleTab = ({ owner}) => {
             </ul>
           </div>
 
-          <div className="p-6 bg-white rounded-lg">
-            <p className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <FaUserGraduate className="text-purple-500" /> Classmates
+          <div className="pt-4 border-t border-ink-100">
+            <p className="text-sm font-semibold uppercase tracking-wide text-ink-400 flex items-center gap-2 mb-3">
+              <FaUserGraduate className="text-brand-500" /> Classmates
             </p>
-            <ul className="space-y-4 mt-4">
+            <ul className="space-y-4">
               {loading ? (
                 <>
                   <UserSkeleton />
@@ -169,7 +169,7 @@ const PeopleTab = ({ owner}) => {
                         } fullName={user.fullName}
                       />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-ink-900">
                       {user.fullName}
                     </span>
                   </li>
@@ -181,35 +181,37 @@ const PeopleTab = ({ owner}) => {
 
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger />
-          <DialogContent className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
-            <DialogTitle className="text-lg font-bold text-gray-800">
+          <DialogContent className="w-full max-w-lg p-6">
+            <DialogTitle className="text-lg font-bold text-ink-800">
               Join Requests
             </DialogTitle>
-            <DialogDescription className="mt-4 text-gray-600">
+            <DialogDescription className="mt-4 text-ink-600">
               <ul className="space-y-4">
                 {joinRequests.length === 0 ? (
-                  <li className="text-sm text-gray-500">
+                  <li className="text-sm text-ink-400">
                     No users are requesting to join at the moment.
                   </li>
                 ) : (
                   joinRequests.map((user) => (
                     <li
                       key={user._id}
-                      className="flex justify-between items-center border-b pb-2"
+                      className="flex justify-between items-center border-b border-ink-100 pb-2"
                     >
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-ink-900">
                         {user.fullName}
                       </span>
                       <div className="space-x-2">
                         <Button
                           onClick={() => handleAccept(user._id)}
-                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-xl"
+                          size="sm"
+                          className="bg-emerald-500 hover:bg-emerald-600"
                         >
                           Accept
                         </Button>
                         <Button
                           onClick={() => handleReject(user._id)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl"
+                          size="sm"
+                          variant="destructive"
                         >
                           Reject
                         </Button>

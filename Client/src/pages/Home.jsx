@@ -16,19 +16,19 @@ const Home = () => {
       title: "Store All Activities",
       description:
         "Store all the activities that were seen and presented during the class so that during the time of self-learning you can remember the same thing and don't miss a single point.",
-      icon: <BookOpen className="h-8 w-8 text-orange-500" />,
+      icon: <BookOpen className="h-8 w-8 text-brand-500" />,
     },
     {
       title: "Dedicated Platform",
       description:
         "A dedicated platform to store the reading materials only, making it easy to find what you need when you need it.",
-      icon: <Lightbulb className="h-8 w-8 text-orange-500" />,
+      icon: <Lightbulb className="h-8 w-8 text-brand-500" />,
     },
     {
       title: "Group Study Session",
       description:
         "Connect with peers for collaborative learning sessions that enhance understanding through discussion.",
-      icon: <Users className="h-8 w-8 text-orange-500" />,
+      icon: <Users className="h-8 w-8 text-brand-500" />,
     },
   ]
   return (
@@ -47,7 +47,7 @@ const Home = () => {
         </div>
 
         <div className="container mx-auto px-4 h-full relative z-20">
-          <div className="flex flex-col justify-center h-full ml-20 -mt-10">
+          <div className="flex flex-col justify-center h-full">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -55,35 +55,42 @@ const Home = () => {
               className="max-w-2xl space-y-6"
             >
               <motion.h1
-                className="text-4xl md:text-5xl font-bold text-white"
+                className="font-display text-4xl md:text-6xl font-semibold text-white leading-[1.05] text-balance"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
-                Connect Your <span className="text-orange-400 font-serif text-6xl">Learning Journey</span>
+                Connect your <span className="text-brand-400 italic">learning journey</span>
               </motion.h1>
 
               <motion.p
-                className="text-lg text-gray-100"
+                className="text-lg text-white/80 max-w-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-               <span className='italic text-gray-300 font-semibold'> Learn by engaging with interactive classrooms and collaborative resources. Learn from peers and experts.</span>
+                Learn by engaging with interactive classrooms and collaborative resources — and learn from peers and experts.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
-                className="flex flex-wrap gap-4"
+                className="flex flex-wrap gap-4 pt-4"
               >
-                <Button className="bg-orange-500 hover:bg-orange-600 mt-12">
-                  Get Started
-                  <ChevronRight className="ml-2 h-4 w-4" />
+                <Button size="lg" asChild>
+                  <Link to="/signup">
+                    Get Started
+                    <ChevronRight className="ml-1 h-4 w-4" />
+                  </Link>
                 </Button>
-                <Button variant="outline" className="border-orange-400 text-white hover:bg-orange-500/20 mt-12 ml-4 bg-orange-400">
-                  Learn More
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white hover:border-white/50"
+                  asChild
+                >
+                  <Link to="/about">Learn More</Link>
                 </Button>
               </motion.div>
             </motion.div>
@@ -95,13 +102,13 @@ const Home = () => {
                   <section className="py-16 bg-white m-10">
         <div className="container mx-auto px-4">
           <motion.h2
-            className="text-3xl font-bold text-center mb-12 text-gray-900 font-mono"
+            className="font-display text-3xl md:text-4xl font-semibold text-center mb-12 text-ink-900 text-balance"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Learning and teaching is easier through <span className="text-orange-500 font-serif">Learn Link</span>
+            Learning and teaching is easier through <span className="text-brand-500 italic">LearnLink</span>
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -114,12 +121,12 @@ const Home = () => {
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
                 <Card
-                  className={'h-full transition-all duration-300 hover:bg-orange-50 hover:border-red-900 hover:rounded-xl hover:scale-105'}
+                  className="h-full transition-all duration-300 hover:border-brand-300 hover:shadow-glow hover:-translate-y-1"
                 >
                   <CardContent className="pt-6">
-                    <div className="mb-4">{feature.icon}</div>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900">Point {index + 1}</h3>
-                    <p className="text-gray-700">{feature.description}</p>
+                    <div className="mb-4 inline-flex items-center justify-center h-12 w-12 rounded-xl bg-brand-50">{feature.icon}</div>
+                    <h3 className="text-xl font-semibold mb-2 text-ink-900">Point {index + 1}</h3>
+                    <p className="text-ink-600">{feature.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -131,7 +138,7 @@ const Home = () => {
      
        {/* Benifits for teachers and students */}
 
-        <section className="py-16 bg-orange-50 ">
+        <section className="py-16 bg-brand-50/60">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 m-10">
             <motion.div
@@ -141,20 +148,20 @@ const Home = () => {
               transition={{ duration: 0.5 }}
               className="space-y-6"
             >
-              <h2 className="text-2xl font-bold text-gray-900 font-serif">For Teachers</h2>
-              <Card className="transition-all duration-300 hover:border-red-900 hover:rounded-xl hover:scale-105">
+              <h2 className="font-display text-2xl font-semibold text-ink-900">For Teachers</h2>
+              <Card className="transition-all duration-300 hover:border-brand-300 hover:shadow-glow">
                 <CardContent className="pt-6 space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="bg-orange-100 p-2 rounded-full">
-                      <Video className="h-5 w-5 text-orange-500" />
+                    <div className="bg-brand-100 p-2 rounded-full">
+                      <Video className="h-5 w-5 text-brand-600" />
                     </div>
-                    <p className="text-gray-700">White board embedded videos</p>
+                    <p className="text-ink-700">White board embedded videos</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="bg-orange-100 p-2 rounded-full">
-                      <BookOpen className="h-5 w-5 text-orange-500" />
+                    <div className="bg-brand-100 p-2 rounded-full">
+                      <BookOpen className="h-5 w-5 text-brand-600" />
                     </div>
-                    <p className="text-gray-700">Everything you wrote will be stored</p>
+                    <p className="text-ink-700">Everything you wrote will be stored</p>
                   </div>
                 </CardContent>
               </Card>
@@ -167,20 +174,20 @@ const Home = () => {
               transition={{ duration: 0.5 }}
               className="space-y-6"
             >
-              <h2 className="text-2xl font-bold text-gray-900 font-serif">For Students</h2>
-              <Card className="transition-all duration-300 hover:border-red-900 hover:rounded-xl hover:scale-105">
+              <h2 className="font-display text-2xl font-semibold text-ink-900">For Students</h2>
+              <Card className="transition-all duration-300 hover:border-brand-300 hover:shadow-glow">
                 <CardContent className="pt-6 space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="bg-orange-100 p-2 rounded-full">
-                      <BookOpen className="h-5 w-5 text-orange-500" />
+                    <div className="bg-brand-100 p-2 rounded-full">
+                      <BookOpen className="h-5 w-5 text-brand-600" />
                     </div>
-                    <p className="text-gray-700">Dedicated platform to store the study materials</p>
+                    <p className="text-ink-700">Dedicated platform to store the study materials</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="bg-orange-100 p-2 rounded-full">
-                      <Users className="h-5 w-5 text-orange-500" />
+                    <div className="bg-brand-100 p-2 rounded-full">
+                      <Users className="h-5 w-5 text-brand-600" />
                     </div>
-                    <p className="text-gray-700">Collaborative learning</p>
+                    <p className="text-ink-700">Collaborative learning</p>
                   </div>
                 </CardContent>
               </Card>
@@ -198,51 +205,51 @@ const Home = () => {
                 { icon: Zap, title: "Skill Advancement", description: "Track your progress and earn certificates to boost your career" },
               ].map((feature) => (
                 <div key={feature.title} className="text-center space-y-6 group">
-                  <div className="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto group-hover:bg-orange-200 transition-colors">
-                    <feature.icon className="w-10 h-10 text-orange-600" />
+                  <div className="bg-brand-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto group-hover:bg-brand-200 transition-colors">
+                    <feature.icon className="w-10 h-10 text-brand-600" />
                   </div>
-                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
-                  <p className="text-gray-600 text-lg">{feature.description}</p>
+                  <h3 className="font-display text-2xl font-semibold text-ink-900">{feature.title}</h3>
+                  <p className="text-ink-600 text-lg">{feature.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-orange-50">
+        <section className="py-20 bg-brand-50/60">
           <div className="container mx-auto px-4 space-y-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-center font-serif">What Our Learners Say</h2>
-            <div className="grid md:grid-cols-3 gap-12 m-10">
+            <h2 className="font-display text-4xl md:text-5xl font-semibold text-center text-ink-900">What Our Learners Say</h2>
+            <div className="grid md:grid-cols-3 gap-8 mt-10">
               {[
                 { name: "Alex Johnson", role: "Software Developer", quote: "LearnLink transformed my coding skills and career prospects." },
                 { name: "Sarah Lee", role: "Marketing Specialist", quote: "The collaborative projects helped me apply my learning in real-world scenarios." },
                 { name: "Michael Chen", role: "Data Analyst", quote: "The expert-led courses and supportive community accelerated my learning journey." },
               ].map((testimonial) => (
-                <div key={testimonial.name} className="bg-white hover:scale-105 p-8 rounded-xl shadow-lg space-y-6">
+                <div key={testimonial.name} className="bg-white hover:-translate-y-1 transition-transform duration-300 p-8 rounded-2xl shadow-card space-y-6">
                   <div className="flex items-center space-x-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-6 h-6 fill-orange-400 text-orange-400" />
+                      <Star key={i} className="w-5 h-5 fill-brand-400 text-brand-400" />
                     ))}
                   </div>
-                  <p className="text-gray-600 italic text-lg">"{testimonial.quote}"</p>
+                  <p className="text-ink-600 italic text-lg">"{testimonial.quote}"</p>
                   <div>
-                    <p className="font-semibold text-lg">{testimonial.name}</p>
-                    <p className="text-gray-500">{testimonial.role}</p>
+                    <p className="font-semibold text-lg text-ink-900">{testimonial.name}</p>
+                    <p className="text-ink-500">{testimonial.role}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
-        
-        <section className="py-20 bg-white text-center">
-          <div className="container mx-auto px-4 space-y-12">
-            <h2 className="text-4xl md:text-5xl font-bold">Ready to Start Your Learning Journey?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+
+        <section className="py-24 bg-white text-center">
+          <div className="container mx-auto px-4 space-y-8">
+            <h2 className="font-display text-4xl md:text-5xl font-semibold text-ink-900 text-balance">Ready to start your learning journey?</h2>
+            <p className="text-xl text-ink-600 max-w-3xl mx-auto">
               Join thousands of learners who are advancing their careers and expanding their knowledge with LearnLink.
             </p>
-            <Button  size="lg" className="text-xl px-12 py-6 rounded-xl">
-              <Link to={'/signup'} >Get Started Now</Link>
+            <Button size="lg" className="text-lg px-10 py-6 rounded-xl" asChild>
+              <Link to="/signup">Get Started Now</Link>
             </Button>
           </div>
         </section>

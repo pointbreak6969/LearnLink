@@ -30,6 +30,6 @@ router.route("/getSuggestedClassrooms").get(verifyJwt, getSuggestedClassrooms);
 router.route("/getPublicClassrooms").get(getSuggestedClassrooms);
 router.route("/getClassroomUsers/:classroomId").get(verifyJwt, getClassroomUsers);
 router.route('/request').post(verifyJwt,requestToJoinclassRoom)
-router.route('/getJoinRequests/:id').get(getJoinRequests)
+router.route('/getJoinRequests/:id').get(verifyJwt, getJoinRequests)
 router.route('/userRequestToadmin').post(verifyJwt,userRequestToadmin)
 export default router;

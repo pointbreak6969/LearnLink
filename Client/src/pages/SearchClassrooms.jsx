@@ -12,6 +12,7 @@ import { universities } from "@/components/CreateClassroom";
 import classroomService from "@/services/classroom";
 import MyCard from "@/components/MyCard";
 import useDebounce from "@/hooks/useDebounce";
+import { escapeRegExp } from "@/lib/utils";
 
 const SearchClassrooms = () => {
   const [university, setUniversity] = useState("");
@@ -25,8 +26,9 @@ const SearchClassrooms = () => {
   const filteredClassroom = classrooms.filter((classroom) => {
     return (
       (!university ||
-        new RegExp(university, "i").test(classroom.university)) &&
-      (!debouncedFaculty || new RegExp(faculty, "i").test(classroom.faculty))
+        new RegExp(escapeRegExp(university), "i").test(classroom.university)) &&
+      (!debouncedFaculty ||
+        new RegExp(escapeRegExp(debouncedFaculty), "i").test(classroom.faculty))
     );
   });
 
@@ -64,11 +66,11 @@ const SearchClassrooms = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-orange-50">
+      <div className="min-h-screen bg-gradient-to-b from-brand-50/60 to-white">
         <main className="container mx-auto p-4">
           <div className="mt-10">
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-              <h2 className="text-xl font-semibold mb-4 text-[#FF9500]">
+            <div className="bg-white rounded-2xl shadow-card border border-ink-100 p-6 mb-8">
+              <h2 className="font-display text-xl font-semibold mb-4 text-ink-900">
                 Filter Classrooms
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -98,7 +100,7 @@ const SearchClassrooms = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
               {filteredClassroom.length > 0 ? (
                 filteredClassroom.map((classroom) => (
                   <div key={classroom._id}>
@@ -112,7 +114,7 @@ const SearchClassrooms = () => {
                   </div>
                 ))
               ) : (
-                <div className="text-center text-gray-500 col-span-full">
+                <div className="text-center text-ink-400 col-span-full py-12">
                   No classrooms found for the selected filters.
                 </div>
               )}

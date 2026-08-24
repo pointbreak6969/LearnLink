@@ -7,12 +7,44 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+  			display: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+  		boxShadow: {
+  			glow: '0 20px 45px -15px rgba(234, 88, 12, 0.35)',
+  			card: '0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -8px rgba(15, 23, 42, 0.08)',
+  		},
   		colors: {
+  			brand: {
+  				50: '#fff8ed',
+  				100: '#ffefd3',
+  				200: '#ffdba3',
+  				300: '#ffc16b',
+  				400: '#ff9d33',
+  				500: '#fb7f13',
+  				600: '#ec6208',
+  				700: '#c34909',
+  				800: '#9b390f',
+  				900: '#7d3110',
+  			},
+  			ink: {
+  				50: '#f6f5f4',
+  				100: '#e8e5e3',
+  				200: '#d3cdc8',
+  				300: '#aea49c',
+  				400: '#867a70',
+  				500: '#635a52',
+  				600: '#4a423c',
+  				700: '#372f2b',
+  				800: '#251f1c',
+  				900: '#171310',
+  			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',

@@ -71,8 +71,8 @@ const Classroom = () => {
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
       ) : (
-        <div className="min-h-screen bg-gradient-to-b from-orange-100 to-green-100 mt-0">
-          <main className="container mx-auto mt-0 py-10 px-4">
+        <div className="min-h-screen bg-gradient-to-b from-brand-50/60 to-white">
+          <main className="container mx-auto py-10 px-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -83,13 +83,13 @@ const Classroom = () => {
 
             {classrooms?.length > 0 && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">My Classrooms</h2>
+                <h2 className="font-display text-2xl font-semibold text-ink-900 mb-4">My Classrooms</h2>
                 <CardCollection array={classrooms} isJoined={true} />
               </div>
             )}
 
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold mb-4">Suggested Classrooms</h2>
+            <div className="mt-10">
+              <h2 className="font-display text-2xl font-semibold text-ink-900 mb-4">Suggested Classrooms</h2>
               {suggestedClassrooms.length > 0 && (
                 <>
                   <CardCollection array={suggestedClassrooms} isJoined={false}/>
@@ -98,7 +98,6 @@ const Classroom = () => {
                       <Button
                         onClick={handleLoadMore}
                         disabled={isLoadingMore}
-                        className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 text-white"
                       >
                         {isLoadingMore ? (
                           <>
