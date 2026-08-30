@@ -41,7 +41,7 @@ import resourceRouter from "./routes/resources.routes.js";
 import classroomRouter from "./routes/classroom.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import courseRouter from "./routes/course.routes.js";
-
+import healthRouter from "./routes/health.route.js";
 //routes declaration
 app.get("/", (req, res)=>{
   res.send("Welcome to LearnLink API. Official documentation is at https://github.com/pointbreak6969/LearnLink/tree/main/Server/readme.md")
@@ -52,7 +52,7 @@ app.use("/api/v1/resource", resourceRouter);
 app.use("/api/v1/classroom", classroomRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/course", courseRouter);
-
+app.use("/api/v1/health", healthRouter);
 app.use("*", (req, res) => {
   res.status(404).json({
     success: false,
