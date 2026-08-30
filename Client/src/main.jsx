@@ -22,7 +22,7 @@ import SearchClassrooms from "./pages/SearchClassrooms.jsx";
 import UserAvatar from "./components/UserAvatar.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
 import AdminPage from "./pages/Admin/AdminPage.jsx";
-import ClassRoomAdmin from "./pages/Admin/classRoom.jsx";
+import ClassRoomAdmin from "./pages/Admin/ClassRoom.jsx";
 import PendingClassroomAdmin from "./pages/Admin/ClassroomPending.jsx";
 import UserManagement from "./pages/Admin/UserInfoAdmin.jsx";
 // Define public routes
