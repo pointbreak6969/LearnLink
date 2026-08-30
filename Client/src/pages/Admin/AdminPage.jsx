@@ -3,17 +3,18 @@ import {
   LayoutDashboard,
   Users,
   CheckCircle,
-  BookOpen,
   Folder,
-  ArrowLeft,
   RefreshCw,
   UserCheck,
   GraduationCap,
   Sparkles,
+  LogOut,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import adminService from "@/services/admin";
+import authService from "@/services/auth";
+import { logout } from "@/store/authSlice";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -26,6 +27,8 @@ const AdminPage = () => {
   });
   const [loading, setLoading] = useState(true);
   const currentUser = useSelector((state) => state.auth?.userData);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchStats = async () => {
     try {
@@ -37,6 +40,18 @@ const AdminPage = () => {
       toast.error(err.message || "Failed to load admin stats");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      dispatch(logout());
+      navigate("/login");
+      toast.success("Logged out successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to log out");
     }
   };
 
@@ -63,7 +78,7 @@ const AdminPage = () => {
                 </span>
               </div>
               <p className="text-sm text-ink-500 mt-0.5">
-                Welcome back, <span className="font-semibold text-brand-700">{currentUser?.fullName || "Admin"}</span>. Manage your platform, classrooms, and users.
+                Welcome back, <span className="font-semibold text-brand-700">{currentUser?.fullName || "Admin"}</span>. Manage your platform, inspect classrooms, and moderate users.
               </p>
             </div>
           </div>
@@ -78,11 +93,14 @@ const AdminPage = () => {
               <RefreshCw className={`w-4 h-4 mr-1.5 ${loading ? "animate-spin" : ""}`} />
               Refresh
             </Button>
-            <Button asChild size="sm" className="bg-brand-600 hover:bg-brand-700 text-white">
-              <Link to="/classroom" className="flex items-center gap-1.5">
-                <ArrowLeft className="w-4 h-4" />
-                Back to App
-              </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+            >
+              <LogOut className="w-4 h-4 mr-1.5" />
+              Log Out
             </Button>
           </div>
         </div>
@@ -134,7 +152,7 @@ const AdminPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <AdminModuleCard
               title="Classroom Management"
-              description="View all classrooms, edit details, assign/remove co-admins, review enrolled students, or delete classrooms."
+              description="Inspect any classroom stream, resources, members, assign/remove co-admins, or delete classrooms."
               icon={GraduationCap}
               link="/admin/classroom"
               badge={`${stats.totalClassrooms} Classrooms`}
@@ -160,13 +178,10 @@ const AdminPage = () => {
         </div>
 
         {/* Superadmin System Banner */}
-        <div className="p-4 bg-brand-100/70 border border-brand-200 rounded-xl text-sm text-brand-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="p-4 bg-brand-100/70 border border-brand-200 rounded-xl text-sm text-brand-900 flex items-center justify-between">
           <div>
-            <strong>Super Admin Privilege Active:</strong> You have master access to modify any classroom, manage all student requests, and control user access across the system.
+            <strong>Super Admin Mode Active:</strong> You have master administrative access to inspect and manage all classrooms, moderate join requests, and manage users.
           </div>
-          <Button asChild variant="link" className="text-brand-700 hover:text-brand-900 p-0 h-auto">
-            <Link to="/courses">Explore All Courses →</Link>
-          </Button>
         </div>
       </div>
     </div>
@@ -229,3 +244,4 @@ const AdminModuleCard = ({ title, description, icon: Icon, link, badge, badgeCol
 );
 
 export default AdminPage;
+

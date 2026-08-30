@@ -13,7 +13,11 @@ class ProfileService {
       if (!profilePicture || !phone || !location || !university || !college) {
         throw new Error("All fields are required");
       }
-      formData.append("profilePicture", profilePicture[0]);
+      const fileToUpload =
+        profilePicture instanceof FileList || Array.isArray(profilePicture)
+          ? profilePicture[0]
+          : profilePicture;
+      formData.append("profilePicture", fileToUpload);
       formData.append("phone", phone);
       formData.append("location", location);
       formData.append("university", university);
@@ -30,18 +34,25 @@ class ProfileService {
       );
       return response.data.data;
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "An error occurred";
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred";
       throw new Error(errorMessage);
     }
   }
 
-  async updateProfile({ newProfilePicture, ...contactInfo }) {
+  async updateProfile({ newProfilePicture, profilePicture, ...contactInfo }) {
     try {
       const formData = new FormData();
       
+      const fileToUpload = newProfilePicture || profilePicture;
       // Only append file if provided
-      if (newProfilePicture) {
-        formData.append('file', newProfilePicture[0]);
+      if (fileToUpload) {
+        const actualFile =
+          fileToUpload instanceof FileList || Array.isArray(fileToUpload)
+            ? fileToUpload[0]
+            : fileToUpload;
+        if (actualFile instanceof File) {
+          formData.append('file', actualFile);
+        }
       }
   
       // Only append non-null contact info fields
@@ -64,7 +75,7 @@ class ProfileService {
   
       return response.data.data;
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "An error occurred";
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred";
       throw new Error(errorMessage);
     }
   }

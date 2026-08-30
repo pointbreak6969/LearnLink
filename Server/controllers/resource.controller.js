@@ -33,7 +33,9 @@ const AddResources = asyncHandler(async (req, res) => {
   const requesterId = req.user._id.toString();
   const isMember =
     classroom.admin.toString() === requesterId ||
-    classroom.users.some((u) => u.toString() === requesterId);
+    classroom.admins?.some((adm) => adm.toString() === requesterId) ||
+    classroom.users.some((u) => u.toString() === requesterId) ||
+    req.user.role === "superadmin";
   if (!isMember) {
     cleanupUploadedFiles();
     throw new ApiError(403, "You are not a member of this classroom");
@@ -140,9 +142,10 @@ const DeleteResource = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Resource not found");
   }
 
-  // Check authorization
-  if (resource.owner.toString() !== req.user._id.toString()) {
-    throw new ApiError(403, "Unauthorized: Only the resource owner can delete this resource");
+  // Check authorization (owner or superadmin)
+  const isSuperAdmin = req.user.role === "superadmin";
+  if (resource.owner.toString() !== req.user._id.toString() && !isSuperAdmin) {
+    throw new ApiError(403, "Unauthorized: Only the resource owner or super admin can delete this resource");
   }
 
   // Normalize resource URLs to array
@@ -231,11 +234,8 @@ const DeleteResource = asyncHandler(async (req, res) => {
 });
 const getUserUploadedResource = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  const resources = await Resource.find({ owner: userId });
-  if (resources.length == 0) {
-    throw new ApiError(400, "No resource found");
-  }
-  res.status(200).json(new ApiResponse(200, resources, "Resources found"));
+  const resources = await Resource.find({ owner: userId }).sort({ createdAt: -1 });
+  res.status(200).json(new ApiResponse(200, resources || [], "Resources retrieved successfully"));
 });
 const getClassroomResources = asyncHandler(async (req, res) => {
   const { classroomId } = req.query;
@@ -249,7 +249,9 @@ const getClassroomResources = asyncHandler(async (req, res) => {
   const requesterId = req.user._id.toString();
   const isMember =
     classroom.admin.toString() === requesterId ||
-    classroom.users.some((u) => u.toString() === requesterId);
+    classroom.admins?.some((adm) => adm.toString() === requesterId) ||
+    classroom.users.some((u) => u.toString() === requesterId) ||
+    req.user.role === "superadmin";
   if (!isMember) {
     throw new ApiError(403, "You are not a member of this classroom");
   }

@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { universities } from "@/components/CreateClassroom";
-import { Shield, ShieldAlert, Trash2, LogOut, UserPlus, Loader2, Users } from "lucide-react";
+import { Shield, ShieldAlert, Trash2, LogOut, UserPlus, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import AvatarComponent from "@/components/AvatarComponent";

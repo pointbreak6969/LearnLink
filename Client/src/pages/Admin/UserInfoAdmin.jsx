@@ -10,7 +10,6 @@ import {
   MapPin,
   Mail,
   User,
-  Calendar,
   Award,
   Shield,
   ShieldAlert,

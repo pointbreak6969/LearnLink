@@ -24,12 +24,16 @@ const Signup = () => {
         _id: createdUser.data._id,
         fullName: createdUser.data.fullName,
         email: createdUser.data.email,
-       
+        role: createdUser.data.role,
       };
       if (createdUser) {
         dispatch(login(userData));
-      
-        navigate("/");
+
+        if (createdUser.data.role === "superadmin") {
+          navigate("/admin");
+        } else {
+          navigate("/classroom");
+        }
       }
     } catch (error) {
       setError(error.message);

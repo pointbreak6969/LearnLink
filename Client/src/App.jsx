@@ -3,15 +3,18 @@ import { useDispatch } from "react-redux";
 import "./App.css";
 import authService from "./services/auth";
 import { login, logout } from "./store/authSlice";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { fetchProfileDetails } from "./store/profileReducer";
 import { Toaster } from "sonner";
+
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const adminpage=location.pathname==='/admin' || location.pathname==='/admin/classroom' || location.pathname=== '/admin/classroomrequest' || location.pathname=== '/admin/userinfo'
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -53,9 +56,9 @@ function App() {
         closeButton
         theme="light"
       />
-     {!adminpage && <Navbar />}
+      {!isAdminRoute && <Navbar />}
       <Outlet />
-      {!adminpage && <Footer />}
+      {!isAdminRoute && <Footer />}
     </>
   );
 }

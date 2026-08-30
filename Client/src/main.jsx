@@ -9,6 +9,8 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Courses from "./pages/AllCourses.jsx";
+import CourseDetails from "./pages/CourseDetails.jsx";
+import CourseLearningPage from "./pages/CourseLearningPage.jsx";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
@@ -29,13 +31,13 @@ const publicRoutes = [
     path: "/",
     element: (
       <Protected authentication={false} redirectPath="/classroom">
-        {" "}
         <Home />
       </Protected>
     ),
   },
   { path: "/userAvatar", element: <UserAvatar /> },
   { path: "/courses", element: <Courses /> },
+  { path: "/courses/:courseId", element: <CourseDetails /> },
   { path: "/contact", element: <Contact /> },
   { path: "/about", element: <About /> },
   { path: "/verifyotp", element: <VerifyOtp /> },
@@ -66,15 +68,23 @@ const protectedRoutes = [
   {
     path: "/profile",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} userOnly={true}>
         <Profile />
+      </Protected>
+    ),
+  },
+  {
+    path: "/courses/:courseId/learn",
+    element: (
+      <Protected authentication={true} userOnly={true}>
+        <CourseLearningPage />
       </Protected>
     ),
   },
   {
     path: "/classroom",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} userOnly={true}>
         <Classroom />
       </Protected>
     ),
@@ -90,16 +100,15 @@ const protectedRoutes = [
   {
     path: "/searchclassrooms",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} userOnly={true}>
         <SearchClassrooms />
       </Protected>
     ),
   },
-
   {
     path: "/reward",
     element: (
-      <Protected authentication={true}>
+      <Protected authentication={true} userOnly={true}>
         <Reward />
       </Protected>
     ),
@@ -108,7 +117,7 @@ const protectedRoutes = [
     path: "/admin",
     element: (
       <Protected authentication={true} requireSuperAdmin={true}>
-        <AdminPage/>
+        <AdminPage />
       </Protected>
     ),
   },
@@ -116,7 +125,15 @@ const protectedRoutes = [
     path: "/admin/classroom",
     element: (
       <Protected authentication={true} requireSuperAdmin={true}>
-       <ClassRoomAdmin/> 
+        <ClassRoomAdmin />
+      </Protected>
+    ),
+  },
+  {
+    path: "/admin/classroom/:classCode",
+    element: (
+      <Protected authentication={true} requireSuperAdmin={true}>
+        <SingleClass />
       </Protected>
     ),
   },
@@ -124,7 +141,7 @@ const protectedRoutes = [
     path: "/admin/classroomrequest",
     element: (
       <Protected authentication={true} requireSuperAdmin={true}>
-       <PendingClassroomAdmin/> 
+        <PendingClassroomAdmin />
       </Protected>
     ),
   },
@@ -132,15 +149,44 @@ const protectedRoutes = [
     path: "/admin/userinfo",
     element: (
       <Protected authentication={true} requireSuperAdmin={true}>
-       <UserManagement/>
+        <UserManagement />
       </Protected>
     ),
   },
 ];
+
+function RouteErrorBoundary() {
+  return (
+    <div className="min-h-screen bg-ink-50 flex flex-col items-center justify-center p-6 text-center">
+      <div className="bg-white p-8 rounded-2xl border border-ink-100 shadow-card max-w-md w-full space-y-4">
+        <h2 className="font-display text-2xl font-bold text-ink-900">Something went wrong</h2>
+        <p className="text-sm text-ink-600">
+          We encountered an unexpected error. Please return to the homepage or try again.
+        </p>
+        <div className="flex gap-3 justify-center pt-2">
+          <button
+            onClick={() => window.location.href = "/courses"}
+            className="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+          >
+            Browse Courses
+          </button>
+          <button
+            onClick={() => window.location.reload()}
+            className="border border-ink-200 hover:bg-ink-50 text-ink-700 font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <RouteErrorBoundary />,
     children: [...publicRoutes, ...authRoutes, ...protectedRoutes],
   },
 ]);

@@ -46,7 +46,6 @@ const UserSkeleton = () => (
 const PeopleTab = ({
   classroomId,
   isCreator,
-  isCoAdmin,
   isSuperAdmin,
   canManageClassroom,
   onClassroomUpdated,

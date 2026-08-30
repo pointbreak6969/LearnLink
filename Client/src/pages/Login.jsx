@@ -29,11 +29,16 @@ const Login = () => {
         _id: session.data._id,
         fullName: session.data.fullName,
         email: session.data.email,
+        role: session.data.role,
       };
       if (session?.data) {
         dispatch(authLogin(userData));
 
-        navigate("/classroom");
+        if (session.data.role === "superadmin") {
+          navigate("/admin");
+        } else {
+          navigate("/classroom");
+        }
       } else {
         setError("Invalid response from server");
       }

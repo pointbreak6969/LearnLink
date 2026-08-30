@@ -70,6 +70,24 @@ const SingleClass = () => {
 
   return (
     <div className="min-h-screen bg-brand-50/40 pb-16">
+      {/* Super Admin Inspection Banner */}
+      {isSuperAdmin && (
+        <div className="bg-amber-600 text-white px-4 py-2 text-xs font-medium flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2">
+            <Shield className="w-4 h-4 text-amber-200" />
+            <span>
+              <strong>Super Admin Inspection Mode:</strong> You are viewing this classroom with full administrative privileges.
+            </span>
+          </div>
+          <Link
+            to="/admin/classroom"
+            className="underline hover:text-amber-100 font-semibold transition"
+          >
+            ← Back to Classroom Admin
+          </Link>
+        </div>
+      )}
+
       {/* Header Banner */}
       <header className="bg-white border-b border-ink-100 shadow-xs">
         <div className="container mx-auto px-4 py-6">
@@ -77,8 +95,8 @@ const SingleClass = () => {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Button asChild variant="ghost" size="sm" className="h-7 px-2 text-ink-500 hover:text-ink-800 -ml-2">
-                  <Link to="/classroom">
-                    <ArrowLeft className="w-4 h-4 mr-1" /> Classrooms
+                  <Link to={isSuperAdmin ? "/admin/classroom" : "/classroom"}>
+                    <ArrowLeft className="w-4 h-4 mr-1" /> {isSuperAdmin ? "Back to Admin Panel" : "Classrooms"}
                   </Link>
                 </Button>
                 {isCreator && (

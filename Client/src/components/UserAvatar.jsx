@@ -1,4 +1,4 @@
-import { LifeBuoy, LogOut, Settings, User, CreditCard, Shield } from "lucide-react";
+import { LifeBuoy, LogOut, User, CreditCard, Shield, BookOpen } from "lucide-react";
 import AvatarComponent from "./AvatarComponent.jsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -55,60 +55,85 @@ function UserAvatar() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel className="flex items-center justify-between">
-          <span>My Account</span>
+          <div className="truncate pr-2">
+            <p className="text-sm font-semibold text-ink-900 truncate">{fullName}</p>
+            <p className="text-xs text-ink-400 font-normal truncate">{userData?.email}</p>
+          </div>
           {isSuperAdmin && (
-            <span className="text-[10px] bg-brand-100 text-brand-700 px-1.5 py-0.5 rounded font-semibold">
+            <span className="text-[10px] bg-brand-100 text-brand-700 px-1.5 py-0.5 rounded font-bold shrink-0">
               Admin
             </span>
           )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {isSuperAdmin && (
-            <DropdownMenuItem
-              onClick={() => {
-                navigate("/admin");
-              }}
-              className="text-brand-700 font-medium focus:bg-brand-50"
-            >
-              <Shield className="text-brand-600 w-4 h-4" />
-              <span>Admin Panel</span>
-            </DropdownMenuItem>
+          {isSuperAdmin ? (
+            <>
+              <DropdownMenuItem
+                onClick={() => navigate("/admin")}
+                className="text-brand-700 font-medium focus:bg-brand-50 cursor-pointer"
+              >
+                <Shield className="text-brand-600 w-4 h-4" />
+                <span>Admin Dashboard</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate("/admin/classroom")}
+                className="cursor-pointer"
+              >
+                <Shield className="w-4 h-4 text-ink-500" />
+                <span>Classroom Admin</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate("/admin/classroomrequest")}
+                className="cursor-pointer"
+              >
+                <Shield className="w-4 h-4 text-ink-500" />
+                <span>Join Requests</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate("/admin/userinfo")}
+                className="cursor-pointer"
+              >
+                <Shield className="w-4 h-4 text-ink-500" />
+                <span>User Directory</span>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuItem
+                onClick={() => navigate("/courses")}
+                className="cursor-pointer"
+              >
+                <BookOpen />
+                <span>My Courses</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate("/profile")}
+                className="cursor-pointer"
+              >
+                <User />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate("/reward")}
+                className="cursor-pointer"
+              >
+                <CreditCard />
+                <span>Rewards</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => navigate("/contact")}
+                className="cursor-pointer"
+              >
+                <LifeBuoy />
+                <span>Contact</span>
+              </DropdownMenuItem>
+            </>
           )}
-          <DropdownMenuItem
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            <User />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              navigate("/reward");
-            }}
-          >
-            <CreditCard />
-            <span>Rewards</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings />
-            <span>Settings</span>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            navigate("/contact");
-          }}
-        >
-          <LifeBuoy />
-          <span>Contact</span>
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
-          <LogOut />
+        <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:bg-red-50 cursor-pointer">
+          <LogOut className="text-red-600 w-4 h-4" />
           <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

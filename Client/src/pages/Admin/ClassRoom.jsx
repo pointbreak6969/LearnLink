@@ -256,6 +256,13 @@ const ClassRoomAdmin = () => {
                     </td>
                     <td className="px-4 py-3.5">
                       <div className="flex items-center justify-center gap-1.5">
+                        <Link
+                          to={`/admin/classroom/${room._id}`}
+                          className="p-1.5 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition"
+                          title="Inspect Classroom Content"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </Link>
                         <button
                           onClick={() => setViewModal(room)}
                           className="p-1.5 text-brand-700 bg-brand-50 hover:bg-brand-100 rounded-lg transition"
@@ -412,9 +419,9 @@ const ClassRoomAdmin = () => {
                   Close
                 </Button>
                 <Button asChild className="bg-brand-600 hover:bg-brand-700 text-white">
-                  <Link to={`/classroom/${viewModal._id}`}>
+                  <Link to={`/admin/classroom/${viewModal._id}`}>
                     <ExternalLink className="w-4 h-4 mr-1.5" />
-                    Open in App
+                    View Inside Classroom
                   </Link>
                 </Button>
               </div>

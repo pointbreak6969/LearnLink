@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { BookOpen } from "lucide-react";
 import { toast } from "sonner";
+import classroomService from "@/services/classroom";
 
 const MyCard = ({ id, name, admin, university, faculty, isJoined }) => {
   const navigate = useNavigate();
