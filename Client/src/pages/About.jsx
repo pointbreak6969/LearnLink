@@ -209,3 +209,6 @@ const About = () => {
 };
 
 export default About;
+
+
+//bullshit
