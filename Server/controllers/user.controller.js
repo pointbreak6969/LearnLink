@@ -19,6 +19,19 @@ const generateAccessAndRefreshToken = async (userId) => {
   }
 };
 
+const getCookieOptions = () => {
+  const isProduction =
+    process.env.NODE_ENV === "production" ||
+    Boolean(process.env.RENDER) ||
+    Boolean(process.env.VERCEL);
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 24 * 60 * 60 * 1000 * 7, // 7 days
+  };
+};
+
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
   if (!(fullName && email && password)) {
@@ -57,12 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(500, "User not created");
   }
-  const options = {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    maxAge: 24 * 60 * 60 * 1000 * 7, // 7 days
-  };
+  const options = getCookieOptions();
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
   );
@@ -78,6 +86,7 @@ const registerUser = asyncHandler(async (req, res) => {
           fullName: createdUser.fullName,
           email: createdUser.email,
           role: createdUser.role,
+          accessToken,
         },
         "User created successfully"
       )
@@ -106,12 +115,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken -otp -otpExpiry"
   );
-  const options = {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    maxAge: 24 * 60 * 60 * 1000 * 7, // 1 week
-  };
+  const options = getCookieOptions();
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
@@ -124,6 +128,7 @@ const loginUser = asyncHandler(async (req, res) => {
           fullName: loggedInUser.fullName,
           email: loggedInUser.email,
           role: loggedInUser.role,
+          accessToken,
         },
         "User logged in successfully"
       )
@@ -142,12 +147,7 @@ const logoutUser = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  const options = {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    maxAge: 24 * 60 * 60 * 1000 * 7, // 1 week
-  };
+  const options = getCookieOptions();
   return res
     .status(200)
     .clearCookie("accessToken", options)
@@ -236,12 +236,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       throw new ApiError(401, "Refresh token is expired or used");
     }
 
-    const options = {
-      httpOnly: true,
-      secure: true,
-      maxAge: 24 * 60 * 60 * 1000 * 7,
-      sameSite: "lax",
-    };
+    const options = getCookieOptions();
 
     const { accessToken, refreshToken: newRefreshToken } =
       await generateAccessAndRefreshToken(user._id);
@@ -249,7 +244,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", newRefreshToken, options)
-      .json(new ApiResponse(200, {}, "Access token refreshed successfully"));
+      .json(
+        new ApiResponse(
+          200,
+          { accessToken },
+          "Access token refreshed successfully"
+        )
+      );
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid refresh token");
   }

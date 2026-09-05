@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { fetchProfileDetails } from "./store/profileReducer";
 import { Toaster } from "sonner";
+import { clearAccessToken } from "./services/api";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -24,10 +25,12 @@ function App() {
           dispatch(login(session.data.data));
           dispatch(fetchProfileDetails());
         } else {
+          clearAccessToken();
           dispatch(logout());
         }
       } catch (error) {
         console.error("Authentication error:", error);
+        clearAccessToken();
         dispatch(logout());
       } finally {
         setLoading(false);
